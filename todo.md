@@ -1,17 +1,17 @@
-# moad :
+## moad:
 
-- User
->  login routing based on  the role
+### User
+- [ ] login routing based on  the role
 
->  register  
+- [ ] register  
 
->  logout  
+- [ ] logout  
 
->  notification read
+- [ ] notification read
 
->  role checking  for prevent unautherized access 
+- [ ] role checking  for prevent unautherized access 
 
->  ...  
+- [ ] ...  
 
-- Admin 
->  not yet defined  
+### Admin 
+- [ ] not yet defined  
