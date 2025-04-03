@@ -12,11 +12,6 @@ $info = null;
 
 if($_SERVER["REQUEST_METHOD"] ==  "POST"){
     //professor is ready, sending the email 
-    $emails = new PreparedEmails();
-
-    $email_sent = $emails->accountIsReadyEmail($_POST["email"], "test123", $_POST["first_name"]." ".$_POST["last_name"]);
-
-    echo $email_sent;
 
     if (empty($_POST['first_name']) || !preg_match("/^[a-zA-Z '\-]*$/", $_POST['first_name'])) {
         $errors["first_name"] = "First name is required and should contain only letters , spaces,',-";
