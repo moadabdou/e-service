@@ -1,6 +1,6 @@
 <?php 
 require_once __DIR__."/user.php"; 
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/libs/passwordGenrator/passwordGenerator.php"; 
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/libs/passwordGenerator/passwordGenerator.php"; 
 
 class ProfessorModel  extends UserModel{
 
@@ -23,20 +23,20 @@ class ProfessorModel  extends UserModel{
         int $departement_id,
         int $max_hours,
         int $min_hours
-        ): bool {
+        ): string | false {
         
         $password = $this->passGen->generate();
-        $password = password_hash($password, PASSWORD_DEFAULT);
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-        $user_id  =  parent::newUser($firstName, $lastName, $cin, $email, "professor", $password, $phone, $address, $birth_date);
+        $user_id  =  parent::newUser($firstName, $lastName, $cin, $email, "professor", $password_hash, $phone, $address, $birth_date);
         if ($user_id ===  false){
             return false; 
         }
 
         if ($this->db->query("INSERT INTO professor(id_professor, max_hours, min_hours, role, id_deparetement) VALUES (?, ?, ?, ?,?)", 
             [$user_id, $max_hours, $min_hours, "normal", $departement_id])) {
-            echo "here";
-            return true;
+
+            return $password;
 
         }else { 
 

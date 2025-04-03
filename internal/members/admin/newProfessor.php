@@ -2,6 +2,8 @@
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/layouts/forms/forms.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/professor.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/libs/email/prepared_emails.php";
+
 
 $form = new Form();
 
@@ -9,6 +11,13 @@ $errors = [];
 $info = null;
 
 if($_SERVER["REQUEST_METHOD"] ==  "POST"){
+    //professor is ready, sending the email 
+    $emails = new PreparedEmails();
+
+    $email_sent = $emails->accountIsReadyEmail($_POST["email"], "test123", $_POST["first_name"]." ".$_POST["last_name"]);
+
+    echo $email_sent;
+
     if (empty($_POST['first_name']) || !preg_match("/^[a-zA-Z '\-]*$/", $_POST['first_name'])) {
         $errors["first_name"] = "First name is required and should contain only letters , spaces,',-";
     }
@@ -51,13 +60,13 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 
     if (count($errors)){
         $info =  [
-            "msg" => "we encountred some errors when we tried to add this professor",
+            "msg" => "we found a problem with the data format when we tried to add this professor",
             "type" => "danger"
         ];
     }else {
         $profModel = new ProfessorModel();
 
-        $feedback_new_prof = $profModel->newProfessor(
+        $new_prof_password = $profModel->newProfessor(
             $_POST['first_name'],
             $_POST['last_name'],
             $_POST['cin'],
@@ -70,16 +79,33 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
             $_POST['work_hours_min']
         );
 
-        if ($feedback_new_prof){
-            $info =  [
-                "msg" => "the  registration was seccussfull,  an email  is sent to the professor",
-                "type" => "info"
-            ];
-        }else {
+        if ($new_prof_password === false){
             $info =  [
                 "msg" => "data format looks fine but an error accured when we tried to add this professor : ".$profModel->resolveProfessorOperationError(),
                 "type" => "danger"
             ];
+        }else {
+            //professor is ready, sending the email 
+
+            $emails = new PreparedEmails();
+
+            $email_sent = $emails->accountIsReadyEmail($_POST["email"], $new_prof_password, $_POST["first_name"]." ".$_POST["last_name"]);
+
+            if ($email_sent === true){
+                
+                $info =  [
+                    "msg" => "the  registration was seccussfull,  an email  is sent to the professor",
+                    "type" => "info"
+                ]; 
+
+            }else {
+
+                $info =  [
+                    "msg" => "the  registration was seccussfull,  but we were not able to sent the email to the professor ".$email_sent,
+                    "type" => "warning"
+                ]; 
+            }
+
         }
     }
 }

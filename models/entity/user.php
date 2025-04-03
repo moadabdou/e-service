@@ -20,11 +20,6 @@ class UserModel  extends Model{
         string $birth_date
         ): string | false{
         
-/*
-
-
-
-*/
 
         if ($this->db->query("INSERT INTO user(
                                                 firstName, lastName, CIN, email, role, password, phone, address, birth_date, creation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())", 
@@ -63,7 +58,7 @@ class UserModel  extends Model{
             return null;
         }
 
-        if (strpos($this->getError(), "email")){
+        if (strpos($this->getError(), "email") !== false){
             return "email is already exists";
         }else{
             return null;
