@@ -1,7 +1,11 @@
 <?php
+require_once __DIR__.'/../vendor/autoload.php';
+use Dotenv\Dotenv;
+
 class Database {
-    /** @var string Database host */
+    /** @var string Database host:port */
     private string $host;
+    private string $port;
     /** @var string Database name */
     private string $dbName;
     /** @var string Database username */
@@ -35,9 +39,20 @@ class Database {
      * @param string $charset  Character set (default: 'utf8mb4')
      * @param array  $options  Optional array of PDO options to override defaults
      */
-    public function __construct(string $host, string $dbName, string $username, string $password, string $charset = 'utf8mb4', array $options = []) {
+    public function __construct(string $charset = 'utf8mb4', array $options = []) {
+
+        $dotenv = Dotenv::createImmutable(__DIR__."/..");
+        $dotenv->load();
+        
+        $host = $_ENV["host"];
+        $dbname = $_ENV["dbname"]; 
+        $username = $_ENV["username"];
+        $password = $_ENV["password"];  
+        $port = $_ENV["port"];
+
         $this->host     = $host;
-        $this->dbName   = $dbName;
+        $this->port     = $port;
+        $this->dbName   = $dbname;
         $this->username = $username;
         $this->password = $password;
         $this->charset  = $charset;
@@ -45,7 +60,7 @@ class Database {
         // Override default options if provided
         $this->options = $options + $this->options;
 
-        $dsn = "mysql:host={$this->host};dbname={$this->dbName};charset={$this->charset}";
+        $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->dbName};charset={$this->charset}";
 
         try {
             $this->pdo = new PDO($dsn, $this->username, $this->password, $this->options);
@@ -89,6 +104,7 @@ class Database {
             // execute() returns true on success or false on failure.
             return $this->stmt->execute($params);
         } catch (PDOException $e) {
+
             $this->error = "Query failed: " . $e->getMessage() . " (SQL: " . $sql . ")";
             // error_log("Database Query Error: " . $e->getMessage() . " | SQL: " . $sql);
             $this->stmt = null; // Reset statement on error
@@ -191,7 +207,7 @@ class Database {
         try {
             return $this->pdo->lastInsertId($name);
         } catch (PDOException $e) {
-             $this->error = "LastInsertId failed: " . $e->getMessage();
+            $this->error = "LastInsertId failed: " . $e->getMessage();
             return false;
         }
     }

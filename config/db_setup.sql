@@ -1,4 +1,4 @@
--- Active: 1730824903744@@127.0.0.1@3306@eservice
+-- Active: 1743650804132@@127.0.0.1@3307@eservice
 
 CREATE DATABASE eservice;
 
@@ -10,6 +10,16 @@ CREATE TABLE IF NOT EXISTS deparetement(
     title CHAR(50) UNIQUE NOT NULL ,
     description VARCHAR(400) NOT NULL
 );
+
+INSERT INTO deparetement (title, description) VALUES
+('Computer Science', 'Department focused on computer programming and information technology'),
+('Mathematics', 'Department dedicated to mathematical sciences and research'),
+('Physics', 'Department specializing in physical sciences and experimental research'),
+('Engineering', 'Department covering various engineering disciplines'),
+('Business', 'Department focused on business administration and management');
+
+
+
 
 
 CREATE TABLE IF NOT EXISTS filiere(
@@ -37,12 +47,15 @@ CREATE TABLE IF NOT EXISTS user(
     firstName CHAR(30) NOT NULL ,
     lastName CHAR(30) NOT NULL ,
     CIN CHAR(8) NOT NULL ,
-    email CHAR(30) NOT NULL ,
+    email CHAR(30) UNIQUE NOT NULL ,
     role ENUM('professor','vacataire','admin') NOT NULL,
     password CHAR(255) NOT  NULL,
-    phone INT NOT NULL, 
+    phone INT(10) NOT NULL, 
+    address TEXT NOT NULL,
     birth_date DATE NOT  NULL
 );
+ALTER TABLE user ADD COLUMN creation_date DATETIME NOT NULL ;
+
 
 CREATE TABLE IF NOT EXISTS admin(
     id_admin INT UNIQUE NOT NULL,
@@ -52,12 +65,12 @@ CREATE TABLE IF NOT EXISTS admin(
 
 CREATE TABLE IF NOT EXISTS professor(
     id_professor INT UNIQUE NOT NULL,
-    max_hours INT NOT NULL,
-    min_hours INT NOT NULL,
+    max_hours INT NOT NULL CHECK( max_hours > 0),
+    min_hours INT NOT NULL CHECK( min_hours >= 0),
     role ENUM('normal','chef_deparetement','coordonnateur') NOT NULL, 
     id_deparetement INT NOT NULL, 
-    FOREIGN KEY(id_deparetement) REFERENCES deparetement(id_deparetement)
-    Foreign Key(id_professor) REFERENCES user(id_user),
+    Foreign Key (id_deparetement) REFERENCES deparetement(id_deparetement),
+    Foreign Key (id_professor) REFERENCES user(id_user)
 );
 
 CREATE TABLE IF NOT EXISTS coordonnateur(

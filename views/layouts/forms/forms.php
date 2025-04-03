@@ -1,34 +1,14 @@
 <?php 
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/departement.php";
+
 class Form{
 
-    public function professorFormView(){
+    public function professorFormView(array $errors = [], ?array $info){
 
-        $departements = [
-            [
-                "title" => "Math",
-                "id_deparetement" => 1
-            ],
-            [
-                "title" => "Physics",
-                "id_deparetement" => 2
-            ],
-            [
-                "title" => "Chemistry",
-                "id_deparetement" => 3
-            ],
-            [
-                "title" => "Biology",
-                "id_deparetement" => 4
-            ],
-            [
-                "title" => "Computer Science",
-                "id_deparetement" => 5
-            ],
-            [
-                "title" => "Engineering",
-                "id_deparetement" => 6
-            ],
-        ];
+        
+        $depModel = new DepartementModel();
+
+        $departements = $depModel->getAll();
 
         ob_start();
         require __DIR__."/professor_form.view.php";
