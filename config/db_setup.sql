@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS user(
     id_user INT PRIMARY KEY AUTO_INCREMENT,
     firstName CHAR(30) NOT NULL ,
     lastName CHAR(30) NOT NULL ,
+    CIN CHAR(8) NOT NULL ,
     email CHAR(30) NOT NULL ,
     role ENUM('professor','vacataire','admin') NOT NULL,
     password CHAR(255) NOT  NULL,
@@ -53,9 +54,10 @@ CREATE TABLE IF NOT EXISTS professor(
     id_professor INT UNIQUE NOT NULL,
     max_hours INT NOT NULL,
     min_hours INT NOT NULL,
-    specialite CHAR(30) NOT NULL,
-    role ENUM('chef_deparetement','coordonnateur'), 
-    Foreign Key (id_professor) REFERENCES user(id_user)
+    role ENUM('normal','chef_deparetement','coordonnateur') NOT NULL, 
+    id_deparetement INT NOT NULL, 
+    FOREIGN KEY(id_deparetement) REFERENCES deparetement(id_deparetement)
+    Foreign Key(id_professor) REFERENCES user(id_user),
 );
 
 CREATE TABLE IF NOT EXISTS coordonnateur(
@@ -67,9 +69,7 @@ CREATE TABLE IF NOT EXISTS coordonnateur(
 
 CREATE TABLE IF NOT EXISTS chef_deparetement(
     id_chef_deparetement INT UNIQUE NOT NULL,
-    id_deparetement INT NOT NULL,
-    Foreign Key (id_chef_deparetement) REFERENCES professor(id_professor),
-    Foreign Key (id_deparetement) REFERENCES deparetement(id_deparetement)
+    Foreign Key (id_chef_deparetement) REFERENCES professor(id_professor)
 );
 
 
@@ -82,8 +82,7 @@ CREATE TABLE IF NOT EXISTS coordonnateur(
 
 CREATE TABLE IF NOT EXISTS vacataire(
     id_vacataire INT UNIQUE NOT NULL,
-    id_coordonnateur INT NOT NULL, 
-    specialite CHAR(30) NOT NULL,
+    id_coordonnateur INT NULL, 
     Foreign Key (id_vacataire) REFERENCES user(id_user),
     Foreign Key (id_coordonnateur) REFERENCES coordonnateur(id_coordonnateur)
 );
@@ -126,6 +125,7 @@ CREATE TABLE IF NOT EXISTS Notes(
     id_vacataire INT NULL,
     id_professor INT NULL,
     date_upload DATE NOT NULL,
+    session enum('normal','ratt') NOT NULL,
     file_id INT NOT NULL, -- where the notes are stored --
     Foreign Key (id_module) REFERENCES module(id_module),
     Foreign Key (id_professor) REFERENCES professor(id_professor),

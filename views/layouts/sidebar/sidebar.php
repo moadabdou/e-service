@@ -7,10 +7,11 @@ class SideBar {
 
     public function __construct(string $role)
     {
-        switch($role) {
+        switch($role) 
+        {
             case "Admin":
-                $this->nav["Admin"] = self::$NAVIGATION["Admin"];
-                $this->nav["User"] = self::$NAVIGATION["User"];  
+                $this->nav["Administration"] = self::$NAVIGATION["Administration"];
+                $this->nav["General"] = self::$NAVIGATION["General"];  
             break;
         }
     }
@@ -25,7 +26,7 @@ class SideBar {
     }
 
     private static array $NAVIGATION =[
-        "User" => [
+        "General" => [
             "Profile" => [
                 "title" => "Profile", 
                 "icon" => "ti-atom",
@@ -37,16 +38,16 @@ class SideBar {
                 "url" => "#"
             ]
         ],
-        "Admin" => [
-            "AllUsers" => [
-                "title" => "All Users", 
+        "Administration" => [
+            "main" => [
+                "title" => "main", 
                 "icon" => "ti-atom",
                 "url" => "."
             ],
-            "NewUsers" => [
-                "title" => "New Users", 
-                "icon" => "ti-power",
-                "url" => "newUsers.php"
+            "newProfessor" => [
+                "title" => "new professor", 
+                "icon" => "ti-user-plus",
+                "url" => "newProfessor.php"
             ]
         ]
     ];

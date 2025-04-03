@@ -1,5 +1,5 @@
 <?php 
-$RESOURCES_PATH = "/e-service/resources";
+require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
 ?>
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
