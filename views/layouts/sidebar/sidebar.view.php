@@ -18,9 +18,9 @@ require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
             <?php foreach($nav  as  $section => $vals){?>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu"><?=htmlspecialchars($section)?></span>
+                    <span class="hide-menu"><?=htmlspecialchars($vals["title"])?></span>
                 </li>
-                <?php foreach($vals  as  $key => $comps){?>
+                <?php foreach($vals["menu"]  as  $key => $comps){?>
                     <li class="sidebar-item">
                         <a class="sidebar-link <?=($key == $active)? "active" :  ""?> " href="<?=htmlspecialchars($comps["url"])?>" aria-expanded="false">
                             <i class="ti <?=htmlspecialchars($comps["icon"])?>"></i>

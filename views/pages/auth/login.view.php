@@ -1,16 +1,5 @@
 <?php 
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
-
-$email_error = ""; 
-if (isset($errors["email"])){
-  $email_error = $errors["email"];
-}
-
-$password_error = ""; 
-if (isset($errors["password"])){
-  $password_error = $errors["password"];
-}
-
 ?>
 
 <!doctype html>
@@ -35,28 +24,25 @@ if (isset($errors["password"])){
           <div class="col-md-8 col-lg-6 col-xxl-3">
             <div class="card mb-0">
               <div class="card-body">
-                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                  <img src="<?=$RESOURCES_PATH?>/assets/images/logos/logo.svg" alt="">
-                </a>
                 <p class="text-center">Your Social Campaigns</p>
-                <form class="needs-validation">
+                <?php if ($info) {?>
+                    <div class="alert alert-<?= $info["type"] ?> text-center mb-5" role="alert">
+                        <?= $info["msg"] ?>
+                    </div>
+                <?php }?>
+                <form class="needs-validation" action="<?= $_SERVER["PHP_SELF"]?>" method="post">
                   <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Username</label>
-                    <input type="email" class="form-control <?= $password_error ? "is-invalid" : ""?>" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                    <?php if ($password_error) {?> 
-                      <div class="invalid-feedback">
-                        <?=htmlspecialchars($email_error)?>
-                      </div>
+                    <label for="email" class="form-label">your email</label>
+                    <input type="email" class="form-control <?= isset($errors["email"]) ||  isset($errors["invalid"]) ? "is-invalid" : ""?>" id="email" name="email" required>
+                    <?php if (isset($errors["email"])) {?>
+                        <div class="invalid-feedback">
+                            <?= $errors["email"] ?>
+                        </div>
                     <?php }?>
                   </div>
                   <div class="mb-4">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control  <?= $password_error ? "is-invalid" : ""?>" id="exampleInputPassword1" required>
-                    <?php if ($password_error) {?> 
-                      <div class="invalid-feedback">
-                        <?= htmlspecialchars($errors["password"]) ?>
-                      </div>
-                    <?php }?>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control <?= isset($errors["invalid"]) ? "is-invalid" : ""?>" id="password" name="password" required>
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">
@@ -67,11 +53,7 @@ if (isset($errors["password"])){
                     </div>
                     <a class="text-primary fw-bold" href="./index.html">Forgot Password ?</a>
                   </div>
-                  <a href="./index.html" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</a>
-                  <div class="d-flex align-items-center justify-content-center">
-                    <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
-                    <a class="text-primary fw-bold ms-2" href="register.php">Create an account</a>
-                  </div>
+                  <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button>
                 </form>
               </div>
             </div>

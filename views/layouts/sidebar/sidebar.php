@@ -7,13 +7,8 @@ class SideBar {
 
     public function __construct(string $role)
     {
-        switch($role) 
-        {
-            case "Admin":
-                $this->nav["Administration"] = self::$NAVIGATION["Administration"];
-                $this->nav["General"] = self::$NAVIGATION["General"];  
-            break;
-        }
+        $this->nav[$role] = self::$NAVIGATION[$role];
+        $this->nav["General"] = self::$NAVIGATION["General"];  
     }
 
     public function view(string $active)
@@ -27,29 +22,87 @@ class SideBar {
 
     private static array $NAVIGATION =[
         "General" => [
-            "Profile" => [
-                "title" => "Profile", 
-                "icon" => "ti-atom",
-                "url" => "#"
-            ],
-            "Logout" => [
-                "title" => "Logout", 
-                "icon" => "ti-power",
-                "url" => "#"
+            "title" => "Generale", 
+            "menu" => 
+            [
+                "profile" => [
+                    "title" => "Profile", 
+                    "icon" => "ti-atom",
+                    "url" => "/e-service/internal/members/common/profile.php"
+                ],
+                "logout" => [
+                    "title" => "Logout", 
+                    "icon" => "ti-power",
+                    "url" => "/e-service/internal/members/common/logout.php"
+                ]
             ]
         ],
-        "Administration" => [
-            "main" => [
-                "title" => "main", 
-                "icon" => "ti-atom",
-                "url" => "."
-            ],
-            "newProfessor" => [
-                "title" => "new professor", 
-                "icon" => "ti-user-plus",
-                "url" => "newProfessor.php"
+
+        "admin" => 
+        [
+            "title" => "Administration",
+            "menu" => [
+                "main" => [
+                    "title" => "main", 
+                    "icon" => "ti-atom",
+                    "url" => "/e-service/internal/members/admin"
+                ],
+                "newProfessor" => [
+                    "title" => "new professor", 
+                    "icon" => "ti-user-plus",
+                    "url" => "newProfessor.php"
+                ]
+            ]
+        ],
+
+        "professor/chef_deparetement" => 
+        [
+            "title"=> "gere deperetement",
+            "menu" =>[
+                "main" => [
+                    "title" => "main", 
+                    "icon" => "ti-atom",
+                    "url" => "/e-service/internal/members/chef_deparetement"
+                ]
+            ]
+        ],
+
+        "professor/coordonnateur" => 
+        [
+            "title"=> "gere filiere",
+            "menu" =>[
+                "main" => [
+                    "title" => "main", 
+                    "icon" => "ti-atom",
+                    "url" => "/e-service/internal/members/coordonnateur"
+                ]
+            ]
+        ],
+
+        "professor" => 
+        [
+            "title"=> "professor panel",
+            "menu" =>[
+                "main" => [
+                    "title" => "main", 
+                    "icon" => "ti-atom",
+                    "url" => "/e-service/internal/members/professor"
+                ]
+            ]
+        ],
+
+        "vacataire" => 
+        [
+            "title"=> "vacataire panel",
+            "menu" =>[
+                "main" => [
+                    "title" => "main", 
+                    "icon" => "ti-atom",
+                    "url" => "/e-service/internal/members/vacataire"
+                ]
             ]
         ]
+
     ];
 
 }

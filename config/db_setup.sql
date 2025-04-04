@@ -1,5 +1,5 @@
 -- Active: 1743650804132@@127.0.0.1@3307@eservice
-
+--pass :  =MBKIIov>F*5
 CREATE DATABASE eservice;
 
 USE  eservice;

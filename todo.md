@@ -1,17 +1,27 @@
 ## moad:
 
 ### User
-- [ ] login routing based on  the role
+- [*] login routing based on  the role
 
-- [ ] register  
+- [*] logout  
 
-- [ ] logout  
+- [*] role checking  for prevent unautherized access 
+
+- [ ] profile 
+
+> [ ] display  information
+
+> [ ] change user informations (phone, address, profile pecture ...)
+
+> [ ] change  password 
 
 - [ ] notification read
-
-- [ ] role checking  for prevent unautherized access 
 
 - [ ] ...  
 
 ### Admin 
-- [ ] not yet defined  
+- [*] register  new professor 
+- [ ] email  check
+
+
+### coordinateur

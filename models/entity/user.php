@@ -53,6 +53,16 @@ class UserModel  extends Model{
         }
     }
 
+    
+    public function getUserByEmail(string $email) : array | false{
+        if ($this->db->query("SELECT * FROM user WHERE email=?", [$email])) {
+            return $this->db->fetch();
+        } else {
+            $this->error = $this->db->getError();
+            return false;
+        }
+    }
+
     protected function resolveUserOperationError(): ?string{
         if (!$this->getError()){
             return null;
@@ -65,7 +75,6 @@ class UserModel  extends Model{
         }
 
     }
-
 }
 
 ?>

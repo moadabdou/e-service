@@ -1,6 +1,6 @@
 <?php 
 require_once __DIR__."/user.php"; 
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/libs/passwordGenerator/passwordGenerator.php"; 
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/passwordGenerator/passwordGenerator.php"; 
 
 class ProfessorModel  extends UserModel{
 
@@ -49,6 +49,18 @@ class ProfessorModel  extends UserModel{
         }
 
     }
+
+
+    public function getProfessorRole(int $id){
+
+        if ($this->db->query("SELECT role FROM professor WHERE id_professor=?", [$id])){
+            return $this->db->fetchColumn(0);
+        }else {
+            throw $this->db->getError();
+        }
+
+    }   
+
 
     public function resolveProfessorOperationError(): ?string{
         if (!$this->getError()){

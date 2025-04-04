@@ -1,8 +1,16 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/layouts/forms/forms.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/layouts/user_register_forms/forms.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/professor.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/libs/email/prepared_emails.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/email/prepared_emails.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
+
+session_start();
+
+$userController =  new UserController();
+
+$userController->checkCurrentUserAuthority(["admin"]);
+
 
 
 $form = new Form();
@@ -86,19 +94,18 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 
             $email_sent = $emails->accountIsReadyEmail($_POST["email"], $new_prof_password, $_POST["first_name"]." ".$_POST["last_name"]);
 
-            if ($email_sent === true){
+            if ($email_sent !== true){
+                $info =  [
+                    "msg" => "the  registration was seccussfull,  but we were not able to send the email to the professor {".htmlspecialchars($new_prof_password)."}".$email_sent,
+                    "type" => "warning"
+                ]; 
+            }else {
                 
                 $info =  [
                     "msg" => "the  registration was seccussfull,  an email  is sent to the professor",
-                    "type" => "info"
+                    "type" => "success"
                 ]; 
 
-            }else {
-
-                $info =  [
-                    "msg" => "the  registration was seccussfull,  but we were not able to sent the email to the professor ".$email_sent,
-                    "type" => "warning"
-                ]; 
             }
 
         }
@@ -106,10 +113,9 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 }
 
 
-
 $content = $form->professorFormView($errors, $info);
 
 $dashboard = new DashBoard();
-$dashboard->view("Admin", "newProfessor", $content);
+$dashboard->view("admin", "newProfessor", $content);
 
 ?>
