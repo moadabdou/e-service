@@ -27,7 +27,7 @@ class SideBar {
             [
                 "profile" => [
                     "title" => "Profile", 
-                    "icon" => "ti-atom",
+                    "icon" => "ti-user",
                     "url" => "/e-service/internal/members/common/profile.php"
                 ],
                 "logout" => [
@@ -50,7 +50,7 @@ class SideBar {
                 "newProfessor" => [
                     "title" => "new professor", 
                     "icon" => "ti-user-plus",
-                    "url" => "newProfessor.php"
+                    "url" => "/e-service/internal/members/admin/newProfessor.php"
                 ]
             ]
         ],

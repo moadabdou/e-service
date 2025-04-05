@@ -19,19 +19,19 @@
                     <div class="form-inner d-flex flex-wrap justify-between">
                         <div class="mb-3 col-lg-6 col-xxl-6 col-md-6 col-sm-12 col-12">
                             <label for="first-name" class="form-label">first Name</label>
-                            <input type="text" class="form-control <?= isset($errors["first_name"]) ? "is-invalid" : "" ?>" id="first-name" name="first_name" placeholder="first name"  pattern="[a-zA-Z]+['\-]?[a-zA-Z]+" maxlength="30" required>
-                            <?php if (isset($errors["first_name"])) {?>
+                            <input type="text" class="form-control <?= isset($errors["firstName"]) ? "is-invalid" : "" ?>" id="first-name" name="firstName" placeholder="first name"  pattern="[a-zA-Z]+['\-]?[a-zA-Z]+" maxlength="30" required>
+                            <?php if (isset($errors["firstName"])) {?>
                                 <div class="invalid-feedback">
-                                    <?= $errors["first_name"] ?>
+                                    <?= $errors["firstName"] ?>
                                 </div>
                             <?php }?>
                         </div>
                         <div class="mb-3 col-lg-6 col-xxl-6 col-md-6 col-sm-12 col-12">
                             <label for="last-name" class="form-label">last Name</label>
-                            <input type="text" class="form-control <?= isset($errors["last_name"]) ? "is-invalid" : "" ?>" id="last-name" name="last_name" placeholder="last name" pattern="[a-zA-Z]+['\-]?[a-zA-Z]+" maxlength="30" required>
-                            <?php if (isset($errors["last_name"])) {?>
+                            <input type="text" class="form-control <?= isset($errors["lastName"]) ? "is-invalid" : "" ?>" id="last-name" name="lastName" placeholder="last name" pattern="[a-zA-Z]+['\-]?[a-zA-Z]+" maxlength="30" required>
+                            <?php if (isset($errors["lastName"])) {?>
                                 <div class="invalid-feedback">
-                                    <?= $errors["last_name"] ?>
+                                    <?= $errors["lastName"] ?>
                                 </div>
                             <?php }?>
                         </div>
@@ -65,10 +65,10 @@
                         </div>
                         <div class="mb-4 col-lg-6 col-xxl-6 col-md-6 col-sm-12 col-12">
                             <label for="CIN" class="form-label">CIN</label>
-                            <input type="text" class="form-control <?= isset($errors["cin"]) ? "is-invalid" : "" ?>" id="CIN" name="cin" placeholder="CIN" pattern="[A-Z]{1,2}[0-9]{5,6}">
-                            <?php if (isset($errors["cin"])) {?>
+                            <input type="text" class="form-control <?= isset($errors["CIN"]) ? "is-invalid" : "" ?>" id="CIN" name="CIN" placeholder="CIN" pattern="[A-Z]{1,2}[0-9]{5,6}">
+                            <?php if (isset($errors["CIN"])) {?>
                                 <div class="invalid-feedback">
-                                    <?= $errors["cin"] ?>
+                                    <?= $errors["CIN"] ?>
                                 </div>
                             <?php }?>
                         </div>

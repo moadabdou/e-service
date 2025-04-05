@@ -21,44 +21,44 @@ $info = null;
 if($_SERVER["REQUEST_METHOD"] ==  "POST"){
     //professor is ready, sending the email 
 
-    if (empty($_POST['first_name']) || !preg_match("/^[a-zA-Z '\-]*$/", $_POST['first_name'])) {
-        $errors["first_name"] = "First name is required and should contain only letters , spaces,',-";
+    if (empty($_POST['firstName']) || !$userController->isValidUserData('firstName', $_POST['firstName'])) {
+        $errors["firstName"] = "First name is required and should contain only letters , spaces,',-";
     }
 
-    if (empty($_POST['last_name']) || !preg_match("/^[a-zA-Z '\-]*$/", $_POST['last_name'])) {
-        $errors["last_name"] = "Last name is required and should contain only letters , spaces,',-";
+    if (empty($_POST['lastName']) || !$userController->isValidUserData('lastName', $_POST['lastName'])) {
+        $errors["lastName"] = "Last name is required and should contain only letters , spaces,',-";
     }
 
-    if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if (empty($_POST['email']) || !$userController->isValidUserData('email', $_POST['email'])) {
         $errors["email"] = "A valid email address is required";
     }
 
-    if (empty($_POST['phone']) || !preg_match("/^[0-9]{10}$/", $_POST['phone'])) {
+    if (empty($_POST['phone']) || !$userController->isValidUserData('phone', $_POST['phone'])) {
         $errors["phone"] = "Phone number is required and should be 10 digits";
     }
 
-    if (empty($_POST['address'])) {
-        $errors["address"] = "Address is required";
+    if (empty($_POST['address']) || !$userController->isValidUserData('address', $_POST['address'])) {
+        $errors["address"] = "A valid Address is required";
     }
 
-    if (empty($_POST['cin']) || !preg_match("/^[A-Z]{1,2}[0-9]{5,6}$/", $_POST['cin'])) {
+    if (empty($_POST['CIN']) || !$userController->isValidUserData('CIN', $_POST['CIN'])) {
         $errors["cin"] = "CIN is required and should be 7 characters of uppercase letters and numbers (e.g R123456)";
     }
 
-    if (empty($_POST['birth_date']) || !strtotime($_POST['birth_date']) || (time() - strtotime($_POST['birth_date'])) < (24 * 365 * 24 * 60 * 60)) {
-        $errors["birth_date"] = "A valid birth date is required (older  than 24 yrs old)";
+    if (empty($_POST['birth_date']) || !$userController->isValidUserData('birth_date', $_POST['birth_date'])) {
+        $errors["birth_date"] = "A valid birth date is required (older than 24 yrs old)";
     }
 
-    if (empty($_POST['departement']) || !is_numeric($_POST['departement']) || $_POST['departement'] < 0 ) {
-        $errors["departement"] = "Department is required and must be a valid ID";
+    if (empty($_POST['id_deparetement']) || !$userController->isValidUserData('id_deparetement', $_POST['id_deparetement'])) {
+        $errors["id_deparetement"] = "Department is required and must be a valid ID";
     }
 
-    if (empty($_POST['work_hours_max']) || !is_numeric($_POST['work_hours_max']) || $_POST['work_hours_max'] < 0) {
-        $errors["work_hours_max"] = "Maximum work hours must be a positive number";
+    if (empty($_POST['max_hours']) || !$userController->isValidUserData('max_hours', $_POST['max_hours'])) {
+        $errors["max_hours"] = "Maximum work hours must be a positive number";
     }
 
-    if (empty($_POST['work_hours_min']) || !is_numeric($_POST['work_hours_min']) || $_POST['work_hours_min'] < 0) {
-        $errors["work_hours_min"] = "Minimum work hours must be a positive number";
+    if (empty($_POST['min_hours']) || !$userController->isValidUserData('min_hours', $_POST['min_hours'])) {
+        $errors["min_hours"] = "Minimum work hours must be a positive number";
     }
 
     if (count($errors)){
@@ -70,16 +70,16 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
         $profModel = new ProfessorModel();
 
         $new_prof_password = $profModel->newProfessor(
-            $_POST['first_name'],
-            $_POST['last_name'],
-            $_POST['cin'],
+            $_POST['firstName'],
+            $_POST['lastName'],
+            $_POST['CIN'],
             $_POST['email'],
             $_POST['phone'],
             $_POST['address'],
             $_POST['birth_date'],
-            $_POST['departement'],
-            $_POST['work_hours_max'],
-            $_POST['work_hours_min']
+            $_POST['id_deparetement'],
+            $_POST['max_hours'],
+            $_POST['min_hours']
         );
 
         if ($new_prof_password === false){
@@ -92,7 +92,7 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 
             $emails = new PreparedEmails();
 
-            $email_sent = $emails->accountIsReadyEmail($_POST["email"], $new_prof_password, $_POST["first_name"]." ".$_POST["last_name"]);
+            $email_sent = $emails->accountIsReadyEmail($_POST["email"], $new_prof_password, $_POST["firstName"]." ".$_POST["lastName"]);
 
             if ($email_sent !== true){
                 $info =  [

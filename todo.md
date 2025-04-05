@@ -9,9 +9,9 @@
 
 - [ ] profile 
 
-> [ ] display  information
+> [*] display  information
 
-> [ ] change user informations (phone, address, profile pecture ...)
+> [*] change user informations (phone, address, profile pecture ...)
 
 > [ ] change  password 
 
@@ -21,6 +21,7 @@
 
 ### Admin 
 - [*] register  new professor 
+
 - [ ] email  check
 
 

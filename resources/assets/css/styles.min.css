@@ -16080,7 +16080,7 @@ body {
 .body-wrapper .container-fluid, .body-wrapper .container-sm, .body-wrapper .container-md, .body-wrapper .container-lg, .body-wrapper .container-xl, .body-wrapper .container-xxl {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 0px;
   transition: 0.2s ease-in;
   padding-top: 100px;
 }

@@ -46,14 +46,16 @@ CREATE TABLE IF NOT EXISTS user(
     id_user INT PRIMARY KEY AUTO_INCREMENT,
     firstName CHAR(30) NOT NULL ,
     lastName CHAR(30) NOT NULL ,
-    CIN CHAR(8) NOT NULL ,
+    img TEXT DEFAULT 'default',
+    CIN CHAR(8) UNIQUE NOT NULL ,
     email CHAR(30) UNIQUE NOT NULL ,
     role ENUM('professor','vacataire','admin') NOT NULL,
     password CHAR(255) NOT  NULL,
-    phone INT(10) NOT NULL, 
+    phone CHAR(10) NOT NULL, --06 xx xx xx xx 
     address TEXT NOT NULL,
     birth_date DATE NOT  NULL
 );
+
 ALTER TABLE user ADD COLUMN creation_date DATETIME NOT NULL ;
 
 
