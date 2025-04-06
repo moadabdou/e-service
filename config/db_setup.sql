@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS user(
     lastName CHAR(30) NOT NULL ,
     img TEXT DEFAULT 'default',
     CIN CHAR(8) UNIQUE NOT NULL ,
-    email CHAR(30) UNIQUE NOT NULL ,
+    email CHAR(100) UNIQUE NOT NULL ,
     role ENUM('professor','vacataire','admin') NOT NULL,
     password CHAR(255) NOT  NULL,
     phone CHAR(10) NOT NULL, --06 xx xx xx xx 
@@ -156,8 +156,17 @@ CREATE TABLE IF NOT EXISTS notifications(
     id_notification INT PRIMARY KEY AUTO_INCREMENT,
     id_user INT NOT NULL,
     date_time DATETIME NOT NULL,
-    title CHAR(30) UNIQUE NOT NULL ,
+    title CHAR(30) UNIQUE NOT NULL,
+    image_url TEXT,
+    status ENUM('read', 'unread') DEFAULT 'unread',
     content VARCHAR(400) NOT NULL,
     Foreign Key (id_user) REFERENCES user(id_user)
 );
+
+INSERT INTO notifications (id_user, date_time, title, content, status) VALUES
+(46, '2024-02-01 09:00:00', 'New Module Assignment', 'You have been assigned to teach Database Management', 'unread'),
+(46, '2024-02-01 10:30:00', 'Grade Submission Reminder', 'Please submit grades for Programming 101 by Friday', 'unread'),
+(46, '2024-02-02 11:15:00', 'Department Meeting', 'Monthly department meeting scheduled for next week', 'read'),
+(46, '2024-02-02 14:00:00', 'Schedule Update', 'Your teaching schedule has been updated', 'unread'),
+(46, '2024-02-03 09:45:00', 'System Maintenance', 'System will be down for maintenance on Sunday', 'read');
 

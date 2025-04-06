@@ -48,13 +48,12 @@ class UserModel  extends Model{
 
     protected function deleteUserById(int $id): bool {
         if ($this->db->query("DELETE FROM user WHERE id_user=?", [$id])) {
-            return true;
+            return $this->db->rowCount()>0;
         } else {
             $this->error = $this->db->getError();
             return false;
         }
     }
-
     
     public function getUserByEmail(string $email) : array | false{
         if ($this->db->query("SELECT * FROM user WHERE email=?", [$email])) {
@@ -65,8 +64,8 @@ class UserModel  extends Model{
         }
     }
 
-    public function getNonCriticalDataByEmail(string $email) : array | false{
-        if ($this->db->query("SELECT firstName, lastName, CIN, email, role, phone, address, birth_date, creation_date, img FROM user WHERE email=?", [$email])) {
+    public function getNonCriticalDataById(string $id_user) : array | false{
+        if ($this->db->query("SELECT firstName, lastName, CIN, email, role, phone, address, birth_date, creation_date, img FROM user WHERE id_user=?", [$id_user])) {
             return $this->db->fetch();
         } else {
             $this->error = $this->db->getError();

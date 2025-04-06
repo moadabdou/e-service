@@ -1,5 +1,6 @@
 <?php 
 require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
+
 ?>
 
 <!doctype html>
@@ -32,21 +33,13 @@ require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
                 <i class="ti ti-menu-2"></i>
               </a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link " href="javascript:void(0)" id="drop1" data-bs-toggle="dropdown" aria-expanded="false">
-                <iconify-icon icon="solar:bell-linear" class="fs-6"></iconify-icon>
-                <div class="notification bg-primary rounded-circle"></div>
+            <li class="nav-item">
+              <a class="nav-link " href="/e-service/internal/members/common/notifications.php">
+                <iconify-icon icon="solar:bell-linear" <?= $active=="notifications"? 'style="color: #000ea4"': "" ?> class="fs-6"></iconify-icon>
+                <?php if($unread_notifications_count !== 0) {?> 
+                  <div class="notification bg-primary rounded-circle"><?=htmlspecialchars($unread_notifications_count)?></div>
+                <?php }?>
               </a>
-              <div class="dropdown-menu dropdown-menu-animate-up" aria-labelledby="drop1">
-                <div class="message-body">
-                  <a href="javascript:void(0)" class="dropdown-item">
-                    Item 1
-                  </a>
-                  <a href="javascript:void(0)" class="dropdown-item">
-                    Item 2
-                  </a>
-                </div>
-              </div>
             </li>
           </ul>
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">

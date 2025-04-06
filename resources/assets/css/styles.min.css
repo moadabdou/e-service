@@ -16031,12 +16031,16 @@ textarea.form-control-lg {
 }
 
 .notification {
-  content: "";
   position: absolute;
   top: 22px;
   right: 9px;
-  width: 8px;
-  height: 8px;
+  min-width: 17px;
+  height: 17px;
+  color: #ffffff;
+  line-height: .5em;
+  font-size: 13px;
+  text-align: center;
+  padding: 5px;
 }
 
 @media (max-width: 991.98px) {

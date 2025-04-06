@@ -39,7 +39,6 @@ class UserController{
             }
 
             Navigation::redirect($url);
-
         }else {
             Navigation::redirect("/e-service/public/login.php");
         }
@@ -92,6 +91,10 @@ class UserController{
         return  in_array($dataKey, self::$selfEditable);
     }
 
+    public function absoluteProfilePectureUrl(string $user_img){
+        return "/e-service/internal/members/common/getResource.php?type=image&path=users_pp/".htmlspecialchars($user_img);
+    }
+
     public function isValidUserData(string $key, string|array $value) : bool{
         switch ($key){
             case 'firstName':
@@ -127,7 +130,7 @@ class UserController{
 
                 $dims = getimagesize($value['tmp_name']);
                 return $dims[0] === 512 && $dims[1] === 512 ;
-                
+
             default:
                 return false;
         }

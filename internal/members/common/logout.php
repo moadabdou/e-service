@@ -20,5 +20,4 @@ session_destroy();
 
 Navigation::redirect("/e-service/public/login.php");
 
-
 ?>

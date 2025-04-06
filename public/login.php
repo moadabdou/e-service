@@ -47,7 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
         $_SESSION["last_name"] = $user_info["lastName"];
         $_SESSION["role"] = $user_info["role"];
         $_SESSION["id_user"] = $user_info["id_user"];
-        $_SESSION["email"] = $user_info["email"];
         
         if ($_SESSION["role"]  === "professor"){
             $profModel = new ProfessorModel();

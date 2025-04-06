@@ -133,7 +133,7 @@
 
 <div class="profile-content">
     <div class="profile-picture-section">
-        <img src="<?= $profile_picture_url.htmlspecialchars($user_pp) ?>" alt="User Profile Picture" id="profile-pic">
+        <img src="<?= $profile_picture_url ?>" alt="User Profile Picture" id="profile-pic">
             <button class="edit-pic-btn" id="changePictureBtn">
             <i class="fas fa-camera"></i> Change Picture
             <input type="file"  id="fileInput" hidden>

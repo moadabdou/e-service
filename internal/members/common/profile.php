@@ -1,7 +1,5 @@
 <?php
 
-use function PHPSTORM_META\type;
-
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/profile/profile.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/user.php";
@@ -14,10 +12,8 @@ $userController->checkCurrentUserAuthority([]);
 
 $dashboard = new DashBoard();
 $userModel = new UserModel();
-
-$user_info = $userController->classifyDataBySelfEditability($userModel->getNonCriticalDataByEmail($_SESSION["email"]));
+$user_info = $userController->classifyDataBySelfEditability($userModel->getNonCriticalDataById($_SESSION["id_user"]));
 $user_pp = $user_info["img"]["value"];
-unset($user_info["img"]);
 
 $info = null;
 
@@ -73,13 +69,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     if (!$info){
         $res =  $userModel->updateUserColumn($_POST["key"], $value , $_SESSION["id_user"]);
         if($res){
+            $user_info[$_POST["key"]]["value"] =  $value;
             $info = [
                 "msg" => "your date is  updated seccessfuly",
                 "type" => "success"
             ];
         }else {
             $info = [
-                "msg" => "we were not able to  update your data because of an occured error ".$userModel->getError(),
+                "msg" => "we were not able to  update your data because of an occured error ",
                 "type" => "danger"
             ];
         }
@@ -87,9 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
 }
 
-
-
-$content = Profile::view($user_info, $user_pp, $info);
+unset($user_info["img"]); //we dont want this 
+$content = Profile::view($user_info,$userController->absoluteProfilePectureUrl($user_pp), $info);
 $dashboard->view($_SESSION["role"], "profile", $content);
 
 ?>
