@@ -15,7 +15,7 @@
 
     - [ ] change  password 
 
-- [ ] notification read
+- [x] notification read/unread/delete..
 
 - [ ] ...  
 
