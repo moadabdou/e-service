@@ -8,10 +8,15 @@ class UserController{
      * other data can be edited but only by the user/admin
     */
     private static array $selfEditable = ["img", "phone", "address", "password", "email"]; 
-
+    private static string $defaultPecture = "blank-profile.webp";
     /**
      * this function must be  used and session is already  started
     */
+
+    public function getDefaultPecture(){
+        return self::$defaultPecture;
+    }
+
     public function redirectCurrentUserBasedOnRole(){
         if (isset($_SESSION["role"])){
             $url = "/e-service/internal/members/";
@@ -63,7 +68,7 @@ class UserController{
      * Implement the logic to determine which entities can be edited by the user and return the classification.
      */
     public function classifyDataBySelfEditability(array $user_data): array{
-        // Example implementation: Return a placeholder array for now
+  
         foreach ( $user_data as  $key => $value ){
             if ( in_array($key, self::$selfEditable) ){
 

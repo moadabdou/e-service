@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
         if (move_uploaded_file($value['tmp_name'], $targetPath)) {
             //remove the  old pecture  
             $old_pp_path = $uploadDir.$user_pp; 
-            if (file_exists($old_pp_path)){
+            if (file_exists($old_pp_path) && $user_pp != $userController->getDefaultPecture()){
                 unlink($old_pp_path);
             }
 

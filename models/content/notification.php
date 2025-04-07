@@ -3,15 +3,17 @@
 require_once __DIR__."/../model.php"; 
 
 class NotificationModel extends Model{
+
+    private static int $item_per_page = 20;
     
     public function __construct()
     {
         parent::__construct();
     }
 
-    public function getAllNotificationByUserId(int $userId): array{
+    public function getAllNotificationByUserId(int $userId, int $page = 1): array{
 
-        if ($this->db->query("SELECT * FROM notifications WHERE id_user=? ORDER BY date_time DESC", [$userId])){
+        if ($this->db->query("SELECT * FROM notifications WHERE id_user=? ORDER BY date_time DESC LIMIT ?,?", [$userId, self::$item_per_page*($page-1), self::$item_per_page])){
             return $this->resolveNotificationData( $this->db->fetchAll(PDO::FETCH_ASSOC));
         }else {
             throw $this->db->getError(); //for now we gonna throw all  select queries
@@ -19,14 +21,30 @@ class NotificationModel extends Model{
 
     }
 
-    public function getUnreadNotificationByUserId(int $userId): array{
+    public function getUnreadNotificationByUserId(int $userId, int $page = 1): array{
 
-        if ($this->db->query("SELECT * FROM notifications WHERE id_user=? AND status='unread' ORDER BY date_time DESC", [$userId])){
+        if ($this->db->query("SELECT * FROM notifications WHERE id_user=? AND status='unread' ORDER BY date_time DESC LIMIT ?,?", [$userId, self::$item_per_page*($page-1), self::$item_per_page])){
             return $this->resolveNotificationData( $this->db->fetchAll(PDO::FETCH_ASSOC));
         }else {
             throw $this->db->getError(); //for now we gonna throw all  select queries
         }
 
+    }
+
+    public function getMaxPages(int $userId): int{
+        if ($this->db->query("SELECT * FROM notifications WHERE id_user=?", [$userId])){
+            return (int) ((int)$this->db->rowCount() / self::$item_per_page) + 1;
+        }else {
+            throw $this->db->getError(); //for now we gonna throw all  select queries
+        }
+    }
+
+    public function getUnreadMaxPages(int $userId): int{
+        if ($this->db->query("SELECT * FROM notifications WHERE id_user=? AND status='unread'", [$userId])){
+            return (int) ((int)$this->db->rowCount() / self::$item_per_page) + 1;
+        }else {
+            throw $this->db->getError(); //for now we gonna throw all  select queries
+        }
     }
 
     public function getUnreadNotificationCountByUserId(int $userId): int{

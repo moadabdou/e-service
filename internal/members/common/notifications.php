@@ -65,17 +65,22 @@ if ( $_SERVER["REQUEST_METHOD"] == "UPDATE"){
 $dashboard = new DashBoard();
 
 $notification = [];
+$maxPages = 0;
 $type = "all";
+$page  = (int)($_GET["page"] ?? 1);
 
 if(isset($_GET["type"]) && $_GET["type"] === "unread" ){
-    $notifications =  $notificationModel->getUnreadNotificationByUserId($_SESSION["id_user"]);
+    $notifications =  $notificationModel->getUnreadNotificationByUserId($_SESSION["id_user"], $page);
+    $maxPages =  $notificationModel->getUnreadMaxPages($_SESSION["id_user"]);
     $type = "unread";
 }else {
-    $notifications =  $notificationModel->getAllNotificationByUserId($_SESSION["id_user"]);
+    $maxPages = $notificationModel->getMaxPages($_SESSION["id_user"]);
+    $notifications =  $notificationModel->getAllNotificationByUserId($_SESSION["id_user"], $page);
 }
+
 $notificationPage = new NotificationPage();
 
-$content =  $notificationPage->view($notifications, $type);
+$content =  $notificationPage->view($notifications, $type, $page, $maxPages);
 
 $dashboard->view($_SESSION["role"], "notifications", $content);
 

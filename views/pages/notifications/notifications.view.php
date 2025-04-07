@@ -203,10 +203,10 @@
         /* Darker grey content text */
         line-height: 1.4;
         margin: 0;
-        white-space: nowrap;         
-        overflow: hidden;            
-        text-overflow: ellipsis; 
-        width: 60%;   
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 60%;
     }
 
     /* --- Actions --- */
@@ -264,6 +264,145 @@
         color: #adb5bd;
         /* Lighter icon */
     }
+
+    /* --- Refined Pagination Styles --- */
+
+    .pagination-container {
+        margin-top: 1.5rem;
+    }
+
+    .pagination {
+        display: flex;
+        /* Use flexbox for alignment */
+        padding-left: 0;
+        list-style: none;
+        justify-content: center;
+        gap: 8px;
+        /* Creates space between items */
+    }
+
+    .page-link {
+        position: relative;
+        display: flex;
+        /* Use flex for centering content if needed (like icons) */
+        justify-content: center;
+        align-items: center;
+        min-width: 40px;
+        /* Ensure minimum width for consistency */
+        height: 40px;
+        /* Ensure consistent height */
+        padding: 0 10px;
+        /* Horizontal padding, vertical handled by height/align-items */
+        font-size: 0.875rem;
+        /* Slightly smaller font */
+        font-weight: 500;
+        /* Medium weight */
+        line-height: 1;
+        /* Reset line height as height controls vertical size */
+        color: #5a6a85;
+        /* Default muted text color */
+        background-color: #ffffff;
+        /* White background for inactive */
+        border: 1px solid #dee2e6;
+        /* Subtle border for inactive */
+        border-radius: 7px;
+        /* Rounded corners - adjust to match template */
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        /* Very subtle shadow */
+    }
+
+    /* Hover state for inactive items */
+    .page-link:hover {
+        z-index: 2;
+        color: #5D87FF;
+        /* Primary blue text on hover */
+        background-color: #f8f9fa;
+        /* Very light grey background */
+        border-color: #ced4da;
+        /* Slightly darker border on hover */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+    }
+
+    /* Focus state (accessibility) */
+    .page-link:focus {
+        z-index: 3;
+        outline: 0;
+        /* Use the primary color for the focus ring */
+        box-shadow: 0 0 0 0.2rem rgba(93, 135, 255, 0.3);
+    }
+
+    /* Active page state */
+    .page-item.active .page-link {
+        z-index: 1;
+        color: #fff;
+        /* White text */
+        background-color: #0d6efd;
+        ;
+        /* Primary blue background */
+        border-color: #5D87FF;
+        /* Primary blue border */
+        box-shadow: 0 3px 5px rgba(93, 135, 255, 0.3);
+        /* More prominent shadow for active */
+    }
+
+    .page-item.active .page-link:hover,
+    .page-item.active .page-link:focus {
+        background-color: #4a70e0;
+        /* Slightly darker blue on hover/focus */
+        border-color: #4a70e0;
+    }
+
+    /* Disabled state */
+    .page-item.disabled .page-link {
+        color: #adb5bd;
+        /* Light grey text */
+        pointer-events: none;
+        cursor: default;
+        background-color: #f8f9fa;
+        /* Lightest background */
+        border-color: #e9ecef;
+        /* Very light border */
+        box-shadow: none;
+        /* No shadow for disabled */
+        opacity: 0.8;
+    }
+
+    /* Style for ellipsis (...) */
+    .page-link.dots {
+        cursor: default;
+        color: #adb5bd;
+        background-color: transparent;
+        /* Make dots backgroundless */
+        border-color: transparent;
+        box-shadow: none;
+    }
+
+    .page-link.dots:hover {
+        /* Prevent hover effect on dots */
+        background-color: transparent;
+        border-color: transparent;
+        color: #adb5bd;
+    }
+
+    /* Styling for Prev/Next Chevrons */
+    .page-link span[aria-hidden="true"] {
+        font-size: 1.1rem;
+        /* Make chevrons slightly larger */
+        font-weight: bold;
+    }
+
+    /* Optional: Adjust chevron color on hover/disabled if needed */
+    .page-item.disabled .page-link span[aria-hidden="true"] {
+        color: #ced4da;
+    }
+
+    .page-link:hover span[aria-hidden="true"] {
+        /* color: #5D87FF; */
+        /* Already handled by general text color hover */
+    }
 </style>
 
 <div class="notifications-page-fully-light"> <!-- New class for clarity -->
@@ -276,34 +415,64 @@
     </div>
 
     <div class="notification-list">
-        <?php foreach($notifications as $notification) {?>
-        <a href=" <?= "/e-service/internal/members/common/read_notification.php?id=".$notification["id_notification"]?> ">
-            <div class="notification-item <?= $notification["status"]?>" data-id="<?= $notification["id_notification"]?>">
-                <div class="notification-indicator"></div>
-                <div class="notification-icon">
-                    <img src="<?= $notification["image_url"] ?>" alt="notification">
-                </div>
-                <div class="notification-details">
-                    <div class="notification-header">
-                        <span class="notification-title"><?= $notification["title"]?></span>
-                        <span class="notification-time"><?= $notification["date_time"]?></span>
+        <?php foreach ($notifications as $notification) { ?>
+            <a href=" <?= "/e-service/internal/members/common/read_notification.php?id=" . $notification["id_notification"] ?> ">
+                <div class="notification-item <?= $notification["status"] ?>" data-id="<?= $notification["id_notification"] ?>">
+                    <div class="notification-indicator"></div>
+                    <div class="notification-icon">
+                        <img src="<?= $notification["image_url"] ?>" alt="notification">
                     </div>
-                    <p class="notification-content"><?= $notification["content"]?></p>
+                    <div class="notification-details">
+                        <div class="notification-header">
+                            <span class="notification-title"><?= $notification["title"] ?></span>
+                            <span class="notification-time"><?= $notification["date_time"] ?></span>
+                        </div>
+                        <p class="notification-content"><?= $notification["content"] ?></p>
+                    </div>
+                    <div class="notification-actions">
+                        <button class="action-btn notification-delete" title="Delete"><i class="ti ti-trash"></i></button>
+                    </div>
                 </div>
-                <div class="notification-actions">
-                    <button class="action-btn notification-delete" title="Delete"><i class="ti ti-trash"></i></button>
-                </div>
+            </a>
+        <?php } ?>
+
+        <?php if (count($notifications) === 0) { ?>
+            <div class="notification-empty">
+                <i class="fas fa-bell-slash"></i>
+                <p>You have no notifications.</p>
             </div>
-        </a>
-        <?php }?>
-        
-        <?php if (count($notifications) === 0){?>
-        <div class="notification-empty">
-            <i class="fas fa-bell-slash"></i>
-            <p>You have no notifications.</p>
-        </div>
-        <?php }?>
+        <?php } ?>
     </div>
+    <nav aria-label="Page navigation example" class="pagination-container">
+        <ul class="pagination">
+            <!-- Previous Button -->
+            <li class="page-item <?= $page === 1? "disabled" : ""?>">
+                <a class="page-link" href="/e-service/internal/members/common/notifications.php?type=<?= $type ?>&page=<?= $page-1 ?>" tabindex="-1" aria-disabled="true" aria-label="Previous">
+                    <span aria-hidden="true">«</span>
+                    <!-- Or use text: Previous -->
+                </a>
+            </li>
+
+            <li class="page-item active"><a class="page-link" href="/e-service/internal/members/common/notifications.php?type=<?= $type ?>&page=1">start</a></li>
+            <li class="page-item"><span class="page-link dots">...</span></li> <!-- Ellipsis -->
+            <!-- Page Numbers -->
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="/e-service/internal/members/common/notifications.php?type=<?= $type ?>&page=<?= $page ?>"><?= $page ?></a>
+            </li>
+            <?php for($i = $page + 1 ; $i <= min( $page+6, $maxPages ); $i++){?> 
+                <li class="page-item"><a class="page-link" href="/e-service/internal/members/common/notifications.php?type=<?= $type ?>&page=<?= $i  ?>"><?= $i ?></a></li>
+            <?php }?>
+            <li class="page-item"><span class="page-link dots">...</span></li> <!-- Ellipsis -->
+            <li class="page-item active"><a class="page-link" href="/e-service/internal/members/common/notifications.php?type=<?= $type ?>&page=<?= $maxPages ?>">end</a></li>
+            <!-- Next Button -->
+            <li class="page-item <?= $page === $maxPages? "disabled" : ""?>" >
+                <a class="page-link" href="/e-service/internal/members/common/notifications.php?type=<?= $type ?>&page=<?= $page+1 ?>" aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                    <!-- Or use text: Next -->
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
     <div id="alert-box" class="alert alert-danger d-none" role="alert">
@@ -311,53 +480,49 @@
     </div>
 </div>
 <script>
+    function showAlert(msg) {
+        const alertBox = document.getElementById("alert-box");
+        alertBox.classList.remove("d-none");
+        alertBox.textContent = msg;
+        setTimeout(() => alertBox.classList.add("d-none"), 3000);
+    }
 
-function showAlert(msg){
-    const alertBox = document.getElementById("alert-box");
-    alertBox.classList.remove("d-none");
-    alertBox.textContent = msg;
-    setTimeout(() => alertBox.classList.add("d-none"), 3000);
-}
+    document.querySelectorAll(".notification-delete").forEach(el => {
+        el.addEventListener("click", async e => {
+            const not_id = el.parentElement.parentElement.getAttribute("data-id");
+            const res = await fetch("<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>", {
+                method: "DELETE",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    notification_id: not_id
+                })
+            });
 
-document.querySelectorAll(".notification-delete").forEach(el => {
-    el.addEventListener("click", async e=> {
-        const not_id  = el.parentElement.parentElement.getAttribute("data-id");
-        const res = await fetch("<?=htmlspecialchars($_SERVER["PHP_SELF"])?>", {
-            method : "DELETE",
-            headers :{
-                "Content-type" : "application/json"
+            if (res.status === 200) {
+                location.reload();
+            } else {
+                showAlert("we were not able to delete this  notification");
+            }
+        })
+    })
+
+    document.querySelector(".mark-all-read-btn").addEventListener("click", async e => {
+        const res = await fetch("<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>", {
+            method: "UPDATE",
+            headers: {
+                "Content-type": "application/json"
             },
-            body : JSON.stringify({
-                notification_id : not_id
+            body: JSON.stringify({
+                action: 0
             })
         });
 
-        if (res.status === 200){
+        if (res.status === 200) {
             location.reload();
-        }else {
-            showAlert("we were not able to delete this  notification");
-        } 
+        } else {
+            showAlert("we were not able to perform this action");
+        }
     })
-})
-
-document.querySelector(".mark-all-read-btn").addEventListener("click", async e=> {
-    const res = await fetch("<?=htmlspecialchars($_SERVER["PHP_SELF"])?>", {
-        method : "UPDATE",
-        headers :{
-            "Content-type" : "application/json"
-        },
-        body : JSON.stringify({
-            action : 0
-        })
-    });
-
-    if (res.status === 200){
-        location.reload();
-    }else {
-        showAlert("we were not able to perform this action");
-    } 
-})
-
-
-
 </script>
