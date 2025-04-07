@@ -22,7 +22,11 @@
 ### Admin 
 - [x] register  new professor 
 
-- [ ] email  check
+- [ ] set a welcom  notification for the new user 
+
+- [x] email  check
+
+- [ ] reset a user's password 
 
 
 ### coordinateur
