@@ -42,6 +42,9 @@
         border-color: #aaa;
     }
 
+    h2:not(:nth-of-type(1)){
+        margin-top: 40px;
+    }
 
     .profile-info-section {
         flex-grow: 1; /* Take remaining space */
@@ -55,7 +58,7 @@
         font-weight: 500;
     }
 
-    .info-item {
+    .info-item, .setting-item{
         display: flex;
         align-items: center;
         margin-bottom: 20px;
@@ -63,14 +66,18 @@
         position: relative; /* Needed for absolute positioning of the button if desired */
     }
 
-    .info-item label {
+    .info-item label, .setting-item label{
         font-weight: 600;
         color: #555;
         width: 200px; /* Fixed width for labels */
         flex-shrink: 0; /* Prevent label from shrinking */
     }
 
-    .info-value {
+    .setting-item label {
+        flex-grow: 1;
+    }
+
+    .info-value{
         color: #333;
         flex-grow: 1; /* Take available space */
         margin-right: 10px; /* Space before the pen icon */
@@ -158,6 +165,15 @@
                 <?php }?>
             </div>  
         <?php } ?>
+        <h2>Settings</h2>
+        <?php foreach ($general_settings as $setting => $title) {?>
+            <div class="setting-item" data-setting="<?= $setting ?>">
+                <label><?= htmlspecialchars($title) ?></label>
+                <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#editSetting">
+                    <i class="ti ti-pencil"></i>
+                </button>
+            </div>  
+        <?php } ?>
         
     </div>
 
@@ -169,6 +185,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <form action="<?=htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST">
+                    <input type="hidden" value="info" name="edit_type_request">
                     <div class="modal-body">
                         <div class="mb-2">
                             <label for="data-field" class="form-label data-key">data key</label>
@@ -182,6 +199,29 @@
                     </div>
                 </form>
             
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editSetting" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editSettingLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editSettingLabel">Edit your data here </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <form action="<?=htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST">
+                    <input type="hidden" value="settings" name="edit_type_request">
+                    <div class="modal-body">
+                        <input type="hidden" name="setting_name">
+                        <div class="mb-2 setting-form">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+        
             </div>
         </div>
     </div>
@@ -212,6 +252,7 @@
                 </div>
                 <div class="modal-footer">
                     <form id="uploadProfilePhoto" action="<?=htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" value="info" name="edit_type_request">
                         <input type="text" name="key" value="img" hidden>
                         <input type="file" name="value" id="profilePhotoInput" hidden>
                     </form>
@@ -235,6 +276,38 @@
             editDataModel.querySelector(".data-key").textContent =  key;
             editDataModel.querySelector(".data-key-input").value =  key;
             editDataModel.querySelector(".data-value").value =  value;
+
+        })
+    }
+
+    const settingsForms =  {
+        "change-password" : /*html*/`
+            <div>
+                <div class="mb-3">
+                    <label for="currentPassword" class="form-label">Current Password</label>
+                    <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">New Password</label>
+                    <input type="password" class="form-control" id="newPassword" name="new_password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+                </div>
+            </div>
+        `
+    };
+    const editSettingModel = document.getElementById('editSetting')
+    if (editSettingModel) {
+        editSettingModel.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const  settingsItem =  event.relatedTarget.parentElement;
+            const  type  = settingsItem.getAttribute("data-setting");
+            const settingForm = settingsForms[type];
+
+            editSettingModel.querySelector("div.setting-form").innerHTML = settingForm;
+            editSettingModel.querySelector("input[name=setting_name]").value = type;
 
         })
     }

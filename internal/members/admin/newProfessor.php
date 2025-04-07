@@ -4,6 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/layouts/user_register_f
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/professor.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/email/prepared_emails.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
+
 
 session_start();
 
@@ -14,6 +16,8 @@ $userController->checkCurrentUserAuthority(["admin"]);
 
 
 $form = new Form();
+$notificationModel = new NotificationModel();
+
 
 $errors = [];
 $info = null;
@@ -69,7 +73,7 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
     }else {
         $profModel = new ProfessorModel();
 
-        $new_prof_password = $profModel->newProfessor(
+        [$prof_id , $new_prof_password] = $profModel->newProfessor(
             $_POST['firstName'],
             $_POST['lastName'],
             $_POST['CIN'],
@@ -88,6 +92,15 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
                 "type" => "danger"
             ];
         }else {
+
+
+            $notificationModel->createNotification(
+                $prof_id, 
+                "Welcome to E-service", 
+                "Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.",
+                null
+            );
+
             //professor is ready, sending the email 
 
             $emails = new PreparedEmails();
@@ -96,7 +109,7 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 
             if ($email_sent !== true){
                 $info =  [
-                    "msg" => "the  registration was seccussfull,  but we were not able to send the email to the professor {".htmlspecialchars($new_prof_password)."}".$email_sent,
+                    "msg" => "the  registration was seccussfull,  but we were not able to send the email to the professor {".htmlspecialchars($new_prof_password)."} ".$email_sent,
                     "type" => "warning"
                 ]; 
             }else {

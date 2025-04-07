@@ -36,7 +36,7 @@ class UserModel  extends Model{
 
     }
 
-    protected function getUserByID(int $id){
+    public function getUserByID(int $id){
 
         if ($this->db->query("SELECT * FROM user WHERE id_user=?", [$id])){
             return $this->db->fetch();

@@ -23,7 +23,7 @@ class ProfessorModel  extends UserModel{
         int $departement_id,
         int $max_hours,
         int $min_hours
-        ): string | false {
+        ): array | false {
         
         $password = $this->passGen->generate();
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -36,7 +36,7 @@ class ProfessorModel  extends UserModel{
         if ($this->db->query("INSERT INTO professor(id_professor, max_hours, min_hours, role, id_deparetement) VALUES (?, ?, ?, ?,?)", 
             [$user_id, $max_hours, $min_hours, "normal", $departement_id])) {
 
-            return $password;
+            return [$user_id, $password];
 
         }else { 
 

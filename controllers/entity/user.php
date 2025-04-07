@@ -8,13 +8,13 @@ class UserController{
      * other data can be edited but only by the user/admin
     */
     private static array $selfEditable = ["img", "phone", "address", "password", "email"]; 
-    private static string $defaultPecture = "blank-profile.webp";
+    private static string $defaultPicture = "blank-profile.webp";
     /**
      * this function must be  used and session is already  started
     */
 
-    public function getDefaultPecture(){
-        return self::$defaultPecture;
+    public function getDefaultPicture(){
+        return self::$defaultPicture;
     }
 
     public function redirectCurrentUserBasedOnRole(){
@@ -96,7 +96,7 @@ class UserController{
         return  in_array($dataKey, self::$selfEditable);
     }
 
-    public function absoluteProfilePectureUrl(string $user_img){
+    public function absoluteProfilePictureUrl(string $user_img){
         return "/e-service/internal/members/common/getResource.php?type=image&path=users_pp/".htmlspecialchars($user_img);
     }
 

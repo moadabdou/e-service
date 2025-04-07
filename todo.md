@@ -7,13 +7,13 @@
 
 - [x] role checking  for prevent unautherized access 
 
-- [ ] profile 
+- [x] profile 
 
     - [x] display  information
 
-    - [x] change user informations (phone, address, profile pecture ...)
+    - [x] change user informations (phone, address, profile Picture ...)
 
-    - [ ] change  password 
+    - [x] change  password 
 
 - [x] notification read/unread/delete..
 
@@ -22,9 +22,9 @@
 ### Admin 
 - [x] register  new professor 
 
-- [ ] set a welcom  notification for the new user 
+- [x] set a welcom  notification for the new user 
 
-- [x] email  check
+- [x] email  check for the new  professor
 
 - [ ] reset a user's password 
 

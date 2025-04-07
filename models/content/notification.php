@@ -67,8 +67,9 @@ class NotificationModel extends Model{
                 }else if($key === "date_time"){
                     $datetime = new DateTime($val);
                     $now = new DateTime();
+                    var_dump($now);
                     $interval = $now->diff($datetime);
-                    
+    
                     if ($interval->d > 0){
                         $notification[$key] = $val;
                     } elseif ($interval->h > 0) {
@@ -126,6 +127,20 @@ class NotificationModel extends Model{
         }
     }
 
+
+    public function createNotification(int $id_user, string $title, string $content, ?string $img_url ): string | false{
+        
+
+        if ($this->db->query("INSERT INTO notifications(
+                                                id_user, date_time, title, content, image_url) VALUES (?,  NOW(), ?, ? ,?)", 
+                                                [$id_user, $title, $content, $img_url])) {    
+            return $this->db->lastInsertId();
+
+        }else {
+            $this->error = $this->db->getError();
+            return false;
+        }
+    }
 
 }
 

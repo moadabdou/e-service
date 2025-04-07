@@ -19,73 +19,125 @@ $info = null;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
-    $value = isset($_POST["value"]) ? $_POST["value"] : (isset($_FILES["value"]) ? $_FILES["value"] : null);
+    $type = $_POST["edit_type_request"]??null;
 
-    if ( !isset($_POST["key"]) || !$userController->isSelfEditable($_POST["key"]) ){
-        $info = [
-            "msg" => "Seems like  you dont have the right to edit this Data",
-            "type" => "danger"
-        ];
-    }else if(!$value || !$userController->isValidUserData($_POST["key"], $value)){
+    if ($type == "info"){
+        $value = isset($_POST["value"]) ? $_POST["value"] : (isset($_FILES["value"]) ? $_FILES["value"] : null);
 
-        $info = [
-            "msg" => "we were not able to  update your data because it was invalid",
-            "type" => "danger"
-        ];
+        if ( !isset($_POST["key"]) || !$userController->isSelfEditable($_POST["key"]) ){
+            $info = [
+                "msg" => "Seems like  you dont have the right to edit this Data",
+                "type" => "danger"
+            ];
+        }else if(!$value || !$userController->isValidUserData($_POST["key"], $value)){
 
-    }else if ($_POST["key"] === "img"){
+            $info = [
+                "msg" => "we were not able to  update your data because it was invalid",
+                "type" => "danger"
+            ];
 
-        $random16 = str_pad(mt_rand(0, 9999999999999999), 16, '0', STR_PAD_LEFT);
+        }else if ($_POST["key"] === "img"){
+
+            $random16 = str_pad(mt_rand(0, 9999999999999999), 16, '0', STR_PAD_LEFT);
 
 
-        $newFileName = "{$_SESSION["id_user"]}_{$random16}.png";
+            $newFileName = "{$_SESSION["id_user"]}_{$random16}.png";
 
-  
-        $uploadDir = $_SERVER['DOCUMENT_ROOT']."/e-service/storage/image/users_pp/"; // Absolute path is safer
-        $targetPath = $uploadDir . $newFileName;
+    
+            $uploadDir = $_SERVER['DOCUMENT_ROOT']."/e-service/storage/image/users_pp/"; // Absolute path is safer
+            $targetPath = $uploadDir . $newFileName;
 
-        if (!file_exists($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-
-        if (move_uploaded_file($value['tmp_name'], $targetPath)) {
-            //remove the  old pecture  
-            $old_pp_path = $uploadDir.$user_pp; 
-            if (file_exists($old_pp_path) && $user_pp != $userController->getDefaultPecture()){
-                unlink($old_pp_path);
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
             }
 
-            $value = $newFileName;
-            $user_pp = $newFileName;
-        } else {
-            $info = [
-                "msg" => "a problem in  the server prevented us from updating your profile photo",
-                "type" => "danger"
-            ];
+            if (move_uploaded_file($value['tmp_name'], $targetPath)) {
+                //remove the  old Picture  
+                $old_pp_path = $uploadDir.$user_pp; 
+                if (file_exists($old_pp_path) && $user_pp != $userController->getDefaultPicture()){
+                    unlink($old_pp_path);
+                }
+
+                $value = $newFileName;
+                $user_pp = $newFileName;
+            } else {
+                $info = [
+                    "msg" => "a problem in  the server prevented us from updating your profile photo",
+                    "type" => "danger"
+                ];
+            }
+
+        }
+
+        if (!$info){
+            $res =  $userModel->updateUserColumn($_POST["key"], $value , $_SESSION["id_user"]);
+            if($res){
+                $user_info[$_POST["key"]]["value"] =  $value;
+                $info = [
+                    "msg" => "your date is  updated seccessfuly",
+                    "type" => "success"
+                ];
+            }else {
+                $info = [
+                    "msg" => "we were not able to  update your data because of an occured error ",
+                    "type" => "danger"
+                ];
+            }
+        }
+    
+    
+    }else if($type === "settings"){
+
+        $settingName = $_POST["setting_name"]??null;
+
+        if($settingName === "change-password"){
+            
+
+            $user_full_info = $userModel->getUserByID($_SESSION["id_user"]);
+
+            if (!isset($_POST["current_password"]) || password_verify($_POST["current_password"] , $user_full_info["password"]) === false){
+
+                $info = [
+                    "msg" => "we were not able to  update your password : current password incurrect! ",
+                    "type" => "danger"
+                ];
+
+            }else if( !isset($_POST["confirm_password"]) || !isset($_POST["new_password"]) || $_POST["new_password"] !== $_POST["confirm_password"]){
+
+                $info = [
+                    "msg" => "we were not able to  update your password : new password and confirm passowrd are not the same! ",
+                    "type" => "danger"
+                ];
+
+            }else {
+
+                $hashed_password =  password_hash($_POST["new_password"], PASSWORD_DEFAULT);
+
+                $res =  $userModel->updateUserColumn("password", $hashed_password , $_SESSION["id_user"]);
+                if($res){
+                    $info = [
+                        "msg" => "your password is  updated seccessfuly",
+                        "type" => "success"
+                    ];
+                }else {
+                    $info = [
+                        "msg" => "we were not able to  update your password because of an occured error ",
+                        "type" => "danger"
+                    ];
+                }
+
+            }
+
+
         }
 
     }
 
-    if (!$info){
-        $res =  $userModel->updateUserColumn($_POST["key"], $value , $_SESSION["id_user"]);
-        if($res){
-            $user_info[$_POST["key"]]["value"] =  $value;
-            $info = [
-                "msg" => "your date is  updated seccessfuly",
-                "type" => "success"
-            ];
-        }else {
-            $info = [
-                "msg" => "we were not able to  update your data because of an occured error ",
-                "type" => "danger"
-            ];
-        }
-    }
 
 }
 
 unset($user_info["img"]); //we dont want this 
-$content = Profile::view($user_info,$userController->absoluteProfilePectureUrl($user_pp), $info);
+$content = Profile::view($user_info,$userController->absoluteProfilePictureUrl($user_pp), $info);
 $dashboard->view($_SESSION["role"], "profile", $content);
 
 ?>
