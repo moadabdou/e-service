@@ -67,7 +67,6 @@ class NotificationModel extends Model{
                 }else if($key === "date_time"){
                     $datetime = new DateTime($val);
                     $now = new DateTime();
-                    var_dump($now);
                     $interval = $now->diff($datetime);
     
                     if ($interval->d > 0){
