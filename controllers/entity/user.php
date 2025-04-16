@@ -109,7 +109,7 @@ class UserController{
             case 'email':
                 return filter_var($value, FILTER_VALIDATE_EMAIL);
             case 'phone':
-                return preg_match("/^[0-9]{10}$/", $value);
+                return preg_match("/0[76][0-9]{8}$/", $value);
             case 'address':
                 return preg_match("/^.{10,}$/", $value);
             case 'CIN':
