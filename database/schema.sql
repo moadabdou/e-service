@@ -158,7 +158,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (46,'Moad','Abdou','RC54632','elabdellaoui.mod@etu.com','admin','$2y$10$JrfpPxNPO5TMYYEith0qkuU1nEi7CSdHkYINtE6I4L64ieck3E4Ci','0612345576','targuits hoceima ','2001-03-28','2025-04-03 20:43:26','46_1121788800440928.png'),(59,'Moad','Abdou','RC12345','elabdellaod@etu.uae.ac.ma','professor','$2y$10$qXc4l8GJgWu2PTQQeemJV.LWBpehoJe9dKDLZD26it5QoUtDSaQYe','612345678','testjjsdsbds','2001-03-30','2025-04-04 22:10:29','blank-profile.webp'),(64,'Moad','Abdou','RC12344','elabdellaoui.mod@etu.uae.ac.ma','professor','$2y$10$sb/.6ep7gOrhcR.L8fBSCeu/7PpVkUfw0j6VsZiToH6vNfcw29p1G','612345678','testjjsdsbds','2001-04-06','2025-04-07 17:09:17','64_2706955314457879.png');
+INSERT INTO `user` VALUES (46,'ENSAH','ADMIN','R000000','admin@ensah.com','admin','$2y$10$fIXAPsiWA7JkDePaE8Ri1u55onCC2Nq7TGxQc17XEAZSdjSR.rUgO','0512345575','ensah ','2008-03-28','2025-04-03 20:43:26','46_7301907675552309.png'),(59,'Moad','Abdou','RC12345','elabdellaod@etu.uae.ac.ma','professor','$2y$10$qXc4l8GJgWu2PTQQeemJV.LWBpehoJe9dKDLZD26it5QoUtDSaQYe','612345678','testjjsdsbds','2001-03-30','2025-04-04 22:10:29','blank-profile.webp'),(64,'Moad','Abdou','RC12344','elabdellaoui.mod@etu.uae.ac.ma','professor','$2y$10$sb/.6ep7gOrhcR.L8fBSCeu/7PpVkUfw0j6VsZiToH6vNfcw29p1G','612345678','testjjsdsbds','2001-04-06','2025-04-07 17:09:17','64_2706955314457879.png');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -171,4 +171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-16 18:48:09
+-- Dump completed on 2025-04-16 19:36:45
