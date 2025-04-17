@@ -1,11 +1,10 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/core/Database.php";
+require_once __DIR__."/../model.php"; 
 
-class ModuleModel {
-    private $conn;
+class ModuleModel extends  Model{
 
     public function __construct() {
-        $this->conn = (new Database())->getPdoInstance();
+        parent::__construct();
     }
 
     // Modules disponibles pour le département du professeur
@@ -20,9 +19,11 @@ class ModuleModel {
                       WHERE to_professor = ?
                   )";
     
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$departmentId, $professorId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($this->db->query( $query, [$departmentId, $professorId])){
+            $this->db->fetchAll(PDO::FETCH_ASSOC);
+        }else {
+            return $this->db->getError();
+        }
     }
     
 
@@ -32,45 +33,58 @@ class ModuleModel {
                   FROM module m
                   JOIN affectation_professor ap ON m.id_module = ap.id_module
                   WHERE ap.to_professor = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$professorId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($this->db->query( $query, [$professorId])){
+            $this->db->fetchAll(PDO::FETCH_ASSOC);
+        }else {
+            return $this->db->getError();
+        }
     }
 
     // Enregistrer les choix du professeur
     public function assignModulesToProfessor($professorId, $moduleIds) {
         try {
-            $this->conn->beginTransaction();
     
             // Get already assigned module IDs
             $query = "SELECT id_module FROM affectation_professor WHERE to_professor = ?";
-            $stmt = $this->conn->prepare($query);
-            $stmt->execute([$professorId]);
-            $existingModules = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $existingModules = [];
+
+
+            if ($this->db->query( $query, [$professorId])){
+                $existingModules = $this->db->fetchAll(PDO::FETCH_ASSOC);
+            }else {
+                throw new Exception($this->db->getError());
+            }
     
             // Debugging: Check the existingModules and moduleIds
             error_log("Existing modules: " . implode(", ", $existingModules));
             error_log("Modules to assign: " . implode(", ", $moduleIds));
     
             // Prepare insert statement
-            $insertQuery = "INSERT INTO affectation_professor (to_professor, id_module) VALUES (?, ?)";
-            $insertStmt = $this->conn->prepare($insertQuery);
-    
+            // Create values part of the query for multiple inserts
+            $values = [];
+            $params = [];
             foreach ($moduleIds as $moduleId) {
-                // Debugging: Check if moduleId is in existingModules
                 if (!in_array($moduleId, $existingModules)) {
-                    error_log("Inserting module: $moduleId for professor: $professorId");
-                    $insertStmt->execute([$professorId, $moduleId]);
+                    $values[] = "(?, ?)";
+                    $params[] = $professorId;
+                    $params[] = $moduleId;
+                    error_log("Adding module: $moduleId for professor: $professorId");
                 } else {
                     error_log("Skipping module: $moduleId because it's already assigned.");
                 }
             }
-    
-            $this->conn->commit();
+
+            if (!empty($values)) {
+                $insertQuery = "INSERT INTO affectation_professor (to_professor, id_module) VALUES " . implode(", ", $values);
+                if (! $this->db->query($insertQuery, $params)){
+                    throw new Exception($this->db->getError());
+                }
+            }
+
             return true;
     
         } catch (Exception $e) {
-            $this->conn->rollBack();
             error_log("Error: " . $e->getMessage());
             return false;
         }

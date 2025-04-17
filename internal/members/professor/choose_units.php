@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($result === false) {
             $info = [
-                "msg" => "Une erreur est survenue lors de l'enregistrement de vos choix.". print_r($selectedModuleIds, true),
+                "msg" => "Une erreur est survenue lors de l'enregistrement de vos choix.",
                 "type" => "danger"
             ];
         } else {
