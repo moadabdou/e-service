@@ -54,6 +54,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
             if ($profRole !== "normal"){
                 $_SESSION["role"] .= "/".$profRole;
             }
+            
+            //get departement id , i need it to show units, and i also do getProfessorByUserId method in professor.php 
+            $professorData = $profModel->getProfessorByUserId($_SESSION["id_user"]);
+            if ($professorData && isset($professorData["id_deparetement"])) {
+                $_SESSION["id_deparetement"] = $professorData["id_deparetement"];
+            }
         }
 
         $userController->redirectCurrentUserBasedOnRole($_SESSION["role"]);

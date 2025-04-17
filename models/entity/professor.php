@@ -59,7 +59,16 @@ class ProfessorModel  extends UserModel{
             throw $this->db->getError();
         }
 
-    }   
+    }
+    // Get professor's department by user ID
+    public function getProfessorByUserId($userId) {
+        if ($this->db->query("SELECT id_deparetement FROM professor WHERE id_professor = ?", [$userId])) {
+            return $this->db->fetch(); // returns ['id_deparetement' => ...]
+        } else {
+            $this->error = $this->db->getError();
+            return false;
+        }
+    }
 
 
     public function resolveProfessorOperationError(): ?string{
