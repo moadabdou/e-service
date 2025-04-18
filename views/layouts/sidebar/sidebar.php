@@ -96,7 +96,7 @@ class SideBar {
                 "other" => [
                     "title" => "Choisir Des Modules", 
                     "icon" => "ti-list-check",
-                    "url" => "/e-service/internal/members/professor/tet.php"
+                    "url" => "/e-service/internal/members/professor/"
                 ]
 
             ]
