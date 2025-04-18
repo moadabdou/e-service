@@ -16,10 +16,19 @@ $notificationModel = new NotificationModel();
 $errors = [];
 $info = null;
 
+$professorId = $_SESSION['id_user'];
 $departmentId = $_SESSION['id_deparetement'] ?? null;
 
-$availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId, $_SESSION['id_user']);
-$selectedModules = $moduleModel->getSelectedModulesByProfessor($_SESSION['id_user']);
+$availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId, $professorId);
+$selectedModules = $moduleModel->getSelectedModulesByProfessor($professorId);
+
+// Get professor limits
+$professorData = $moduleModel->getProfessorHours($professorId); 
+
+$totalHours = $moduleModel->getTotalHoursFromChoix($professorId);
+
+$maxHours = $professorData['max_hours'] ?? PHP_INT_MAX;
+$minHours = $professorData['min_hours'] ?? 0;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($_POST['modules'])) {
@@ -33,7 +42,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ];
     } else {
         $selectedModuleIds = $_POST['modules'];
-        $result = $moduleModel->assignModulesToProfessor($_SESSION['id_user'], $selectedModuleIds);
+
+        // Calculate total hours
+        foreach ($selectedModuleIds as $moduleId) {
+            $module = $moduleModel->getModuleById($moduleId);
+            if ($module) {
+                $totalHours += $module['volume_horaire'];
+            }
+        }
+
+        $result = $moduleModel->assignModulesToProfessor($professorId, $selectedModuleIds);
 
         if ($result === false) {
             $info = [
@@ -41,6 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "type" => "danger"
             ];
         } else {
+
+            // Notification for normal success
             $moduleNames = [];
             foreach ($selectedModuleIds as $moduleId) {
                 $module = $moduleModel->getModuleById($moduleId);
@@ -49,31 +69,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
             }
 
-            if (count($moduleNames) === 1) {
-                $notificationMessage = "Votre choix de module a bien été enregistré : " . $moduleNames[0];
-            } else {
-                $moduleList = implode(", ", $moduleNames);
-                $notificationMessage = "Vos choix de modules ont bien été enregistrés : " . $moduleList;
+            $moduleList = implode(", ", $moduleNames);
+            $message = "Vos choix de modules ont bien été enregistrés : " . $moduleList;
+
+            // Check hour limits
+            if ($totalHours < $minHours) {
+                $message .= ". ⚠️ Attention : votre charge horaire ($totalHours h) est inférieure au minimum requis ($minHours h).";
+            } elseif ($totalHours > $maxHours) {
+                $message .= ". ⚠️ Attention : votre charge horaire ($totalHours h) dépasse le maximum autorisé ($maxHours h).";
             }
 
             $notificationId = $notificationModel->createNotification(
-                $_SESSION['id_user'],
+                $professorId,
                 "Affectation enregistrée",
-                $notificationMessage,
+                $message,
                 null
             );
 
-            if ($notificationId === false) {
-                $info = [
-                    "msg" => "Vos choix de modules ont bien été enregistrés, mais une erreur est survenue lors de la création de la notification.",
-                    "type" => "warning" 
-                ];
-            } else {
-                $info = [
-                    "msg" => "Vos choix ont été enregistrés avec succès.",
-                    "type" => "success"
-                ];
-            }
+            $info = [
+                "msg" => $notificationId ? "Vos choix ont été enregistrés avec succès." : "Modules enregistrés, mais erreur lors de la notification.",
+                "type" => $notificationId ? "success" : "warning"
+            ];
 
             $_SESSION['info'] = $info;
 
@@ -87,9 +103,7 @@ if (isset($_SESSION['info'])) {
     $info = $_SESSION['info'];
     unset($_SESSION['info']);
 }
-
-$content = chooseUnitsFormView($availableModules, $selectedModules, $errors, $info);
+$content = chooseUnitsFormView($availableModules, $selectedModules, $errors, $info, $totalHours,$minHours,$maxHours);
 $dashboard = new DashBoard();
 $dashboard->view("professor", "chooseUnits", $content);
-
 ?>

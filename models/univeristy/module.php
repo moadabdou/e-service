@@ -39,15 +39,30 @@ class ModuleModel extends  Model{
     }
 
     
-        public function getModuleById($moduleId) {
-            $query = "SELECT id_module, title FROM module WHERE id_module = ?";
-            if ($this->db->query($query, [$moduleId])) {
-                return $this->db->fetch(PDO::FETCH_ASSOC); // Return a single module as an associative array
-            } else {
-                return null; 
-            }
+    public function getModuleById($moduleId) {
+        $query = "SELECT id_module, title, volume_horaire FROM module WHERE id_module = ?";
+        if ($this->db->query($query, [$moduleId])) {
+            return $this->db->fetch(PDO::FETCH_ASSOC); // Return a single module as an associative array
+        } else {
+            return false; 
         }
-
+    }
+    
+    public function getTotalHoursFromChoix($professorId) {
+        $query = "SELECT SUM(m.volume_horaire) AS total 
+                  FROM module m
+                  JOIN choix_module cm ON m.id_module = cm.id_module
+                  WHERE cm.by_professor = ?";
+    
+        if ($this->db->query($query, [$professorId])) {
+            $result = $this->db->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } else {
+            return 0;
+        }
+    }
+    
+    
 
 
 
@@ -96,6 +111,19 @@ class ModuleModel extends  Model{
             return false;
         }
     }
+
+    public function getProfessorHours($professorId) {
+        $query = "SELECT min_hours, max_hours FROM professor WHERE id_professor = ?";
+        
+        if ($this->db->query($query, [$professorId])) {
+            return $this->db->fetch(PDO::FETCH_ASSOC); 
+        } else {
+            return false;
+        }
+    }
+    
+
+    
     public function getSelectedModulesWithStatus($professorId) {
         $query = "SELECT 
                     m.*, 
@@ -112,41 +140,51 @@ class ModuleModel extends  Model{
             return $this->db->getError();
         }
     }
-    
-    
-}
- //functions for selected units
-function formatSemester($code) {
-    $semesters = [
-        's1' => 'Premier semestre',
-        's2' => 'Deuxième semestre',
-        's3' => 'Troisième semestre',
-        's4' => 'Quatrième semestre',
-        's5' => 'Cinquième semestre',
-        's6' => 'Sixième semestre',
-    ];
-    return $semesters[strtolower($code)] ?? 'Semestre inconnu';
-}
-function getStatusBadge($status) {
-    $commonClasses = 'badge px-3 py-2 fs-6 rounded-pill d-flex align-items-center gap-2 shadow-sm';
 
-    switch ($status) {
-        case 'validated':
-            return '<span class="' . $commonClasses . ' bg-success text-white">
-                        <i class="ti ti-circle-check"></i> Validé
-                    </span>';
-        case 'declined':
-            return '<span class="' . $commonClasses . ' bg-danger text-white">
-                        <i class="ti ti-circle-x"></i> Refusé
-                    </span>';
-        case 'in progress':
-        default:
-            return '<span class="' . $commonClasses . ' bg-warning text-dark">
-                        <i class="ti ti-hourglass-empty"></i> En attente
-                    </span>';
+    public function deleteModuleChoice($idUser, $idModule) {
+        $query = "DELETE FROM choix_module WHERE by_professor = ? AND id_module = ?";
+        
+        if ($this->db->query($query, [$idUser, $idModule])) {
+            return true;
+        } else {
+            return false;
+        }
     }
+    
+    
 }
+    //functions for selected units
+    function formatSemester($code) {
+        $semesters = [
+            's1' => 'Premier semestre',
+            's2' => 'Deuxième semestre',
+            's3' => 'Troisième semestre',
+            's4' => 'Quatrième semestre',
+            's5' => 'Cinquième semestre',
+            's6' => 'Sixième semestre',
+        ];
+        return $semesters[strtolower($code)] ?? 'Semestre inconnu';
+    }
 
+    function getStatusBadge($status) {
+        $commonClasses = 'badge px-3 py-2 fs-6 rounded-pill d-flex align-items-center gap-2 shadow-sm';
+
+        switch ($status) {
+            case 'validated':
+                return '<span class="' . $commonClasses . ' bg-success text-white">
+                            <i class="ti ti-circle-check"></i> Validé
+                        </span>';
+            case 'declined':
+                return '<span class="' . $commonClasses . ' bg-danger text-white">
+                            <i class="ti ti-circle-x"></i> Refusé
+                        </span>';
+            case 'in progress':
+            default:
+                return '<span class="' . $commonClasses . ' bg-warning text-dark">
+                            <i class="ti ti-hourglass-empty"></i> En attente
+                        </span>';
+        }
+    }
 
 
 ?>
