@@ -88,7 +88,7 @@ class SideBar {
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/professor"
                 ],
-                "choose units" => [
+                "chooseUnits" => [
                     "title" => "Choisir Des Modules", 
                     "icon" => "ti-book",
                     "url" => "/e-service/internal/members/professor/choose_units.php"
@@ -96,7 +96,7 @@ class SideBar {
                 "other" => [
                     "title" => "Choisir Des Modules", 
                     "icon" => "ti-list-check",
-                    "url" => "/e-service/internal/members/professor/"
+                    "url" => "/e-service/internal/members/professor/tet.php"
                 ]
 
             ]

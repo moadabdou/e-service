@@ -1,16 +1,14 @@
 <?php
 session_start();
 
-
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/layouts/professor_views/choose_units_form.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/entity/module.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/choose_units_form.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
 
 $userController = new UserController();
 $userController->checkCurrentUserAuthority(["professor"]);
-
 
 $moduleModel = new ModuleModel();
 $notificationModel = new NotificationModel();
@@ -20,7 +18,7 @@ $info = null;
 
 $departmentId = $_SESSION['id_deparetement'] ?? null;
 
-$availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId,$_SESSION['id_user']);
+$availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId, $_SESSION['id_user']);
 $selectedModules = $moduleModel->getSelectedModulesByProfessor($_SESSION['id_user']);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -33,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "msg" => "Veuillez corriger les erreurs avant de valider vos choix.",
             "type" => "danger"
         ];
-    
     } else {
         $selectedModuleIds = $_POST['modules'];
         $result = $moduleModel->assignModulesToProfessor($_SESSION['id_user'], $selectedModuleIds);
@@ -44,25 +41,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "type" => "danger"
             ];
         } else {
-            $notificationModel->createNotification(
-                $_SESSION['id_user'],                
+            $moduleNames = [];
+            foreach ($selectedModuleIds as $moduleId) {
+                $module = $moduleModel->getModuleById($moduleId);
+                if ($module) {
+                    $moduleNames[] = $module['title']; 
+                }
+            }
+
+            if (count($moduleNames) === 1) {
+                $notificationMessage = "Votre choix de module a bien été enregistré : " . $moduleNames[0];
+            } else {
+                $moduleList = implode(", ", $moduleNames);
+                $notificationMessage = "Vos choix de modules ont bien été enregistrés : " . $moduleList;
+            }
+
+            $notificationId = $notificationModel->createNotification(
+                $_SESSION['id_user'],
                 "Affectation enregistrée",
-                "Vos choix de modules ont bien été enregistrés.", 
-                null,
+                $notificationMessage,
+                null
             );
 
-            $info = [
-                "msg" => "Vos choix ont été enregistrés avec succès.",
-                "type" => "success"
-            ];
+            if ($notificationId === false) {
+                $info = [
+                    "msg" => "Vos choix de modules ont bien été enregistrés, mais une erreur est survenue lors de la création de la notification.",
+                    "type" => "warning" 
+                ];
+            } else {
+                $info = [
+                    "msg" => "Vos choix ont été enregistrés avec succès.",
+                    "type" => "success"
+                ];
+            }
 
-            $selectedModules = $moduleModel->getSelectedModulesByProfessor($_SESSION['id_user']);
+            $_SESSION['info'] = $info;
+
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
         }
     }
 }
 
-$content = chooseUnitsFormView($availableModules, $selectedModules, $errors, $info);
+if (isset($_SESSION['info'])) {
+    $info = $_SESSION['info'];
+    unset($_SESSION['info']);
+}
 
+$content = chooseUnitsFormView($availableModules, $selectedModules, $errors, $info);
 $dashboard = new DashBoard();
 $dashboard->view("professor", "chooseUnits", $content);
+
 ?>
