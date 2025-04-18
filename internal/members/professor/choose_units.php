@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $notificationId = $notificationModel->createNotification(
                 $professorId,
-                "Affectation enregistrée",
+                "Affectation enregistree",
                 $message,
                 null
             );
