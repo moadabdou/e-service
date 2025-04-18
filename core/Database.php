@@ -1,8 +1,10 @@
 <?php
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Dotenv\Dotenv;
 
-class Database {
+class Database
+{
     /** @var string Database host:port */
     private string $host;
     private string $port;
@@ -39,15 +41,16 @@ class Database {
      * @param string $charset  Character set (default: 'utf8mb4')
      * @param array  $options  Optional array of PDO options to override defaults
      */
-    public function __construct(string $charset = 'utf8mb4', array $options = []) {
+    public function __construct(string $charset = 'utf8mb4', array $options = [])
+    {
 
-        $dotenv = Dotenv::createImmutable(__DIR__."/..");
+        $dotenv = Dotenv::createImmutable(__DIR__ . "/..");
         $dotenv->load();
-        
+
         $host = $_ENV["host"];
-        $dbname = $_ENV["dbname"]; 
+        $dbname = $_ENV["dbname"];
         $username = $_ENV["username"];
-        $password = $_ENV["password"];  
+        $password = $_ENV["password"];
         $port = $_ENV["port"];
 
         $this->host     = $host;
@@ -80,7 +83,8 @@ class Database {
      *
      * @return bool True if connected, false otherwise.
      */
-    public function isConnected(): bool {
+    public function isConnected(): bool
+    {
         return $this->pdo !== null;
     }
 
@@ -92,7 +96,8 @@ class Database {
      * @param array  $params An associative array of parameters (e.g., [':name' => 'value']) or a numerically indexed array for ?.
      * @return bool True on success, false on failure.
      */
-    public function query(string $sql, array $params = []): bool {
+    public function query(string $sql, array $params = []): bool
+    {
         if (!$this->isConnected()) {
             $this->error = "Not connected to the database.";
             return false;
@@ -118,7 +123,8 @@ class Database {
      * @param int $fetchStyle Optional PDO fetch style (e.g., PDO::FETCH_OBJ). Defaults to the connection default (PDO::FETCH_ASSOC).
      * @return mixed The next row as an array or object, or false if no more rows or error.
      */
-    public function fetch(int $fetchStyle = PDO::FETCH_DEFAULT): mixed {
+    public function fetch(int $fetchStyle = PDO::FETCH_DEFAULT): mixed
+    {
         if (!$this->stmt) {
             $this->error = "No statement executed or previous query failed.";
             return false;
@@ -138,13 +144,14 @@ class Database {
      * @param int $fetchStyle Optional PDO fetch style (e.g., PDO::FETCH_OBJ). Defaults to the connection default (PDO::FETCH_ASSOC).
      * @return array|false An array containing all result rows, or false on error. Returns an empty array if no rows matched.
      */
-    public function fetchAll(int $fetchStyle = PDO::FETCH_DEFAULT): array|false {
+    public function fetchAll(int $fetchStyle = PDO::FETCH_DEFAULT): array|false
+    {
         if (!$this->stmt) {
             $this->error = "No statement executed or previous query failed.";
             return false;
         }
         try {
-             return $this->stmt->fetchAll($fetchStyle === PDO::FETCH_DEFAULT ? $this->options[PDO::ATTR_DEFAULT_FETCH_MODE] : $fetchStyle);
+            return $this->stmt->fetchAll($fetchStyle === PDO::FETCH_DEFAULT ? $this->options[PDO::ATTR_DEFAULT_FETCH_MODE] : $fetchStyle);
         } catch (PDOException $e) {
             $this->error = "FetchAll failed: " . $e->getMessage();
             // error_log("Database FetchAll Error: " . $e->getMessage());
@@ -158,7 +165,8 @@ class Database {
      * @param int $columnNumber The 0-indexed column number to fetch.
      * @return mixed The value of the specified column, or false if no more rows or error.
      */
-    public function fetchColumn(int $columnNumber = 0): mixed {
+    public function fetchColumn(int $columnNumber = 0): mixed
+    {
         if (!$this->stmt) {
             $this->error = "No statement executed or previous query failed.";
             return false;
@@ -178,18 +186,19 @@ class Database {
      *
      * @return int|false The number of affected rows, or false if the last query failed or was not applicable.
      */
-    public function rowCount(): int|false {
+    public function rowCount(): int|false
+    {
         if (!$this->stmt) {
-             $this->error = "No statement available to count rows.";
-             return false;
+            $this->error = "No statement available to count rows.";
+            return false;
         }
         // rowCount() can be unreliable for SELECT in some drivers.
         // It's primarily for INSERT, UPDATE, DELETE.
         try {
-           return $this->stmt->rowCount();
+            return $this->stmt->rowCount();
         } catch (PDOException $e) {
-             $this->error = "RowCount failed: " . $e->getMessage();
-             return false;
+            $this->error = "RowCount failed: " . $e->getMessage();
+            return false;
         }
     }
 
@@ -199,8 +208,9 @@ class Database {
      * @param string|null $name Name of the sequence object (if needed by the driver).
      * @return string|false The ID of the last inserted row, or false on failure or if not supported.
      */
-    public function lastInsertId(?string $name = null): string|false {
-         if (!$this->isConnected()) {
+    public function lastInsertId(?string $name = null): string|false
+    {
+        if (!$this->isConnected()) {
             $this->error = "Not connected to the database.";
             return false;
         }
@@ -220,8 +230,9 @@ class Database {
      *
      * @return bool True on success, false on failure.
      */
-    public function beginTransaction(): bool {
-         if (!$this->isConnected()) {
+    public function beginTransaction(): bool
+    {
+        if (!$this->isConnected()) {
             $this->error = "Not connected to the database.";
             return false;
         }
@@ -240,12 +251,13 @@ class Database {
      *
      * @return bool True on success, false on failure.
      */
-    public function commit(): bool {
+    public function commit(): bool
+    {
         if (!$this->isConnected()) {
             $this->error = "Not connected to the database.";
             return false;
         }
-         $this->error = null;
+        $this->error = null;
         try {
             return $this->pdo->commit();
         } catch (PDOException $e) {
@@ -260,7 +272,8 @@ class Database {
      *
      * @return bool True on success, false on failure.
      */
-    public function rollBack(): bool {
+    public function rollBack(): bool
+    {
         if (!$this->isConnected()) {
             $this->error = "Not connected to the database.";
             return false;
@@ -279,8 +292,9 @@ class Database {
      *
      * @return bool True if a transaction is currently active, false otherwise.
      */
-    public function inTransaction(): bool {
-         if (!$this->isConnected()) {
+    public function inTransaction(): bool
+    {
+        if (!$this->isConnected()) {
             return false; // Cannot be in a transaction if not connected
         }
         return $this->pdo->inTransaction();
@@ -293,7 +307,8 @@ class Database {
      *
      * @return string|null The last error message, or null if no error occurred.
      */
-    public function getError(): ?string {
+    public function getError(): ?string
+    {
         return $this->error;
     }
 
@@ -303,7 +318,8 @@ class Database {
      *
      * @return PDO|null The PDO instance or null if connection failed.
      */
-    public function getPdoInstance(): ?PDO {
+    public function getPdoInstance(): ?PDO
+    {
         return $this->pdo;
     }
 
@@ -313,7 +329,8 @@ class Database {
      *
      * @return PDOStatement|null The last PDOStatement instance or null if no query run/failed.
      */
-    public function getStatement(): ?PDOStatement {
+    public function getStatement(): ?PDOStatement
+    {
         return $this->stmt;
     }
 
@@ -321,7 +338,8 @@ class Database {
      * Closes the database connection by nullifying the PDO object.
      * Optional: PHP usually handles this automatically when the script ends or the object is destroyed.
      */
-    public function closeConnection(): void {
+    public function closeConnection(): void
+    {
         $this->pdo = null;
         $this->stmt = null; // Also clear the statement
     }
@@ -329,9 +347,8 @@ class Database {
     /**
      * Destructor. Optionally close the connection.
      */
-    public function __destruct() {
-       // $this->closeConnection(); // Uncomment if explicit closing is desired
+    public function __destruct()
+    {
+        // $this->closeConnection(); // Uncomment if explicit closing is desired
     }
 }
-
-?>
