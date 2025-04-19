@@ -17,6 +17,31 @@ function chooseUnitsFormView($availableModules, $selectedModules, $errors, $info
         </div>
     </div>
 
+    <?php
+            if ($totalHours > 0) :
+                $alertClass = 'info';
+                if ($totalHours < $minHours || $totalHours > $maxHours) {
+                    $alertClass = 'danger';
+                } elseif ($totalHours >= $minHours && $totalHours <= $maxHours) {
+                    $alertClass = 'success';
+                }
+            ?>
+            <div class="container mt-5 px-4 px-md-5">
+                <div class="alert alert-<?= $alertClass ?> text-center fw-semibold fs-5 shadow-sm">
+                <i class="ti ti-clock"></i> Charge horaire totale sélectionnée : 
+                    <strong><?= htmlspecialchars($totalHours) ?> heures</strong><br>
+
+                    <?php if ($totalHours < $minHours): ?>
+                        <small class="d-block text-danger">Le minimum requis est <?= htmlspecialchars($minHours) ?>h.</small>
+                    <?php elseif ($totalHours > $maxHours): ?>
+                        <small class="d-block text-danger">Le maximum autorisé est <?= htmlspecialchars($maxHours) ?>h.</small>
+                    <?php else: ?>
+                        <small class="d-block text-success">Charge horaire dans la plage autorisée ✅</small>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
     <div class="container mt-5 px-2 px-md-3">
         <?php if ($info) : ?>
             <div class="alert alert-<?= htmlspecialchars($info['type']) ?>"><?= htmlspecialchars($info['msg']) ?></div>
@@ -80,30 +105,7 @@ function chooseUnitsFormView($availableModules, $selectedModules, $errors, $info
             <?php endif; ?>
         </form>
 
-        <?php
-if ($totalHours > 0) :
-    $alertClass = 'info';
-    if ($totalHours < $minHours || $totalHours > $maxHours) {
-        $alertClass = 'danger';
-    } elseif ($totalHours >= $minHours && $totalHours <= $maxHours) {
-        $alertClass = 'success';
-    }
-?>
-            <div class="mt-5">
-                <div class="alert alert-<?= $alertClass ?> text-center fw-semibold fs-5 shadow-sm">
-                <i class="ti ti-clock"></i> Charge horaire totale sélectionnée : 
-                    <strong><?= htmlspecialchars($totalHours) ?> heures</strong><br>
-
-                    <?php if ($totalHours < $minHours): ?>
-                        <small class="d-block text-danger">Le minimum requis est <?= htmlspecialchars($minHours) ?>h.</small>
-                    <?php elseif ($totalHours > $maxHours): ?>
-                        <small class="d-block text-danger">Le maximum autorisé est <?= htmlspecialchars($maxHours) ?>h.</small>
-                    <?php else: ?>
-                        <small class="d-block text-success">Charge horaire dans la plage autorisée ✅</small>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endif; ?>
+ 
     </div>
 
     <?php

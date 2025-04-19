@@ -1,3 +1,5 @@
+# hassan :
+
 # 1. Professor Role (Enseignant) 👨‍🏫
 In your web app, professors should be able to:
 
@@ -6,7 +8,7 @@ In your web app, professors should be able to:
 [x]  View Available Modules	Show list of available "unités d’enseignement" (UE) for the next year.
 [x] Choose Preferences	Select their preferred UEs (wish list).
 [x] Calcul automatique de la charge horaire totale sélectionnée.
-[ ] Load Warning	Alert if minimum required teaching load is not met.
+[x] Load Warning Alert if minimum required teaching load is not met.
 [ ] Assigned Modules	Show list of modules they are assigned to.
 [ ] Upload Notes	Upload student grades (normal + retake).
 [ ] View History	See teaching assignments from past years.
