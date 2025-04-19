@@ -42,7 +42,7 @@ In your web app, professors should be able to:
 [x] Choose Preferences	Select their preferred UEs (wish list).
 [x] Calcul automatique de la charge horaire totale sélectionnée.
 [x] Load Warning Alert if minimum required teaching load is not met.
-[ ] Assigned Modules	Show list of modules they are assigned to.
+[x] Assigned Modules	Show list of modules they are assigned to.
 [ ] Upload Notes	Upload student grades (normal + retake).
 [ ] View History	See teaching assignments from past years.
 

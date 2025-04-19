@@ -97,6 +97,11 @@ class SideBar {
                     "title" => "Mes modules affectéss", 
                     "icon" => "ti-list-check",
                     "url" => "/e-service/internal/members/professor/AssignedModules.php"
+                ],
+                "UploadNotes" => [
+                    "title" => "Uploader les notes", 
+                    "icon" => "ti-upload",
+                    "url" => "/e-service/internal/members/professor/UploadNotes.php"
                 ]
 
             ]

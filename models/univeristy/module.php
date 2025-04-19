@@ -63,10 +63,6 @@ class ModuleModel extends  Model{
         }
     }
     
-    
-
-
-
     public function assignModulesToProfessor($professorId, $moduleIds) {
         try {
             $query = "SELECT id_module FROM choix_module WHERE by_professor = ?";
