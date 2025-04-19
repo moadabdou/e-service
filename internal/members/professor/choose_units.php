@@ -2,7 +2,7 @@
 session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/choose_units_form.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/choose_units_view.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";

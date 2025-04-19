@@ -9,7 +9,8 @@ class ModuleModel extends  Model{
 
     
     public function getAvailableModulesByDepartment($departmentId, $professorId) {
-        $query = "SELECT m.* 
+        $query = "SELECT m.*,
+                f.title AS filiere_name
                 FROM module m
                 JOIN filiere f ON m.id_filiere = f.id_filiere
                 WHERE f.id_deparetement = ? 
@@ -126,18 +127,22 @@ class ModuleModel extends  Model{
     
     public function getSelectedModulesWithStatus($professorId) {
         $query = "SELECT 
-                    m.*, 
+                    m.id_module,
                     cm.status, 
-                    CONCAT(u.firstName, ' ', u.lastName) AS user_full_name
+                    m.title, 
+                    m.description, 
+                    m.semester, 
+                    m.volume_horaire,
+                    f.title AS filiere_name
                   FROM module m
-                  JOIN choix_module cm ON m.id_module = cm.id_module
-                  JOIN user u ON cm.by_professor = u.id_user
-                  WHERE cm.by_professor = ?";
-        
+                  JOIN choix_module cm ON cm.id_module = m.id_module
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE cm.by_professor = ? ";
+    
         if ($this->db->query($query, [$professorId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
-            return $this->db->getError();
+            return [];
         }
     }
 
@@ -150,6 +155,28 @@ class ModuleModel extends  Model{
             return false;
         }
     }
+
+    public function getApprovedModulesByProfessor($professorId) {
+        $query = "SELECT 
+                    m.id_module, 
+                    m.title, 
+                    m.description, 
+                    m.semester, 
+                    m.volume_horaire,
+                    f.title AS filiere_name
+                  FROM module m
+                  JOIN choix_module cm ON cm.id_module = m.id_module
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE cm.by_professor = ? AND cm.status = 'validated'";
+    
+        if ($this->db->query($query, [$professorId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+    
+    
     
     
 }

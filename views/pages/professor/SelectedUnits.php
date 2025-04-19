@@ -29,12 +29,13 @@ ob_start();
 ?>
 <div class="container py-5 px-4 px-md-5">
     <a href="/e-service/internal/members/professor/choose_units.php" class="btn btn-outline-primary mb-4">
-        <i class="ti ti-arrow-left"></i> Retour à la sélection
+    <i class="ti ti-arrow-back-up"></i> Retour à la sélection
     </a>
-
-    <h2 class="text-center mb-5 text-primary fw-bold">
-        📝 Vos modules déjà sélectionnés
-    </h2>
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <h2 class="fw-bold text-primary mb-2 mb-md-0">
+            <i class="ti ti-checklist"></i> Vos modules déjà sélectionnés
+        </h2>
+    </div>
 
     <?php if (isset($_SESSION['success_message'])) : ?>
         <div class="alert alert-success text-center fw-semibold"><?= htmlspecialchars($_SESSION['success_message']) ?></div>
@@ -49,27 +50,31 @@ ob_start();
         <div class="row g-4">
             <?php foreach ($selectedModules as $module) : ?>
                 <div class="col-md-6 col-lg-4">
-                    <div class="card p-4 shadow-sm rounded-4 h-100">
+                    <div class="card p-4 shadow-sm rounded-4 h-80">
                         <h5 class="card-title mb-3 text-primary fw-bold">
                             <?= htmlspecialchars($module['title']) ?>
                         </h5>
                         <p class="mb-2"><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_horaire']) ?> heures</p>
                         <p class="mb-2"><strong>Description :</strong><br><?= htmlspecialchars($module['description'] ?? 'Aucune description disponible.') ?></p>
+                        <p><strong>Filière :</strong> <?= htmlspecialchars($module['filiere_name'] ?? 'Aucune') ?></p>
                         <p class="mb-2"><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></p>
-                        <p class="mb-2"><strong>Professeur :</strong> <?= htmlspecialchars($module['user_full_name'] ?? 'Non attribué') ?></p>
                         <div class="d-flex flex-column align-items-center mt-4 gap-2">
                             <?= getStatusBadge($module['status'] ?? 'in progress') ?>
-                            <button 
-                                type="button" 
-                                class="btn btn-outline-danger btn-sm delete-btn" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#deleteModal" 
-                                data-module-id="<?= htmlspecialchars($module['id_module']) ?>"
-                                data-module-title="<?= htmlspecialchars($module['title']) ?>"
-                            >
-                                <i class="ti ti-trash"></i> Supprimer
-                            </button>
+
+                            <?php if (($module['status'] ?? '') !== 'validated') : ?>
+                                <button 
+                                    type="button" 
+                                    class="btn btn-outline-danger btn-sm delete-btn" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#deleteModal" 
+                                    data-module-id="<?= htmlspecialchars($module['id_module']) ?>"
+                                    data-module-title="<?= htmlspecialchars($module['title']) ?>"
+                                >
+                                    <i class="ti ti-trash"></i> Supprimer
+                                </button>
+                            <?php endif; ?>
                         </div>
+
                     </div>
                 </div>
             <?php endforeach; ?>

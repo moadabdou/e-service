@@ -9,8 +9,8 @@ function chooseUnitsFormView($availableModules, $selectedModules, $errors, $info
 
     <div class="container mt-5 px-4 px-md-5">
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
-            <h2 class="fw-bold text-primary mb-2 mb-md-0">📚 Choisir mes modules</h2>
-
+            <h2 class="fw-bold text-primary mb-2 mb-md-0"><i class="ti ti-bookmarks"></i>  Choisir mes modules</h2>
+            
             <a href="/e-service/views/pages/professor/SelectedUnits.php" class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm">
                 <i class="ti ti-clipboard-list"></i> Voir les modules déjà sélectionnés
             </a>
@@ -70,7 +70,7 @@ function chooseUnitsFormView($availableModules, $selectedModules, $errors, $info
                                 <div class="card card-body">
                                     <p><strong>Description :</strong> <?= htmlspecialchars($module['description'] ?? 'Aucune description disponible.') ?></p>
                                     <p><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></p>
-                                    <p><strong>Professeur :</strong> <?= htmlspecialchars($module['professor_name'] ?? 'Non attribué') ?></p>
+                                    <p><strong>Filière :</strong> <?= htmlspecialchars($module['filiere_name'] ?? 'Aucune') ?></p>
                                     <p><strong>Volume Horaire :</strong> <?= htmlspecialchars($module['volume_horaire'] ?? 'Aucune') ?> heures</p>
                                 </div>
                             </div>

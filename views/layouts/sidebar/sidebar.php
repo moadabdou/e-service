@@ -93,10 +93,10 @@ class SideBar {
                     "icon" => "ti-book",
                     "url" => "/e-service/internal/members/professor/choose_units.php"
                 ],
-                "other" => [
-                    "title" => "Choisir Des Modules", 
+                "assignedModules" => [
+                    "title" => "Mes modules affectéss", 
                     "icon" => "ti-list-check",
-                    "url" => "/e-service/internal/members/professor/"
+                    "url" => "/e-service/internal/members/professor/AssignedModules.php"
                 ]
 
             ]
