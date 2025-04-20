@@ -43,7 +43,7 @@ In your web app, professors should be able to:
 [x] Calcul automatique de la charge horaire totale sélectionnée.
 [x] Load Warning Alert if minimum required teaching load is not met.
 [x] Assigned Modules	Show list of modules they are assigned to.
-[ ] Upload Notes	Upload student grades (normal + retake).
+[x] Upload Notes	Upload student grades (normal + retake).
 [ ] View History	See teaching assignments from past years.
 
 # Technically, i need to:

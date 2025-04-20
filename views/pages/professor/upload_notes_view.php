@@ -6,9 +6,6 @@ function uploadNotesView(array $assignedModules, ?array $info = null): string {
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
         <h2 class="fw-bold text-primary mb-2 mb-md-0">
             <i class="ti ti-upload"></i> Uploader les notes</h2>
-        <a href="/e-service/internal/members/professor" class="btn btn-outline-secondary">
-            <i class="ti ti-arrow-left"></i> Retour au tableau de bord
-        </a>
     </div>
 
     <?php if ($info): ?>

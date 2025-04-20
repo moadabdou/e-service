@@ -21,7 +21,7 @@ class NoteModel extends Model {
 
     // Function to generate a unique file ID
     public function generateFileId(): string {
-        return strval(random_int(100000000000000000, 999999999999999999));
+        return strval(random_int(100000000, 2147483647));
     }
 }
 ?>
