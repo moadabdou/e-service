@@ -2,7 +2,7 @@
 
 class Profile{
 
-    // settings :  title => edit form
+    // settings :  setting => label
 
     public static function view(array $user_info, string $profile_picture_url, ?array $info){
 

@@ -51,6 +51,11 @@ class SideBar {
                     "title" => "new professor", 
                     "icon" => "ti-user-plus",
                     "url" => "/e-service/internal/members/admin/newProfessor.php"
+                ],
+                "allUsers" => [
+                    "title" => "all users",
+                    "icon" => "ti-users",
+                    "url" => "/e-service/internal/members/admin/AllUsers.php"
                 ]
             ]
         ],
