@@ -52,9 +52,9 @@ In your web app, professors should be able to:
 
 [x] Save and load their previous choices.
 
-[ ] Upload files (PDF/Excel for grades).
+[x] Upload files (PDF/Excel for grades).
 
-[ ] Role-based access (only see their part).
+[x] Role-based access (only see their part).
 
 
 
@@ -63,8 +63,8 @@ In your web app, the department head should be able to:
 
 
 # Feature	Description : 
-[ ] List UEs	View all teaching units in their department.
-[ ] List Professors	See all profs in their department.
+[x] List UE View all teaching units in their department.
+[x] List Professors	See all profs in their department.
 [ ] Assign Modules	Assign one or more UEs to professors.
 [ ] Validate Requests	Approve/Reject professors’ preferences.
 [ ] Generate Load	Auto-generate total hours per professor.

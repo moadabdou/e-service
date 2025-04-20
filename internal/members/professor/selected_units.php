@@ -1,0 +1,40 @@
+<?php
+session_start();
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/filiere.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
+
+$userController = new UserController();
+$userController->checkCurrentUserAuthority(["professor"]);
+
+$moduleModel = new ModuleModel();
+$filiereModel = new FiliereModel();
+
+$professorId = $_SESSION['id_user'] ?? null;
+$departmentId = $_SESSION['id_deparetement'] ?? null;
+
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_module_id'])) {
+    $moduleIdToDelete = intval($_POST['delete_module_id']);
+    if ($professorId && $moduleIdToDelete) {
+        $moduleModel->deleteModuleChoice($professorId, $moduleIdToDelete);
+        $_SESSION['success_message'] = "Module supprimé avec succès.";
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit;
+    }
+}
+
+$selectedModules = $moduleModel->getSelectedModulesWithStatus($professorId);
+$filliers = $filiereModel->getFilieresByDepartment($departmentId);
+
+ob_start();
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/SelectedUnits.php";
+
+$dashboard = new DashBoard();
+$dashboard->view("professor", "chooseUnits", $content);
+?>

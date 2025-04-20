@@ -3,7 +3,7 @@ function assignedModulesView(array $assignedModules, int $totalHours): string {
     ob_start();
 ?>
 
-<div class="container mt-5 px-4 px-md-5">
+<div class="container mt-2 px-4 px-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
         <h2 class="fw-bold text-primary mb-2 mb-md-0">
             <i class="ti ti-books"></i> Modules Affectés Validés
@@ -21,10 +21,10 @@ function assignedModulesView(array $assignedModules, int $totalHours): string {
             <strong><?= htmlspecialchars($totalHours) ?> heures</strong>
         </div>
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-1">
             <?php foreach ($assignedModules as $module) : ?>
                 <div class="col">
-                    <div class="card border-0 shadow-lg h-60">
+                    <div class="card border-0 shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-between">
                             <div>
                                 <h5 class="card-title text-dark fw-bold d-flex justify-content-between align-items-center">

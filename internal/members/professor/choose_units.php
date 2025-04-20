@@ -4,6 +4,7 @@ session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/choose_units_view.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/filiere.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
 
@@ -11,6 +12,7 @@ $userController = new UserController();
 $userController->checkCurrentUserAuthority(["professor"]);
 
 $moduleModel = new ModuleModel();
+$FiliereModel = new FiliereModel();
 $notificationModel = new NotificationModel();
 
 $errors = [];
@@ -18,6 +20,7 @@ $info = null;
 
 $professorId = $_SESSION['id_user'];
 $departmentId = $_SESSION['id_deparetement'] ?? null;
+$filliere=$FiliereModel->getFilieresByDepartment($departmentId);
 
 $availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId, $professorId);
 $selectedModules = $moduleModel->getSelectedModulesByProfessor($professorId);
@@ -103,7 +106,7 @@ if (isset($_SESSION['info'])) {
     $info = $_SESSION['info'];
     unset($_SESSION['info']);
 }
-$content = chooseUnitsFormView($availableModules, $selectedModules, $errors, $info, $totalHours,$minHours,$maxHours);
+$content = chooseUnitsFormView($filliere,$availableModules, $selectedModules, $errors, $info, $totalHours,$minHours,$maxHours);
 $dashboard = new DashBoard();
 $dashboard->view("professor", "chooseUnits", $content);
 ?>

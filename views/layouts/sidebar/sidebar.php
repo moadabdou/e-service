@@ -62,7 +62,16 @@ class SideBar {
                 "main" => [
                     "title" => "main", 
                     "icon" => "ti-atom",
-                    "url" => "/e-service/internal/members/chef_deparetement"
+                    "url" => "/e-service/internal/members/professor/chef_deparetement"
+                ],        "modules" => [
+                    "title" => "Unités d’enseignement",
+                    "icon" => "ti-book",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/dep_units.php"
+                ],
+                "professors" => [
+                    "title" => "Professeurs & Charges",
+                    "icon" => "ti-users",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/professors_list.php"
                 ]
             ]
         ],

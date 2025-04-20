@@ -1,5 +1,7 @@
 <?php
-function chooseUnitsFormView($availableModules, $selectedModules, $errors, $info, $totalHours,$minHours,$maxHours) {
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
+
+function chooseUnitsFormView($filliers,$availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours) {
     ob_start();
 
     if ($_SERVER["REQUEST_METHOD"] === "POST" && empty($errors)) {
@@ -7,88 +9,124 @@ function chooseUnitsFormView($availableModules, $selectedModules, $errors, $info
     }
     ?>
 
-    <div class="container mt-5 px-4 px-md-5">
+    <div class="container mt-2 px-4 px-md-5">
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
             <h2 class="fw-bold text-primary mb-2 mb-md-0"><i class="ti ti-bookmarks"></i>  Choisir mes modules</h2>
-            
-            <a href="/e-service/views/pages/professor/SelectedUnits.php" class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm">
+            <a href="/e-service/internal/members/professor/selected_units.php" class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm">
                 <i class="ti ti-clipboard-list"></i> Voir les modules déjà sélectionnés
             </a>
         </div>
     </div>
 
     <?php
-            if ($totalHours > 0) :
-                $alertClass = 'info';
-                if ($totalHours < $minHours || $totalHours > $maxHours) {
-                    $alertClass = 'danger';
-                } elseif ($totalHours >= $minHours && $totalHours <= $maxHours) {
-                    $alertClass = 'success';
-                }
-            ?>
-            <div class="container mt-5 px-4 px-md-5">
-                <div class="alert alert-<?= $alertClass ?> text-center fw-semibold fs-5 shadow-sm">
-                <i class="ti ti-clock"></i> Charge horaire totale sélectionnée : 
-                    <strong><?= htmlspecialchars($totalHours) ?> heures</strong><br>
+        if ($totalHours > 0) :
+            $alertClass = 'info';
+            if ($totalHours < $minHours || $totalHours > $maxHours) {
+                $alertClass = 'danger';
+            } elseif ($totalHours >= $minHours && $totalHours <= $maxHours) {
+                $alertClass = 'success';
+            }
+    ?>
+    <div class="container mt-2 px-7 px-md-7">
+        <div class="alert alert-<?= $alertClass ?> text-center fw-semibold fs-4 shadow-sm">
+            <i class="ti ti-clock"></i> Charge horaire totale sélectionnée : 
+            <strong><?= htmlspecialchars($totalHours) ?> heures</strong><br>
 
-                    <?php if ($totalHours < $minHours): ?>
-                        <small class="d-block text-danger">Le minimum requis est <?= htmlspecialchars($minHours) ?>h.</small>
-                    <?php elseif ($totalHours > $maxHours): ?>
-                        <small class="d-block text-danger">Le maximum autorisé est <?= htmlspecialchars($maxHours) ?>h.</small>
-                    <?php else: ?>
-                        <small class="d-block text-success">Charge horaire dans la plage autorisée ✅</small>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endif; ?>
+            <?php if ($totalHours < $minHours): ?>
+                <small class="d-block text-danger">Le minimum requis est <?= htmlspecialchars($minHours) ?>h.</small>
+            <?php elseif ($totalHours > $maxHours): ?>
+                <small class="d-block text-danger">Le maximum autorisé est <?= htmlspecialchars($maxHours) ?>h.</small>
+            <?php else: ?>
+                <small class="d-block text-success">Charge horaire dans la plage autorisée ✅</small>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endif; ?>
 
-    <div class="container mt-5 px-2 px-md-3">
+    <div class="container px-2 px-md-3">
         <?php if ($info) : ?>
             <div class="alert alert-<?= htmlspecialchars($info['type']) ?>"><?= htmlspecialchars($info['msg']) ?></div>
         <?php endif; ?>
 
         <form method="POST">
             <div class="form-group mb-3">
-                <label class="form-label" style="font-size: 1.2rem; font-weight: bold;">Modules disponibles :</label><br>
-
+            <label class="form-label d-flex align-items-center" style="font-size: 1.2rem; font-weight: bold;"> Modules disponibles :</label>
+                <?php if (!empty($availableModules)) : ?>
+                        <?= createSearchFilterComponent(
+                            "Rechercher un module...",
+                            [
+                                "semester" => [
+                                    "label" => "Semestre",
+                                    "icon" => "ti-calendar",
+                                    "allLabel" => "Tous les semestres",
+                                    "options" => [
+                                        ["value" => "s1", "label" => "Semestre 1"],
+                                        ["value" => "s2", "label" => "Semestre 2"],
+                                        ["value" => "s3", "label" => "Semestre 3"],
+                                        ["value" => "s4", "label" => "Semestre 4"],
+                                        ["value" => "s5", "label" => "Semestre 5"],
+                                        ["value" => "s6", "label" => "Semestre 6"]
+                                    ]
+                                ],
+                                "filiere" => [
+                                    "label" => "Filière",
+                                    "icon" => "ti-book",
+                                    "allLabel" => "Toutes les filières",
+                                  "options" => array_map(function ($f) {
+                                        return [
+                                            "value" => strtolower(str_replace(' ', '_', $f['filiere_name'])),
+                                            "label" => $f['filiere_name']
+                                        ];
+                                    }, $filliers)
+                                ]
+                            ],
+                            "listContainer",
+                            "filterable-item",
+                            "itemCount"
+                        ); ?>
+                        <?php endif; ?>
                 <?php if (empty($availableModules)) : ?>
                     <p class="text-muted">Aucun module disponible pour votre département actuellement.</p>
                 <?php else : ?>
-                    <?php foreach ($availableModules as $module) : ?>
-                        <div class="module-card mb-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="module-title" style="font-size: 1.1rem; font-weight: bold;">
-                                    <?= htmlspecialchars($module['title']) ?> 
-                                    <span class="text-muted">(<?= htmlspecialchars($module['volume_horaire']) ?>h)</span>
+                    <div id="listContainer">
+                        <?php foreach ($availableModules as $module) : ?>
+                            <div class="module-card mb-3 filterable-item"
+                                data-semester="<?= htmlspecialchars(strtolower($module['semester'] ?? '')) ?>"
+                                data-filiere="<?= htmlspecialchars(strtolower(str_replace(' ', '_', $module['filiere_name']))) ?>">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="module-title" style="font-size: 1.1rem; font-weight: bold;">
+                                        <?= htmlspecialchars($module['title']) ?> 
+                                        <span class="text-muted">(<?= htmlspecialchars($module['volume_horaire']) ?>h)</span>
+                                    </div>
+                                    <button type="button" class="btn btn-info btn-sm m-2" data-bs-toggle="collapse" data-bs-target="#moduleDetails-<?= htmlspecialchars($module['id_module']) ?>" aria-expanded="false" aria-controls="moduleDetails-<?= htmlspecialchars($module['id_module']) ?>">
+                                        <i class="ti ti-info-circle"></i> Plus d'infos
+                                    </button>
                                 </div>
-                                <button type="button" class="btn btn-info btn-sm m-2" data-bs-toggle="collapse" data-bs-target="#moduleDetails-<?= htmlspecialchars($module['id_module']) ?>" aria-expanded="false" aria-controls="moduleDetails-<?= htmlspecialchars($module['id_module']) ?>">
-                                    <i class="ti ti-info-circle"></i> Plus d'infos
-                                </button>
-                            </div>
 
-                            <div class="collapse" id="moduleDetails-<?= htmlspecialchars($module['id_module']) ?>">
-                                <div class="card card-body">
-                                    <p><strong>Description :</strong> <?= htmlspecialchars($module['description'] ?? 'Aucune description disponible.') ?></p>
-                                    <p><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></p>
-                                    <p><strong>Filière :</strong> <?= htmlspecialchars($module['filiere_name'] ?? 'Aucune') ?></p>
-                                    <p><strong>Volume Horaire :</strong> <?= htmlspecialchars($module['volume_horaire'] ?? 'Aucune') ?> heures</p>
+                                <div class="collapse" id="moduleDetails-<?= htmlspecialchars($module['id_module']) ?>">
+                                    <div class="card card-body">
+                                        <p><strong>Description :</strong> <?= htmlspecialchars($module['description'] ?? 'Aucune description disponible.') ?></p>
+                                        <p><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></p>
+                                        <p><strong>Filière :</strong> <?= htmlspecialchars($module['filiere_name'] ?? 'Aucune') ?></p>
+                                        <p><strong>Volume Horaire :</strong> <?= htmlspecialchars($module['volume_horaire'] ?? 'Aucune') ?> heures</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-check">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="checkbox" 
+                                        name="modules[]" 
+                                        value="<?= htmlspecialchars($module['id_module']) ?>"
+                                        <?= in_array($module['id_module'], array_column($selectedModules, 'id_module')) ? 'checked' : '' ?>
+                                    >
+                                    <label class="form-check-label">
+                                        Sélectionner ce module
+                                    </label>
                                 </div>
                             </div>
-
-                            <div class="form-check">
-                                <input 
-                                    class="form-check-input" 
-                                    type="checkbox" 
-                                    name="modules[]" 
-                                    value="<?= htmlspecialchars($module['id_module']) ?>"
-                                    <?= in_array($module['id_module'], array_column($selectedModules, 'id_module')) ? 'checked' : '' ?>
-                                >
-                                <label class="form-check-label">
-                                    Sélectionner ce module
-                                </label>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
 
                 <?php if (isset($errors['modules'])) : ?>
@@ -97,18 +135,15 @@ function chooseUnitsFormView($availableModules, $selectedModules, $errors, $info
             </div>
 
             <?php if (!empty($availableModules)) : ?>
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-lg btn-primary px-5 py-3 m-4 shadow rounded-pill">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary px-4 py-3 m-4 shadow rounded-pill fs-4">
                         <i class="ti ti-checkbox px-1"></i> Valider mes choix
                     </button>
                 </div>
             <?php endif; ?>
         </form>
-
- 
     </div>
 
     <?php
     return ob_get_clean();
 }
-?>
