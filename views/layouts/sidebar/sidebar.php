@@ -72,6 +72,11 @@ class SideBar {
                     "title" => "Professeurs & Charges",
                     "icon" => "ti-users",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/professors_list.php"
+                ],
+                "pendingModules" => [
+                    "title" => "Affectation des modules",
+                    "icon" => "ti-link",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/assign_modules.php"
                 ]
             ]
         ],

@@ -37,7 +37,7 @@ function chefDepProfessorsListView(array $professors): string {
         <div class="row g-4" id="profList">
             <?php foreach ($professors as $professor) : ?>
                 <div class="col-12 col-md-6 col-lg-4 prof-card" data-role="<?= htmlspecialchars($professor['p_role']) ?>">
-                    <div class="card h-100 shadow-sm rounded-4 border-0">
+                    <div class="card h-100 shadow rounded-4 border-0">
                         <div class="card-body d-flex flex-column justify-content-between">
                             <div>
                                 <h5 class="card-title text-primary fw-bold mb-3">

@@ -10,7 +10,7 @@ function chefDepModulesListView(array $modules, array $filliers): string {
                 <i class="ti ti-books" aria-hidden="true"></i> Unités d'enseignement du département
             </h2>
         </header>
-
+    
         <?= createSearchFilterComponent(
             "Rechercher un module...",
             [
@@ -44,11 +44,11 @@ function chefDepModulesListView(array $modules, array $filliers): string {
             "itemCount"
         ); ?>
 
-        <?php if (empty($modules)) : ?>
-            <div class="alert alert-warning text-center shadow-sm">
-                <i class="ti ti-alert-circle" aria-hidden="true"></i> Aucun module disponible pour le moment.
-            </div>
-        <?php else : ?>
+                <?php if (empty($modules)) : ?>
+                    <div class="alert alert-warning text-center shadow-sm">
+                        <i class="ti ti-alert-circle" aria-hidden="true"></i> Aucun module disponible pour le moment.
+                    </div>
+                <?php else : ?>
             <div class="row g-4" id="listContainer">
                 <?php foreach ($modules as $module) : 
                     $semesterValue = strtolower($module['semester'] ?? '');
@@ -57,7 +57,7 @@ function chefDepModulesListView(array $modules, array $filliers): string {
                     <div class="col-12 col-md-6 col-lg-4 filterable-item"
                         data-semester="<?= htmlspecialchars($semesterValue) ?>"
                         data-filiere="<?= htmlspecialchars($filiereValue) ?>">
-                        <article class="card h-100 shadow-sm rounded-4 border-0">
+                        <article class="card h-100 shadow rounded-4 border-0">
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <div>
                                     <h5 class="card-title text-primary fw-bold mb-3">
