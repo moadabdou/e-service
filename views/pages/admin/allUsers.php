@@ -1,5 +1,6 @@
 <?php 
 require_once __DIR__."../../../layouts/mini_navbar/minNavbar.php";
+require_once __DIR__."../../../components/simple_user_card/simple_user_card.php";
 
 class AllUsersView{
 
@@ -17,7 +18,7 @@ class AllUsersView{
 
         $base_url = "/e-service/internal/members/admin/AllUsers.php?filter=";
 
-        $roles = ["professors", "deparetements heads","coordinators", "vacataires","admins"];
+        $roles = ["professeurs", "chefs des départements", "coordinateurs", "vacataires", "administrateurs"];
 
         foreach($roles as $index => &$role){
 
@@ -29,6 +30,22 @@ class AllUsersView{
 
 
         $users = "";
+        $user_card = new SimpleUserCard();
+
+        if (empty($users_data)){
+
+            $users = "<h4 class='text-center'>aucun utilisateur trouvé</h4>";
+
+        }else {
+            
+            foreach($users_data as  $user_data){
+
+                $users .=  $user_card->view($user_data["id_user"],$user_data["img"], implode(" ", [$user_data["firstName"], $user_data["lastName"]]) , $user_data["creation_date"]);
+
+            }
+
+
+        }
 
 
         ob_start();

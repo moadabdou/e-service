@@ -140,9 +140,9 @@
 
 <div class="profile-content">
     <div class="profile-picture-section">
-        <img src="<?= $profile_picture_url ?>" alt="User Profile Picture" id="profile-pic">
+        <img src="<?= $profile_picture_url ?>" alt="Photo de Profil" id="profile-pic">
             <button class="edit-pic-btn" id="changePictureBtn">
-            <i class="fas fa-camera"></i> Change Picture
+            <i class="fas fa-camera"></i> Changer la Photo
             <input type="file"  id="fileInput" hidden>
         </button>
     </div>
@@ -153,7 +153,7 @@
                 <?= $info["msg"] ?>
             </div>
         <?php }?>
-        <h2>Profile Information</h2>
+        <h2>Informations du Profil</h2>
         <?php foreach ($user_info as $key => $value) {?>
             <div class="info-item">
                 <label><?= htmlspecialchars($key) ?></label>
@@ -165,7 +165,7 @@
                 <?php }?>
             </div>  
         <?php } ?>
-        <h2>Settings</h2>
+        <h2>Paramètres</h2>
         <?php foreach ($general_settings as $setting => $title) {?>
             <div class="setting-item" data-setting="<?= $setting ?>">
                 <label><?= htmlspecialchars($title) ?></label>
@@ -181,24 +181,23 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editInfoLabel">Edit your data here </h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="editInfoLabel">Modifier vos données ici</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
             </div>
                 <form action="<?=htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST">
                     <input type="hidden" value="info" name="edit_type_request">
                     <div class="modal-body">
                         <div class="mb-2">
-                            <label for="data-field" class="form-label data-key">data key</label>
+                            <label for="data-field" class="form-label data-key">clé de données</label>
                             <input type="text" class="form-control data-value" id="data-field" name="value" >
                             <input type="text" class="form-control data-key-input" id="data-field" name="key" hidden>
-                            <div id="Help" class="form-text">Make sure that your data is valid.</div>
+                            <div id="Help" class="form-text">Assurez-vous que vos données sont valides.</div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </div>
                 </form>
-            
             </div>
         </div>
     </div>
@@ -207,8 +206,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editSettingLabel">Edit your data here </h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="editSettingLabel">Modifier vos paramètres ici</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
             </div>
                 <form action="<?=htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST">
                     <input type="hidden" value="settings" name="edit_type_request">
@@ -218,18 +217,16 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </div>
                 </form>
-        
             </div>
         </div>
     </div>
 
-    <!-- Alert for invalid file -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
         <div id="alertInvalidFile" class="alert alert-danger d-none" role="alert">
-            Chosen file is invalid. Please select an image.
+            Le fichier choisi n'est pas valide. Veuillez sélectionner une image.
         </div>
     </div>
 
@@ -237,8 +234,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="imageModalLabel">Preview Image</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="imageModalLabel">Aperçu de l'image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <div class="modal-body text-center">
                     <div id="image-container"> 
@@ -256,12 +253,11 @@
                         <input type="text" name="key" value="img" hidden>
                         <input type="file" name="value" id="profilePhotoInput" hidden>
                     </form>
-                    <button type="button" id="uploadImage" class="btn btn-secondary" data-bs-dismiss="modal" >Save</button>
+                    <button type="button" id="uploadImage" class="btn btn-secondary" data-bs-dismiss="modal">Enregistrer</button>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 <script>

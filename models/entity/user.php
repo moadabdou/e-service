@@ -64,7 +64,7 @@ class UserModel  extends Model{
         }
     }
 
-    public function getNonCriticalDataById(string $id_user) : array | false{
+    public function getNonCriticalDataById(int $id_user) : array | false{
         if ($this->db->query("SELECT firstName, lastName, CIN, email, role, phone, address, birth_date, creation_date, img FROM user WHERE id_user=?", [$id_user])) {
             return $this->db->fetch();
         } else {
@@ -101,6 +101,36 @@ class UserModel  extends Model{
         }
 
     }
+
+    /*
+    
+     * type is the  type of users you  wanna  show  
+     *  0 => professors
+     *  1 => departements heads
+     *  2 => coordinators
+     *  3 => vacataires 
+     *  4 => admins 
+    */    
+
+    public function getUsersByRole(int $role): array|false{
+
+        $prefix =  "SELECT id_user,firstName,lastName,CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) as img,email,phone,birth_date,creation_date FROM user ";
+        $query = match ($role) {
+            0 => $prefix."WHERE role = 'professor'",
+            1 => $prefix."JOIN professor ON id_user=id_professor AND professor.role = 'chef_deparetement'",
+            2 => $prefix."JOIN professor ON id_user=id_professor AND professor.role = 'coordonnateur'",
+            3 => $prefix."WHERE role = 'vacataire'",
+            4 => $prefix."WHERE role = 'admin'",
+        };
+
+        if ($this->db->query($query)) {
+            return $this->db->fetchAll();
+        } else {
+            $this->error = $this->db->getError();
+            return false;
+        }
+    }
+
 }
 
 ?>

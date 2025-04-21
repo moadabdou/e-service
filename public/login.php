@@ -36,10 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     }
 
     if (count($errors)){
+
         $info = [
             "msg" => "we encountred an error while trying letting you in .. check your credentials",
             "type" => "danger"
         ];
+
+        
     }else {
         session_start();
 

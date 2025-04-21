@@ -13,6 +13,12 @@ class Profile{
         return ob_get_clean();
     }
 
+    public static function viewAsOther(array $user_info, int $id, string $profile_picture_url, ?array $info){
+        ob_start();
+        require_once __DIR__."/profile_other.view.php";
+        return ob_get_clean();
+    }
+
 }
 
 ?>
