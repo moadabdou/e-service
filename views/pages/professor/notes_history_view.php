@@ -96,7 +96,7 @@ function notesHistoryView(array $filliers, array $notes, ?string $success = null
                                     <td><span class="badge bg-secondary text-white"><?= ucfirst($note['session']) ?></span></td>
                                     <td><?= date('d/m/Y', strtotime($note['date_upload'])) ?></td>
                                     <td>
-                                        <a href="/e-service/storage/pdfs/notes/<?= htmlspecialchars($note['file_id']) ?>"
+                                        <a href="/e-service/internal/members/common/getResource.php?type=pdfs&path=notes/<?=$note['file_id']?>"
                                            target="_blank"
                                            class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
                                             <i class="ti ti-eye"></i> Voir

@@ -8,18 +8,16 @@ class ModuleModel extends  Model{
     }
 
     
-    public function getAvailableModulesByDepartment($departmentId, $professorId) {
-        $query = "SELECT m.*,
-                f.title AS filiere_name
+    public function getAvailableModulesByDepartment($departmentId) {
+                        $query = "SELECT m.*, 
+                    f.title AS filiere_name
                 FROM module m
                 JOIN filiere f ON m.id_filiere = f.id_filiere
-                WHERE f.id_deparetement = ? 
-                AND m.id_module NOT IN (
-                    SELECT id_module 
-                    FROM choix_module 
-                    WHERE by_professor = ?
-                )";
-        if ($this->db->query($query, [$departmentId, $professorId])) {
+                WHERE f.id_deparetement = ?  AND m.id_module
+                NOT IN (( SELECT af.id_module FROM 
+                affectation_professor af) UNION ( SELECT cm.id_module FROM 
+                choix_module cm WHERE cm.by_professor= ? AND cm.status = 'in progress'))";
+        if ($this->db->query($query, [$departmentId, $_SESSION['id_user']])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return $this->db->getError();
@@ -241,6 +239,8 @@ class ModuleModel extends  Model{
         } else {
             return [];
         }
+        
+        // same unit , same year and stauts ---> declined 
     }
 
 

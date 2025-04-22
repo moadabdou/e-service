@@ -9,7 +9,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor"]);
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
+
 
 $moduleModel = new ModuleModel();
 $FiliereModel = new FiliereModel();
@@ -22,7 +23,7 @@ $professorId = $_SESSION['id_user'];
 $departmentId = $_SESSION['id_deparetement'] ?? null;
 $filliere=$FiliereModel->getFilieresByDepartment($departmentId);
 
-$availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId, $professorId);
+$availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId);
 $selectedModules = $moduleModel->getSelectedModulesByProfessor($professorId);
 
 // Get professor limits
@@ -108,5 +109,5 @@ if (isset($_SESSION['info'])) {
 }
 $content = chooseUnitsFormView($filliere,$availableModules, $selectedModules, $errors, $info, $totalHours,$minHours,$maxHours);
 $dashboard = new DashBoard();
-$dashboard->view("professor", "chooseUnits", $content);
+$dashboard->view($_SESSION["role"], "chooseUnits", $content);
 ?>
