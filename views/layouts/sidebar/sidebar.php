@@ -22,16 +22,16 @@ class SideBar {
 
     private static array $NAVIGATION =[
         "General" => [
-            "title" => "Generale", 
+            "title" => "Générale", 
             "menu" => 
             [
                 "profile" => [
-                    "title" => "Profile", 
+                    "title" => "Profil", 
                     "icon" => "ti-user",
                     "url" => "/e-service/internal/members/common/profile.php"
                 ],
                 "logout" => [
-                    "title" => "Logout", 
+                    "title" => "Déconnexion", 
                     "icon" => "ti-power",
                     "url" => "/e-service/internal/members/common/logout.php"
                 ]
@@ -43,24 +43,34 @@ class SideBar {
             "title" => "Administration",
             "menu" => [
                 "main" => [
-                    "title" => "main", 
+                    "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/admin"
                 ],
                 "newProfessor" => [
-                    "title" => "new professor", 
+                    "title" => "Nouveau Professeur", 
                     "icon" => "ti-user-plus",
                     "url" => "/e-service/internal/members/admin/newProfessor.php"
-                ]
+                ],
+                "allUsers" => [
+                    "title" => "Tous les Utilisateurs",
+                    "icon" => "ti-users",
+                    "url" => "/e-service/internal/members/admin/AllUsers.php"
+                ],
+                "deperatements"=>[
+                    "title" => "Départements",
+                    "icon" => "ti-building",
+                    "url" => "/e-service/internal/members/admin/Departements.php"
+                ] 
             ]
         ],
 
         "professor/chef_deparetement" => 
         [
-            "title"=> "gere deperetement",
+            "title"=> "Gérer Département",
             "menu" =>[
                 "main" => [
-                    "title" => "main", 
+                    "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/professor/chef_deparetement"
                 ],        "modules" => [
@@ -78,10 +88,10 @@ class SideBar {
 
         "professor/coordonnateur" => 
         [
-            "title"=> "gere filiere",
+            "title"=> "Gérer Filière",
             "menu" =>[
                 "main" => [
-                    "title" => "main", 
+                    "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/coordonnateur"
                 ]
@@ -90,10 +100,10 @@ class SideBar {
 
         "professor" => 
         [
-            "title"=> "professor panel",
+            "title"=> "Panneau Professeur",
             "menu" =>[
                 "main" => [
-                    "title" => "main", 
+                    "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/professor"
                 ],
@@ -118,10 +128,10 @@ class SideBar {
 
         "vacataire" => 
         [
-            "title"=> "vacataire panel",
+            "title"=> "Panneau Vacataire",
             "menu" =>[
                 "main" => [
-                    "title" => "main", 
+                    "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/vacataire"
                 ]

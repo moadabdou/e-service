@@ -8,7 +8,7 @@ class UserController{
      * other data can be edited but only by the user/admin
     */
     private static array $selfEditable = ["img", "phone", "address", "password", "email"]; 
-    private static string $defaultPicture = "blank-profile.webp";
+    private static string $defaultPicture = "default.webp";
     /**
      * this function must be  used and session is already  started
     */
@@ -99,6 +99,8 @@ class UserController{
     public function absoluteProfilePictureUrl(string $user_img){
         return "/e-service/internal/members/common/getResource.php?type=image&path=users_pp/".htmlspecialchars($user_img);
     }
+
+
 
     public function isValidUserData(string $key, string|array $value) : bool{
         switch ($key){

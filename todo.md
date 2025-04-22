@@ -2,28 +2,44 @@
 ## moad:
 
 ### User
-- [*] login routing based on  the role
+- [x] login routing based on  the role
 
-- [*] logout  
+- [x] logout  
 
-- [*] role checking  for prevent unautherized access 
+- [x] role checking  for prevent unautherized access 
 
 - [ ] profile 
 
-> [*] display  information
+> [x] display  information
 
-> [*] change user informations (phone, address, profile pecture ...)
+> [x] change user informations (phone, address, profile pecture ...)
 
-> [ ] change  password 
+> [x] change  password 
 
-- [ ] notification read
+- [x] notification read
 
 - [ ] ...  
 
 ### Admin 
-- [*] register  new professor 
+- [x] register  new professor 
 
-- [ ] email  check
+- [x] email  check
+
+- [ ] actions on All users on website seperated by their roles 
+
+    - [ ] see them 
+    - [ ] see their profile and edit their info
+    - [ ] desactivate and activate and delete 
+    - [ ] reset their password (an email must  be sent)
+    - [ ] make a professor a deparetement head or class coordinator  and the inverse 
+        > if another professor is already a coordinator/head and the same departement/class, a message should appear asking to wheter to replace him ( only if the same year )
+    - ... 
+
+- [ ] actions on  depatements 
+
+    - [ ] see all  deparetments 
+    - [ ] can see all the classes in a deparetment 
+    
 
 
 ### coordinateur
