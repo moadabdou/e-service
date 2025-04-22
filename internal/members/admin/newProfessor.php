@@ -73,7 +73,7 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
     }else {
         $profModel = new ProfessorModel();
 
-        [$prof_id , $new_prof_password] = $profModel->newProfessor(
+        $res = $profModel->newProfessor(
             $_POST['firstName'],
             $_POST['lastName'],
             $_POST['CIN'],
@@ -86,18 +86,18 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
             $_POST['min_hours']
         );
 
-        if ($new_prof_password === false){
+        if ($res === false){
             $info =  [
                 "msg" => "data format looks fine but an error accured when we tried to add this professor : ".$profModel->resolveProfessorOperationError(),
                 "type" => "danger"
             ];
         }else {
 
-
+            [$prof_id , $new_prof_password] = $res;
             $notificationModel->createNotification(
                 $prof_id, 
-                "Welcome to E-service", 
-                "Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.",
+                "Bienvenue sur E-service", 
+                "Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.",
                 null
             );
 
