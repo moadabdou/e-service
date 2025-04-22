@@ -13,7 +13,7 @@ $professor = $_SESSION;
 $departmentId = $professor['id_deparetement'] ?? null;
 $professorId = $professor['id_user'];
 $userModel = new UserModel();
-$professors = $userModel->getProfessorsByDepartment($departmentId,$professorId);
+$professors = $userModel->getProfessorsByDepartmentex($departmentId,$professorId);
 
 $content = chefDepProfessorsListView($professors);
 $dashboard = new DashBoard();

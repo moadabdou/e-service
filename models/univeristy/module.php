@@ -171,6 +171,78 @@ class ModuleModel extends  Model{
             return [];
         }
     }
+
+    public function getUnassignedValidatedModules(int $departmentId): array {
+        $query = "SELECT m.*, f.title AS filiere_name
+                  FROM module m
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE f.id_deparetement = ?
+                  AND m.id_module NOT IN (
+                      SELECT id_module FROM choix_module WHERE status = 'validated'
+                  )";
+
+        if ($this->db->query($query, [$departmentId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
+    function assignModuleToProfessor(int $moduleId, int $professorId, string $status): bool {
+        $db = new Database();
+    
+        // Begin transaction
+        $db->beginTransaction();
+    
+        try {
+            // 1. Update choix_module
+            $updateQuery = "UPDATE choix_module SET status = ?, date_reponce = NOW() 
+                            WHERE id_module = ? AND by_professor = ?";
+            $db->query($updateQuery, [$status, $moduleId, $professorId]);
+    
+            // 2. If status is validated, insert into affectation_professor
+            if ($status === 'validated') {
+                $chefId = $_SESSION['id_user'] ?? null;
+                $year = date("Y");
+    
+                if (!$chefId) {
+                    throw new Exception("ID chef de département manquant.");
+                }
+    
+                $insertQuery = "INSERT INTO affectation_professor (to_professor, by_chef_deparetement, id_module, annee) 
+                                VALUES (?, ?, ?, ?)";
+                $db->query($insertQuery, [$professorId, $chefId, $moduleId, $year]);
+            }
+    
+            // Commit transaction
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            // Rollback on error
+            $db->rollBack();
+            error_log("Erreur assignModuleToProfessor: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    public function getPendingModuleChoices(int $departmentId): array {
+        $query = "SELECT cm.id_module, cm.by_professor, cm.status, cm.date_creation,
+                         m.title AS module_title, m.description, m.semester, m.volume_horaire,
+                         f.title AS filiere_name,
+                         u.firstName, u.lastName, u.email, u.phone
+                  FROM choix_module cm
+                  JOIN module m ON cm.id_module = m.id_module
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  JOIN user u ON cm.by_professor = u.id_user
+                  WHERE cm.status = 'in progress' AND f.id_deparetement = ?";
+
+        if ($this->db->query($query, [$departmentId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
     
     
     
