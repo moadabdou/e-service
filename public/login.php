@@ -32,6 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
             $errors["email"] = "looks like no one has the email you sent .."; 
         }else if((!isset($_POST["password"]) || password_verify($_POST["password"] , $user_info["password"]) === false)){
             $errors["invalid"] = true;
+        }else if($user_info["status"] === "disabled"){
+            $errors["invalid"] = true;
+            $errors["email"] = "the account with this email is disabled, contact the administration";
         }
     }
 

@@ -3,7 +3,7 @@ require_once __DIR__."/../model.php";
 
 class UserModel  extends Model{
 
-    private array $allowedColumns = ['firstName', 'lastName', 'CIN', 'email', 'role', 'password', 'phone', 'address', 'birth_date', 'img'];
+    private array $allowedColumns = ['firstName', 'lastName', 'CIN', 'email', 'role', 'password', 'phone', 'address', 'birth_date', 'img', 'status'];
 
     public function __construct()
     {
@@ -65,7 +65,7 @@ class UserModel  extends Model{
     }
 
     public function getNonCriticalDataById(int $id_user) : array | false{
-        if ($this->db->query("SELECT firstName, lastName, CIN, email, role, phone, address, birth_date, creation_date, img FROM user WHERE id_user=?", [$id_user])) {
+        if ($this->db->query("SELECT firstName, lastName, CIN, email, role, phone, address, birth_date, creation_date, img, status FROM user WHERE id_user=?", [$id_user])) {
             return $this->db->fetch();
         } else {
             $this->error = $this->db->getError();

@@ -56,7 +56,12 @@ class SideBar {
                     "title" => "Tous les Utilisateurs",
                     "icon" => "ti-users",
                     "url" => "/e-service/internal/members/admin/AllUsers.php"
-                ]
+                ],
+                "deperatements"=>[
+                    "title" => "Départements",
+                    "icon" => "ti-building",
+                    "url" => "/e-service/internal/members/admin/Departements.php"
+                ] 
             ]
         ],
 

@@ -187,19 +187,21 @@
             <h2 class="mb-3">Opérations du Compte</h5>
 
             <div class="account-operation-item d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#confirmation" data-operation="reset_password">
-                <span>Réinitialiser le mot de passe</span>
-                <span>></span>
+            <span>Réinitialiser le mot de passe</span>
+            <span>></span>
             </div>
 
+            <?php if($user_info["status"] === "active") :?>
             <div class="account-operation-item d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#confirmation"  data-operation="desactivate_account">
                 <span>Désactiver le compte</span>
                 <span>></span>
             </div>
-
-            <div class="account-operation-item d-flex justify-content-between align-items-center text-danger" data-bs-toggle="modal" data-bs-target="#confirmation"  data-operation="delete_account">
-                <span>Supprimer le compte</span>
+            <?php else: ?>
+            <div class="account-operation-item d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#confirmation"  data-operation="activate_account">
+                <span>Activer le compte</span>
                 <span>></span>
-            </div>   
+            </div>
+            <?php endif; ?>
         <?php endif?>
         
     </div>

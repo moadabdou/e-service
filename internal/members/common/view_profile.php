@@ -105,6 +105,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_SESSION["role"] === "admin" && !e
 
             }
 
+        }else if ($operation === "desactivate_account"){
+            $res =  $userModel->updateUserColumn("status", "disabled" , $id);
+            if($res === true){
+
+                $user_data["status"] =  "disabled";
+                $info = [
+                    "msg" => "le compte a été désactivé avec succès",
+                    "type" => "success"
+                ];
+                
+            }else {
+
+                $info = [
+                    "msg" => "nous n'avons pas pu désactiver le compte",
+                    "type" => "danger"
+                ];
+
+            }
+        }else if($operation === "activate_account"){
+            $res =  $userModel->updateUserColumn("status", "active" , $id);
+            if($res === true){
+                $user_data["status"] =  "active";
+                $info = [
+                    "msg" => "le compte a été activé avec succès",
+                    "type" => "success"
+                ];
+                
+            }else {
+
+                $info = [
+                    "msg" => "nous n'avons pas pu activer le compte",
+                    "type" => "danger"
+                ];
+
+            }
         }
 
 
