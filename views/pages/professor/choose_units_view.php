@@ -45,7 +45,9 @@ function chooseUnitsFormView($filliers,$availableModules, $selectedModules, $err
 
     <div class="container px-2 px-md-3">
         <?php if ($info) : ?>
-            <div class="alert alert-<?= htmlspecialchars($info['type']) ?>"><?= htmlspecialchars($info['msg']) ?></div>
+            <div class="alert alert-<?= htmlspecialchars($info['type']) ?> alert-dismissible fade show text-center"><?= htmlspecialchars($info['msg']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         <?php endif; ?>
 
         <form method="POST">

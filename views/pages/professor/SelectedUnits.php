@@ -55,7 +55,9 @@
     <?php endif; ?>
     </i>
     <?php if (isset($_SESSION['success_message'])) : ?>
-        <div class="alert alert-success text-center fw-semibold"><?= htmlspecialchars($_SESSION['success_message']) ?></div>
+        <div class="alert alert-success alert-dismissible fade show text-center"><?= htmlspecialchars($_SESSION['success_message']) ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
         <?php unset($_SESSION['success_message']); ?>
     <?php endif; ?>
 

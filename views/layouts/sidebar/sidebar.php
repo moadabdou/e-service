@@ -116,6 +116,11 @@ class SideBar {
                     "title" => "Uploader les notes", 
                     "icon" => "ti-upload",
                     "url" => "/e-service/internal/members/professor/UploadNotes.php"
+                ],
+                "NotesHistory" => [
+                    "title" => "Mes notes envoyées",
+                    "icon" => "ti-files",
+                    "url" => "/e-service/internal/members/professor/notes_history.php"
                 ]
 
             ]

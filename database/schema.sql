@@ -65,6 +65,7 @@ CREATE TABLE `affectation_professor` (
 
 LOCK TABLES `affectation_professor` WRITE;
 /*!40000 ALTER TABLE `affectation_professor` DISABLE KEYS */;
+INSERT INTO `affectation_professor` VALUES (3,2,2,2025),(3,2,5,2025);
 /*!40000 ALTER TABLE `affectation_professor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,7 +149,7 @@ CREATE TABLE `choix_module` (
 
 LOCK TABLES `choix_module` WRITE;
 /*!40000 ALTER TABLE `choix_module` DISABLE KEYS */;
-INSERT INTO `choix_module` VALUES (3,1,'2025-04-19',NULL,'validated'),(3,2,'2025-04-19',NULL,'validated');
+INSERT INTO `choix_module` VALUES (3,1,'2025-04-21','2025-04-21','validated'),(3,2,'2025-04-21','2025-04-21','validated'),(3,3,'2025-04-21','2025-04-21','validated'),(3,4,'2025-04-22','2025-04-22','declined'),(3,5,'2025-04-22','2025-04-22','validated');
 /*!40000 ALTER TABLE `choix_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,7 +280,7 @@ CREATE TABLE `notes` (
   `id_professor` int(11) DEFAULT NULL,
   `date_upload` date NOT NULL,
   `session` enum('normal','ratt') NOT NULL,
-  `file_id` int(11) DEFAULT NULL,
+  `file_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id_note`),
   KEY `id_module` (`id_module`),
   KEY `id_professor` (`id_professor`),
@@ -288,7 +289,7 @@ CREATE TABLE `notes` (
   CONSTRAINT `notes_ibfk_2` FOREIGN KEY (`id_professor`) REFERENCES `professor` (`id_professor`),
   CONSTRAINT `notes_ibfk_3` FOREIGN KEY (`id_vacataire`) REFERENCES `vacataire` (`id_vacataire`),
   CONSTRAINT `CONSTRAINT_1` CHECK (`id_professor` is not null and `id_vacataire` is null or `id_professor` is null and `id_vacataire` is not null)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,7 +298,6 @@ CREATE TABLE `notes` (
 
 LOCK TABLES `notes` WRITE;
 /*!40000 ALTER TABLE `notes` DISABLE KEYS */;
-INSERT INTO `notes` VALUES (10,1,NULL,3,'2025-04-20','ratt',1387697393);
 /*!40000 ALTER TABLE `notes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,7 +319,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`id_notification`),
   KEY `id_user` (`id_user`),
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +328,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (11,1,'2024-02-01 09:00:00','New Module Assignment',NULL,'read','You have been assigned to teach Database Management'),(12,1,'2024-02-01 10:30:00','Grade Submission Reminder',NULL,'read','Please submit grades for Programming 101 by Friday'),(13,1,'2024-02-02 11:15:00','Department Meeting',NULL,'read','Monthly department meeting scheduled for next week'),(14,1,'2024-02-02 14:00:00','Schedule Update',NULL,'read','Your teaching schedule has been updated'),(15,1,'2024-02-03 09:45:00','System Maintenance',NULL,'read','System will be down for maintenance on Sunday'),(16,2,'2025-04-16 22:19:28','Welcome to E-service',NULL,'read','Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.'),(24,3,'2025-04-19 00:39:11','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),(25,3,'2025-04-19 00:42:15','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(26,3,'2025-04-19 12:51:05','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),(27,3,'2025-04-19 12:51:30','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(28,3,'2025-04-19 13:51:21','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(29,3,'2025-04-19 15:28:13','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(30,3,'2025-04-20 20:14:52','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(31,3,'2025-04-20 20:21:31','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(32,3,'2025-04-20 22:26:17','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(33,3,'2025-04-20 22:47:43','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : francais, engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).');
+INSERT INTO `notifications` VALUES (11,1,'2024-02-01 09:00:00','New Module Assignment',NULL,'read','You have been assigned to teach Database Management'),(12,1,'2024-02-01 10:30:00','Grade Submission Reminder',NULL,'read','Please submit grades for Programming 101 by Friday'),(13,1,'2024-02-02 11:15:00','Department Meeting',NULL,'read','Monthly department meeting scheduled for next week'),(14,1,'2024-02-02 14:00:00','Schedule Update',NULL,'read','Your teaching schedule has been updated'),(15,1,'2024-02-03 09:45:00','System Maintenance',NULL,'read','System will be down for maintenance on Sunday'),(16,2,'2025-04-16 22:19:28','Welcome to E-service',NULL,'read','Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.'),(24,3,'2025-04-19 00:39:11','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),(25,3,'2025-04-19 00:42:15','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(26,3,'2025-04-19 12:51:05','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),(27,3,'2025-04-19 12:51:30','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(28,3,'2025-04-19 13:51:21','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(29,3,'2025-04-19 15:28:13','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(30,3,'2025-04-20 20:14:52','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(31,3,'2025-04-20 20:21:31','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(32,3,'2025-04-20 22:26:17','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(33,3,'2025-04-20 22:47:43','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : francais, engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).'),(34,3,'2025-04-21 22:31:58','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : Web Dev, C++, mecanique, francais, engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).'),(35,3,'2025-04-21 22:38:24','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : Web Dev, C++, mecanique, francais, engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).'),(36,3,'2025-04-22 22:41:07','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : francais, engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).'),(37,3,'2025-04-22 22:43:05','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).'),(38,3,'2025-04-22 22:44:23','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : francais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).'),(39,3,'2025-04-22 22:49:07','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : francais, engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -433,4 +433,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-21  8:48:49
+-- Dump completed on 2025-04-22 22:54:17

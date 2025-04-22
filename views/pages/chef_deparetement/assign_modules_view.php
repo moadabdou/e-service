@@ -23,7 +23,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
                 <i class="ti ti-hourglass"></i> Modules en attente de validation
             </h2>
         </div>
-
+        <?php if (!empty($pendingModules)) : ?>
         <?= createSearchFilterComponent(
             "Rechercher un module...",
             [
@@ -61,7 +61,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
             "listContainer",
             "filterable-item",
             "itemCount"
-        ); ?>
+        );  endif;?>
 
         <?php if ($info): ?>
             <div class="alert alert-<?= htmlspecialchars($info['type']) ?> alert-dismissible fade show" role="alert">

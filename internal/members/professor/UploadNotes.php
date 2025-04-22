@@ -21,28 +21,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_module']) &&
     if (!empty($_FILES['notes_file']['tmp_name'])) {
         $fileTmp = $_FILES['notes_file']['tmp_name'];
         $fileType = mime_content_type($fileTmp);
-        $fileId = $noteModel->generateFileId(); // Generate a unique file ID
+        $Id = $noteModel->generateFileId(); 
 
-        // Dynamically set the file extension based on the MIME type
-        $fileName = getFileExtensionByType($fileType, $fileId);
+        $fileId = getFileExtensionByType($fileType, $Id);
 
-        // Allowed file types: pdf, xls, xlsx
         $allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
 
         if (in_array($fileType, $allowedTypes)) {
             $moduleId = intval($_POST['selected_module']);
             $sessionType = $_POST['session_type'];
             
-            // Save note record in the database
-            $saveResult = $noteModel->saveUploadedNote($moduleId, $professorId, $sessionType, $fileId, $fileName);
+            $saveResult = $noteModel->saveUploadedNote($moduleId, $professorId, $sessionType, $fileId);
 
-            if ($saveResult && isset($saveResult['file_id'], $saveResult['stored_file_name'])) {
+            if ($saveResult && isset($saveResult['file_id'])) {
                 $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/e-service/storage/pdfs/notes/";
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0755, true);
                 }
 
-                $targetFile = $uploadDir . $saveResult['stored_file_name'];
+                $targetFile = $uploadDir . $fileId;
 
                 if (move_uploaded_file($fileTmp, $targetFile)) {
                     $info = ["type" => "success", "msg" => "Fichier de notes envoyé et enregistré avec succès."];
@@ -64,26 +61,6 @@ $content = uploadNotesView($assignedModules, $info);
 $dashboard = new DashBoard();
 $dashboard->view("professor", "UploadNotes", $content);
 
-// Function to get file extension 
 
-function getFileExtensionByType(string $fileType, string $fileId): string {
-    $fileExtension = '';
-    
-    switch ($fileType) {
-        case 'application/pdf':
-            $fileExtension = '.pdf';
-            break;
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-            $fileExtension = '.xlsx';
-            break;
-        case 'application/vnd.ms-excel':
-            $fileExtension = '.xls';
-            break;
-        default:
-            $fileExtension = ''; 
-            break;
-    }
 
-    return $fileId . $fileExtension;
-}
 ?>
