@@ -105,15 +105,15 @@ class UserController{
     public function isValidUserData(string $key, string|array $value) : bool{
         switch ($key){
             case 'firstName':
-                return preg_match("/^[a-zA-Z '\-]*$/", $value);
+                return preg_match("/^[a-zA-Z]{4,30}$/", $value);
             case 'lastName':
-                return preg_match("/^[a-zA-Z '\-]*$/", $value);
+                return preg_match("/^[a-zA-Z]{4,30}$/", $value);
             case 'email':
-                return filter_var($value, FILTER_VALIDATE_EMAIL);
+                return filter_var($value, FILTER_VALIDATE_EMAIL) && strlen($value) <= 100;
             case 'phone':
                 return preg_match("/0[76][0-9]{8}$/", $value);
             case 'address':
-                return preg_match("/^.{10,}$/", $value);
+                return preg_match("/^.{10,400}$/", $value);
             case 'CIN':
                 return preg_match("/^[A-Z]{1,2}[0-9]{5,6}$/", $value);
             case 'birth_date':
