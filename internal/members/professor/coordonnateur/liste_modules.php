@@ -9,16 +9,18 @@ session_start();
 $userController = new UserController();
 $userController->checkCurrentUserAuthority(["professor/coordonnateur"]);
 
-$coordinatorId = $_SESSION['id_user'] ?? null;
+$filiereModel = new FiliereModel();
+$moduleModel = new ModuleModel();
 
+$coordinatorId = $_SESSION['id_user'];
+
+$filiereId = null;
 $modules = [];
 
 if ($coordinatorId) {
-    $filiereModel = new FiliereModel();
-    $filiereId = $filiereModel->getFiliereIdByCoordinatorUserId($coordinatorId);;
+    $filiereId = $filiereModel->getFiliereIdByCoordinator($coordinatorId);
 
     if ($filiereId) {
-        $moduleModel = new ModuleModel();
         $modules = $moduleModel->getModulesByFiliereId($filiereId);
     }
 }

@@ -8,24 +8,13 @@ class FiliereModel extends Model
         parent::__construct();
     }
 
-    public function getFiliereIdByCoordinatorUserId($userId)
+    public function getFiliereIdByCoordinator($coordonnateurId)
     {
-        // Étape 1 : obtenir l'id du coordonnateur depuis le user
-        $query = "SELECT id_coordonnateur FROM coordonnateur WHERE id_user = ?";
-        if ($this->db->query($query, [$userId])) {
+        $query = "SELECT id_filiere FROM coordonnateur WHERE id_coordonnateur = ?";
+        if ($this->db->query($query, [$coordonnateurId])) {
             $result = $this->db->fetch(PDO::FETCH_ASSOC);
-            if (!$result) return null;
-
-            $idCoordonnateur = $result['id_coordonnateur'];
-
-            // Étape 2 : obtenir la filière associée
-            $query2 = "SELECT id_filiere FROM filiere WHERE id_coordonnateur = ?";
-            if ($this->db->query($query2, [$idCoordonnateur])) {
-                $result2 = $this->db->fetch(PDO::FETCH_ASSOC);
-                return $result2['id_filiere'] ?? null;
-            }
+            return $result['id_filiere'] ?? null;
         }
-
         return null;
     }
 }
