@@ -20,4 +20,13 @@ class FiliereModel extends Model
             return "Query failed: " . $this->db->getError();
         }
     }
+    public function getFiliereIdByCoordinator($coordonnateurId)
+    {
+        $query = "SELECT id_filiere FROM coordonnateur WHERE id_coordonnateur = ?";
+        if ($this->db->query($query, [$coordonnateurId])) {
+            $result = $this->db->fetch(PDO::FETCH_ASSOC);
+            return $result['id_filiere'] ?? null;
+        }
+        return null;
+    }
 }
