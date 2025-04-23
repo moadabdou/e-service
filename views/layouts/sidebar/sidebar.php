@@ -7,7 +7,11 @@ class SideBar {
 
     public function __construct(string $role)
     {
+        
         $this->nav[$role] = self::$NAVIGATION[$role];
+        if ($role === "professor/chef_deparetement" || $role === "professor/coordonnateur" ){
+            $this->nav["professor"] = self::$NAVIGATION["professor"]; 
+        }
         $this->nav["General"] = self::$NAVIGATION["General"];  
     }
 
