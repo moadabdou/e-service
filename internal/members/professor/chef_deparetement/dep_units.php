@@ -15,7 +15,7 @@ $departmentId = $_SESSION['id_deparetement'] ?? null;
 
 $moduleModel = new ModuleModel();
 $FiliereModel = new FiliereModel();
-$modules = $moduleModel->getAvailableModulesByDepartment($departmentId);
+$modules = $moduleModel->getAllModulesByDepartment($departmentId);
 $filliere=$FiliereModel->getFilieresByDepartment($departmentId);
 $alert = null;
 

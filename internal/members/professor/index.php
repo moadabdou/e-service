@@ -24,6 +24,7 @@ ob_start();
 <?php
 $content = ob_get_clean();
 
-$dashboard->view("professor", "main", $content);
+$dashboard->view($_SESSION["role"], "main", $content);
+
 
 ?>

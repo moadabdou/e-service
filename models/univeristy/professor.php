@@ -16,6 +16,7 @@ class UserModel extends Model {
                     u.email,
                     u.phone,
                     u.CIN,
+                    u.img as image_url,
                     u.role as u_role,
                     p.role as p_role,
                     p.min_hours,

@@ -8,7 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.ph
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/notes.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor"]);
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
 
 $professorId = $_SESSION['id_user'];
 $moduleModel = new ModuleModel();
@@ -59,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_module']) &&
 
 $content = uploadNotesView($assignedModules, $info);
 $dashboard = new DashBoard();
-$dashboard->view("professor", "UploadNotes", $content);
+$dashboard->view($_SESSION["role"], "UploadNotes", $content);
+
 
 
 

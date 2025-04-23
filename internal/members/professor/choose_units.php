@@ -26,7 +26,6 @@ $filliere=$FiliereModel->getFilieresByDepartment($departmentId);
 $availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId);
 $selectedModules = $moduleModel->getSelectedModulesByProfessor($professorId);
 
-// Get professor limits
 $professorData = $moduleModel->getProfessorHours($professorId); 
 
 $totalHours = $moduleModel->getTotalHoursFromChoix($professorId);
@@ -47,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $selectedModuleIds = $_POST['modules'];
 
-        // Calculate total hours
         foreach ($selectedModuleIds as $moduleId) {
             $module = $moduleModel->getModuleById($moduleId);
             if ($module) {
@@ -64,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ];
         } else {
 
-            // Notification for normal success
             $moduleNames = [];
             foreach ($selectedModuleIds as $moduleId) {
                 $module = $moduleModel->getModuleById($moduleId);
@@ -76,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $moduleList = implode(", ", $moduleNames);
             $message = "Vos choix de modules ont bien été enregistrés : " . $moduleList;
 
-            // Check hour limits
             if ($totalHours < $minHours) {
                 $message .= ". ⚠️ Attention : votre charge horaire ($totalHours h) est inférieure au minimum requis ($minHours h).";
             } elseif ($totalHours > $maxHours) {
@@ -106,6 +102,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 if (isset($_SESSION['info'])) {
     $info = $_SESSION['info'];
     unset($_SESSION['info']);
+
+
 }
 $content = chooseUnitsFormView($filliere,$availableModules, $selectedModules, $errors, $info, $totalHours,$minHours,$maxHours);
 $dashboard = new DashBoard();

@@ -7,7 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.ph
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor"]);
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
 
 $professorId = $_SESSION['id_user'];
 
@@ -25,5 +25,5 @@ foreach ($assignedModules as $module) {
 $content = assignedModulesView($assignedModules, $totalHours);
 
 $dashboard = new DashBoard();
-$dashboard->view("professor", "assignedModules", $content);
+$dashboard->view($_SESSION['role'], "assignedModules", $content);
 ?>

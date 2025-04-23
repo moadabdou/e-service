@@ -24,7 +24,7 @@ function assignedModulesView(array $assignedModules, int $totalHours): string {
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-1">
             <?php foreach ($assignedModules as $module) : ?>
                 <div class="col">
-                    <div class="card border-0 shadow h-100">
+                    <div class="card border-0 shadow h-100 overflow-hidden hover-shadow transition-300 mb-3">
                         <div class="card-body d-flex flex-column justify-content-between">
                             <div>
                                 <h5 class="card-title text-dark fw-bold d-flex justify-content-between align-items-center">
@@ -54,7 +54,27 @@ function assignedModulesView(array $assignedModules, int $totalHours): string {
 
     <?php endif; ?>
 </div>
-
+<style>
+    .transition-300 {
+        transition: all 0.3s ease;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-3px);
+        transition: transform 0.3s ease;
+    }
+    .icon-box {
+        width: 24px;
+    }
+    .object-fit-cover {
+        object-fit: cover;
+    }
+    .btn {
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+</style>
 <?php
     return ob_get_clean();
 }

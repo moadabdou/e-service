@@ -12,7 +12,7 @@ $userController = new UserController();
 $FiliereModel = new FiliereModel();
 $noteModel = new NoteModel();
 
-$userController->checkCurrentUserAuthority(["professor"]);
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
 
 $professorId = $_SESSION['id_user'] ?? null;
 $departmentId = $_SESSION['id_deparetement'] ?? null;
@@ -29,5 +29,7 @@ $filliere=$FiliereModel->getFilieresByDepartment($departmentId);
 $content = notesHistoryView($filliere, $notes, $successMessage, $errorMessage);
 
 $dashboard = new DashBoard();
-$dashboard->view("professor", "NotesHistory", $content);
+$dashboard->view($_SESSION["role"], "NotesHistory", $content);
+
 ?>
+
