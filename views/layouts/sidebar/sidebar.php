@@ -11,8 +11,10 @@ class SideBar
         
         $this->nav[$role] = self::$NAVIGATION[$role];
         if ($role === "professor/chef_deparetement" || $role === "professor/coordonnateur" ){
+            unset(self::$NAVIGATION["professor"]["menu"]["main"]); 
             $this->nav["professor"] = self::$NAVIGATION["professor"]; 
         }
+        
         $this->nav["General"] = self::$NAVIGATION["General"];  
     }
 
@@ -92,7 +94,18 @@ class SideBar
                     "title" => "Affectation des modules",
                     "icon" => "ti-link",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/assign_modules.php"
+                ],
+                "workload" => [
+                "title" => "Charge des professeurs",
+                "icon" => "ti-calendar-stats",
+                "url" => "/e-service/internal/members/professor/chef_deparetement/workload.php"
+                ],
+                "professorChoices" => [
+                    "title" => "Choix des professeurs",
+                    "icon" => "ti-list-check",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/professor_module_choices.php"
                 ]
+
             ]
         ],
 
@@ -137,6 +150,11 @@ class SideBar
                     "title" => "Uploader les notes", 
                     "icon" => "ti-upload",
                     "url" => "/e-service/internal/members/professor/UploadNotes.php"
+                ],
+                "NotesHistory" => [
+                    "title" => "Mes notes envoyées",
+                    "icon" => "ti-files",
+                    "url" => "/e-service/internal/members/professor/notes_history.php"
                 ]
 
             ]

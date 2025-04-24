@@ -24,14 +24,13 @@ if (!$departmentId || !$chefId) {
 
 $info = null;
 
-// Handle validation/decline actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $moduleId = intval($_POST['module_id'] ?? 0);
     $professorId = intval($_POST['professor_id'] ?? 0);
     $action = $_POST['action'] ?? '';
 
     if ($moduleId && $professorId && in_array($action, ['validate', 'decline'])) {
-        // Define the status properly
+
         $status = $action === 'validate' ? 'validated' : 'declined';
 
         $success = $moduleModel->assignModuleToProfessor($moduleId, $professorId, $status);
@@ -53,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Get modules to display after processing (or for initial page load)
 $pendingModules = $moduleModel->getPendingModuleChoices($departmentId);
 
 if (isset($_SESSION['info'])) {

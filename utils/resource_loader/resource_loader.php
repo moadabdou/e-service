@@ -11,7 +11,7 @@ class ResourceLoader {
         switch (strtolower($type)) {
             case 'image':
                 return $data;  
-            case 'pdf':
+            case 'pdfs':
                 return $data; 
             default:
                 throw new Exception("Unsupported resource type: $type");
@@ -31,7 +31,7 @@ class ResourceLoader {
                 echo $data;
                 break;
 
-            case 'pdf':
+            case 'pdfs':
                 header('Content-Type: application/pdf');
                 header('Content-Length: ' . strlen($data));
                 header('Content-Disposition: inline; filename="' . basename($path) . '"');

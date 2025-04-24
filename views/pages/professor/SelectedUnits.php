@@ -55,7 +55,9 @@
     <?php endif; ?>
     </i>
     <?php if (isset($_SESSION['success_message'])) : ?>
-        <div class="alert alert-success text-center fw-semibold"><?= htmlspecialchars($_SESSION['success_message']) ?></div>
+        <div class="alert alert-success alert-dismissible fade show text-center"><?= htmlspecialchars($_SESSION['success_message']) ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
         <?php unset($_SESSION['success_message']); ?>
     <?php endif; ?>
 
@@ -70,7 +72,7 @@
                     data-semester="<?= htmlspecialchars(strtolower($module['semester'] ?? '')) ?>"
                     data-filiere="<?= htmlspecialchars(strtolower(str_replace(' ', '_', $module['filiere_name'] ?? ''))) ?>"
                     data-status="<?= str_replace(' ', '_', strtolower($module['status'] ?? 'in_progress')) ?>">
-                    <div class="card p-4 shadow-sm rounded-4 h-100">
+                    <div class="card p-4 shadow-sm rounded-4 h-100 overflow-hidden hover-shadow transition-300 mb-3">
                         <h5 class="card-title mb-2 text-primary fw-bold"><?= htmlspecialchars($module['title']) ?></h5>
                         <p class="mb-2"><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_horaire']) ?> heures</p>
                         <p class="mb-2"><strong>Description :</strong><br><?= htmlspecialchars($module['description'] ?? 'Aucune description disponible.') ?></p>
@@ -116,7 +118,27 @@
         </form>
     </div>
 </div>
-
+<style>
+    .transition-300 {
+        transition: all 0.3s ease;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-3px);
+        transition: transform 0.3s ease;
+    }
+    .icon-box {
+        width: 24px;
+    }
+    .object-fit-cover {
+        object-fit: cover;
+    }
+    .btn {
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+</style>
 <script>
     const deleteButtons = document.querySelectorAll('.delete-btn');
     const modalModuleId = document.getElementById('modalModuleId');

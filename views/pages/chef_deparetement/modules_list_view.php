@@ -57,7 +57,7 @@ function chefDepModulesListView(array $modules, array $filliers): string {
                     <div class="col-12 col-md-6 col-lg-4 filterable-item"
                         data-semester="<?= htmlspecialchars($semesterValue) ?>"
                         data-filiere="<?= htmlspecialchars($filiereValue) ?>">
-                        <article class="card h-100 shadow rounded-4 border-0">
+                        <article class="card h-100 shadow rounded-4 border-0 overflow-hidden hover-shadow transition-300 mb-3">
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <div>
                                     <h5 class="card-title text-primary fw-bold mb-3">
@@ -80,6 +80,28 @@ function chefDepModulesListView(array $modules, array $filliers): string {
             </div>
         <?php endif; ?>
     </div>
+    <style>
+    .transition-300 {
+        transition: all 0.3s ease;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-3px);
+        transition: transform 0.3s ease;
+    }
+    .icon-box {
+        width: 24px;
+    }
+    .object-fit-cover {
+        object-fit: cover;
+    }
+    .btn {
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+</style>
     <?php
+    
     return ob_get_clean();
 }
