@@ -12,7 +12,7 @@ $userController = new UserController();
 $FiliereModel = new FiliereModel();
 $noteModel = new NoteModel();
 
-$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement", "professor/coordonnateur"]);
 
 $professorId = $_SESSION['id_user'] ?? null;
 $departmentId = $_SESSION['id_deparetement'] ?? null;

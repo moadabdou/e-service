@@ -161,6 +161,7 @@ class ModuleModel extends  Model
                     m.volume_horaire,
                     f.title AS filiere_name
                   FROM module m
+                  JOIN filiere f ON f.id_filiere = m.id_filiere
                   JOIN choix_module cm ON m.id_module = cm.id_module
                   JOIN user u ON cm.by_professor = u.id_user
                   WHERE cm.by_professor = ?";
@@ -168,6 +169,7 @@ class ModuleModel extends  Model
         if ($this->db->query($query, [$professorId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
+            var_dump($this->db->getError());
             return [];
         }
     }
