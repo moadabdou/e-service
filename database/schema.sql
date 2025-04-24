@@ -1,15 +1,13 @@
--- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Win64 (AMD64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eservice
 -- ------------------------------------------------------
--- Server version	10.4.32-MariaDB
+-- Server version	5.5.5-10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-
-
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -23,7 +21,7 @@
 
 DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
   `id_admin` int(11) NOT NULL,
   UNIQUE KEY `id_admin` (`id_admin`),
@@ -46,19 +44,19 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `affectation_professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `affectation_professor` (
   `to_professor` int(11) NOT NULL,
   `by_chef_deparetement` int(11) NOT NULL,
   `id_module` int(11) NOT NULL,
   `annee` year(4) NOT NULL,
+  UNIQUE KEY `affectation_professor_u_4` (`id_module`,`annee`),
   KEY `to_professor` (`to_professor`),
   KEY `by_chef_deparetement` (`by_chef_deparetement`),
   KEY `id_module` (`id_module`),
   CONSTRAINT `affectation_professor_ibfk_1` FOREIGN KEY (`to_professor`) REFERENCES `professor` (`id_professor`),
   CONSTRAINT `affectation_professor_ibfk_2` FOREIGN KEY (`by_chef_deparetement`) REFERENCES `chef_deparetement` (`id_chef_deparetement`),
-  CONSTRAINT `affectation_professor_ibfk_3` FOREIGN KEY (`id_module`) REFERENCES `module` (`id_module`),
-  CONSTRAINT `affectation_professor_u_4` UNIQUE (`id_module`,`annee`) 
+  CONSTRAINT `affectation_professor_ibfk_3` FOREIGN KEY (`id_module`) REFERENCES `module` (`id_module`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,7 +76,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `affectation_vacataire`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `affectation_vacataire` (
   `to_vacataire` int(11) NOT NULL,
   `by_coordonnateur` int(11) NOT NULL,
@@ -108,7 +106,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `chef_deparetement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chef_deparetement` (
   `id_chef_deparetement` int(11) NOT NULL,
   UNIQUE KEY `id_chef_deparetement` (`id_chef_deparetement`),
@@ -132,7 +130,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `choix_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `choix_module` (
   `by_professor` int(11) NOT NULL,
   `id_module` int(11) NOT NULL,
@@ -152,7 +150,7 @@ CREATE TABLE `choix_module` (
 
 LOCK TABLES `choix_module` WRITE;
 /*!40000 ALTER TABLE `choix_module` DISABLE KEYS */;
-INSERT INTO `choix_module` VALUES (3,1,'2025-04-21','2025-04-21','validated'),(3,2,'2025-04-21','2025-04-21','validated'),(3,3,'2025-04-21','2025-04-21','validated'),(3,4,'2025-04-22','2025-04-22','declined'),(3,5,'2025-04-22','2025-04-22','validated');
+INSERT INTO `choix_module` VALUES (3,1,'2025-04-21','2025-04-21','validated'),(3,2,'2025-04-21','2025-04-21','validated'),(3,3,'2025-04-21','2025-04-21','validated'),(3,4,'2025-04-22','2025-04-22','declined'),(3,5,'2025-04-22','2025-04-22','validated'),(4,1,'2025-04-24',NULL,'in progress');
 /*!40000 ALTER TABLE `choix_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,7 +160,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `coordonnateur`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `coordonnateur` (
   `id_coordonnateur` int(11) NOT NULL,
   `id_filiere` int(11) NOT NULL,
@@ -179,6 +177,7 @@ CREATE TABLE `coordonnateur` (
 
 LOCK TABLES `coordonnateur` WRITE;
 /*!40000 ALTER TABLE `coordonnateur` DISABLE KEYS */;
+INSERT INTO `coordonnateur` VALUES (4,1);
 /*!40000 ALTER TABLE `coordonnateur` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,7 +187,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `deparetement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `deparetement` (
   `id_deparetement` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -214,7 +213,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `filiere`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `filiere` (
   `id_filiere` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -243,7 +242,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `module` (
   `id_module` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -275,7 +274,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notes` (
   `id_note` int(11) NOT NULL AUTO_INCREMENT,
   `id_module` int(11) NOT NULL,
@@ -301,7 +300,7 @@ CREATE TABLE `notes` (
 
 LOCK TABLES `notes` WRITE;
 /*!40000 ALTER TABLE `notes` DISABLE KEYS */;
-INSERT INTO `notes` VALUES (10,1,NULL,3,'2025-04-20','ratt',1387697393);
+INSERT INTO `notes` VALUES (10,1,NULL,3,'2025-04-20','ratt','1387697393');
 /*!40000 ALTER TABLE `notes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,7 +310,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notifications` (
   `id_notification` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
@@ -323,7 +322,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`id_notification`),
   KEY `id_user` (`id_user`),
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,7 +331,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (11,1,'2024-02-01 09:00:00','New Module Assignment',NULL,'read','You have been assigned to teach Database Management'),(12,1,'2024-02-01 10:30:00','Grade Submission Reminder',NULL,'read','Please submit grades for Programming 101 by Friday'),(13,1,'2024-02-02 11:15:00','Department Meeting',NULL,'read','Monthly department meeting scheduled for next week'),(14,1,'2024-02-02 14:00:00','Schedule Update',NULL,'read','Your teaching schedule has been updated'),(15,1,'2024-02-03 09:45:00','System Maintenance',NULL,'read','System will be down for maintenance on Sunday'),(16,2,'2025-04-16 22:19:28','Welcome to E-service',NULL,'read','Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.'),(24,3,'2025-04-19 00:39:11','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),(25,3,'2025-04-19 00:42:15','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(26,3,'2025-04-19 12:51:05','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),(27,3,'2025-04-19 12:51:30','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(28,3,'2025-04-19 13:51:21','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(29,3,'2025-04-19 15:28:13','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(30,3,'2025-04-20 20:14:52','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(31,3,'2025-04-20 20:21:31','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(32,3,'2025-04-20 22:26:17','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(33,3,'2025-04-20 22:47:43','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : francais, engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).');
+INSERT INTO `notifications` VALUES (11,1,'2024-02-01 09:00:00','New Module Assignment',NULL,'read','You have been assigned to teach Database Management'),(12,1,'2024-02-01 10:30:00','Grade Submission Reminder',NULL,'read','Please submit grades for Programming 101 by Friday'),(13,1,'2024-02-02 11:15:00','Department Meeting',NULL,'read','Monthly department meeting scheduled for next week'),(14,1,'2024-02-02 14:00:00','Schedule Update',NULL,'read','Your teaching schedule has been updated'),(15,1,'2024-02-03 09:45:00','System Maintenance',NULL,'read','System will be down for maintenance on Sunday'),(16,2,'2025-04-16 22:19:28','Welcome to E-service',NULL,'read','Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.'),(24,3,'2025-04-19 00:39:11','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),(25,3,'2025-04-19 00:42:15','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(26,3,'2025-04-19 12:51:05','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),(27,3,'2025-04-19 12:51:30','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(28,3,'2025-04-19 13:51:21','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(29,3,'2025-04-19 15:28:13','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),(30,3,'2025-04-20 20:14:52','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(31,3,'2025-04-20 20:21:31','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(32,3,'2025-04-20 22:26:17','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),(33,3,'2025-04-20 22:47:43','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : francais, engalais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).'),(40,4,'2025-04-24 15:52:18','Bienvenue sur E-service',NULL,'read','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(41,4,'2025-04-24 16:22:39','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : Web Dev. ⚠️ Attention : votre charge horaire (120 h) est inférieure au minimum requis (150 h).');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,7 +341,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `professor` (
   `id_professor` int(11) NOT NULL,
   `max_hours` int(11) NOT NULL CHECK (`max_hours` > 0),
@@ -362,7 +361,7 @@ CREATE TABLE `professor` (
 
 LOCK TABLES `professor` WRITE;
 /*!40000 ALTER TABLE `professor` DISABLE KEYS */;
-INSERT INTO `professor` VALUES (2,130,120,'chef_deparetement',1),(3,150,120,'normal',1);
+INSERT INTO `professor` VALUES (2,130,120,'chef_deparetement',1),(3,150,120,'normal',1),(4,200,150,'coordonnateur',1);
 /*!40000 ALTER TABLE `professor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,7 +371,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `firstName` char(30) NOT NULL,
@@ -390,7 +389,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `CIN` (`CIN`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -399,7 +398,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'ADMIN','ENSAH','default.webp','rc12435','adminEnsah@eservice.com','admin','$2y$10$CWflyVgtOuJjEvH5.BHuAeI8kCNhJGZJ1OM4pKy.C0Pg9BY3y1h/6','0653646266','ensah  alhoceima','2000-01-01','2025-03-03 00:00:00','active'),(2,'hassan','hassan','2_8496473093877038.png','PB28536','hassan@gmail.com','professor','$2y$10$pPOO9pFsdt0GvB6T34oO..XmD3ZGNIBuYoFoHYKeTATh/ZcKOBtr6','123456789','morocco alhociema','2000-12-03','2025-04-16 22:19:28','active'),(3,'hassan','hassan','default.webp','PB234323','hassanvivo25@gmail.com','professor','$2y$10$pPOO9pFsdt0GvB6T34oO..XmD3ZGNIBuYoFoHYKeTATh/ZcKOBtr6','123456789','morocco alhociema','2001-02-02','2025-04-16 22:23:25','active');
+INSERT INTO `user` VALUES (1,'ADMIN','ENSAH','default.webp','rc12435','adminEnsah@eservice.com','admin','$2y$10$CWflyVgtOuJjEvH5.BHuAeI8kCNhJGZJ1OM4pKy.C0Pg9BY3y1h/6','0653646266','ensah  alhoceima','2000-01-01','2025-03-03 00:00:00','active'),(2,'hassan','hassan','2_8496473093877038.png','PB28536','hassan@gmail.com','professor','$2y$10$pPOO9pFsdt0GvB6T34oO..XmD3ZGNIBuYoFoHYKeTATh/ZcKOBtr6','123456789','morocco alhociema','2000-12-03','2025-04-16 22:19:28','active'),(3,'hassan','hassan','default.webp','PB234323','hassanvivo25@gmail.com','professor','$2y$10$pPOO9pFsdt0GvB6T34oO..XmD3ZGNIBuYoFoHYKeTATh/ZcKOBtr6','123456789','morocco alhociema','2001-02-02','2025-04-16 22:23:25','active'),(4,'AYOUB','Coordonnateur','4_8702589800169008.png','R123456','ayoub_coord@gmail.com','professor','$2y$10$fyhNM0ptoJxAnsXwYjo4ruvZOobJeE7/5C3rDa423LMM33YXsC/xy','688171625','Beni Bouayach , AL Hoceima','2001-04-24','2025-04-24 15:52:18','active');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -409,7 +408,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `vacataire`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vacataire` (
   `id_vacataire` int(11) NOT NULL,
   `id_coordonnateur` int(11) DEFAULT NULL,
@@ -438,4 +437,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-21  8:48:49
+-- Dump completed on 2025-04-24 16:55:51
