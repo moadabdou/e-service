@@ -52,8 +52,8 @@ class DepartementModel extends Model{
     /**
      * gets professors with role normal
     */
-    public function getHeadCondidates(): array | string | null{
-        if ($this->db->query("SELECT id_user, firstName, lastName, email, CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) as img  FROM user JOIN professor ON id_professor = id_user WHERE  professor.role='normal'")){
+    public function getHeadCondidates(int $dep_id): array | string | null{
+        if ($this->db->query("SELECT id_user, firstName, lastName, email, CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) as img  FROM user JOIN professor ON id_professor = id_user WHERE  professor.role='normal' AND id_deparetement=?", [$dep_id])){
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         }else {
             return $this->db->getError();

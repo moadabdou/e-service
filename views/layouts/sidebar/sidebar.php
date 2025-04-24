@@ -66,7 +66,7 @@ class SideBar
                     "title" => "Départements",
                     "icon" => "ti-building",
                     "url" => "/e-service/internal/members/admin/Departements.php"
-                ] 
+                ]
             ]
         ],
 

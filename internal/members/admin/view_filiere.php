@@ -1,8 +1,8 @@
 <?php 
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/admin/view_departement.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/admin/view_filiere.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/departement.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/filiere.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/professor.php";
 
 session_start();
@@ -11,29 +11,29 @@ $userController =  new UserController();
 
 $userController->checkCurrentUserAuthority(["admin"]);
 
-$id_dep = $_GET["view"]??-1;
-$departementModel = new DepartementModel(); 
+$id_filiere = $_GET["view"]??-1;
+$filiereModel = new FiliereModel(); 
 
-$data_dep = [];
-$data_head = null;
+$filiere_data = [];
+$data_coor = null;
 
-$data_dep = $departementModel->getByID($id_dep);
-$data_head = $departementModel->getHead($id_dep);
+$filiere_data = $filiereModel->getByID($id_filiere);
+$data_coor = $filiereModel->getCoordinator($id_filiere);
 
-
-if ( !is_array($data_dep) || count($data_dep) === 0){
+if ( !is_array($filiere_data) || count($filiere_data) === 0){
     $userController->redirectCurrentUserBasedOnRole();
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
-    $head_condidates = $departementModel->getHeadCondidates($id_dep);
+    $coordinator_condidates = $filiereModel->getCoordinatorCondidates($id_filiere);
 
-    if(is_array($head_condidates)){
-        echo json_encode($head_condidates);
+    if(is_array($coordinator_condidates)){
+        echo json_encode($coordinator_condidates);
         header('Content-Type: application/json');
         http_response_code(200);
     }else {
+        var_dump( $filiereModel->getError() );
         http_response_code(500);
     }
 
@@ -44,13 +44,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     $raw_data = file_get_contents("php://input");
     $data =  json_decode($raw_data, associative:true);    
 
-    if($data !== null && isset($data["id_prof"]) && $departementModel->isQualifiedForHead($data["id_prof"])){
+    if($data !== null && isset($data["id_prof"]) && $filiereModel->isQualifiedForCoordinator($data["id_prof"])){
 
         $professorModel = new ProfessorModel();
         $id_prof = $data["id_prof"];
 
-        if($professorModel->setAsDepartementHead($id_prof)){
-
+        if($professorModel->setAsFiliereCoordinator($id_prof, $id_filiere)){
+            
             http_response_code(200);
         }else {
             var_dump($professorModel->getError());
@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
 $dashboard = new DashBoard();
 
-$content = (new DepartementView())->view($data_dep,$data_head);
+$content = (new FiliereView())->view($filiere_data,$data_coor);
 
 $dashboard->view("admin", "", $content);
 
