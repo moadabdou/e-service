@@ -58,7 +58,7 @@ function chefDepProfessorsListView(array $professors): string {
                                 'ti ti-user');
             ?>
                 <div class="col-12 col-md-6 col-lg-4 prof-card" data-role="<?= $prole ?>">
-                    <div class="card h-80 shadow-sm rounded-4 border-0 overflow-hidden hover-shadow transition-300 mb-3">
+                    <div class="card h-80 shadow-sm rounded-4 border-0 overflow-hidden hover-shadow transition-300 mb-4">
                         <div class="card-header bg-white border-0 pt-4 pb-0 px-4 text-center position-relative">
                             <div class="position-relative mb-1">
                                 <img src="<?= $img ?>" alt="Photo de profil" 

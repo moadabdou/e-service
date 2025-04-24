@@ -9,7 +9,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
     foreach ($pendingModules as $mod) {
         $label = $mod['firstName'] . ' ' . $mod['lastName'];
         $value = strtolower(str_replace(' ', '_', $label));
-        if (!in_array($value, array_column($professorOptions, 'value'))) {
+        if (!in_array(needle: $value, haystack: array_column(array: $professorOptions, column_key: 'value'))) {
             $professorOptions[] = [
                 "value" => $value,
                 "label" => $label
@@ -17,7 +17,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
         }
     }
 ?>
-    <div class="container mt-4 px-4 px-md-5">
+    <div class="container mt-2 px-4 px-md-5">
         <!-- Page Header with improved styling -->
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 border-bottom pb-3">
             <h2 class="fw-bold text-primary mb-0">
@@ -82,7 +82,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
 
         <?php if (empty($pendingModules)) : ?>
             <div class="alert alert-warning text-center shadow-sm rounded-4 p-4">
-                <i class="ti ti-alert-circle fs-1 d-block mb-3"></i>
+                <i class="ti ti-alert-circle fs-5 d-block mb-3"></i>
                 <h5>Aucun module en attente pour le moment</h5>
                 <p class="text-muted mb-0">Les nouveaux modules à valider apparaîtront ici</p>
             </div>
@@ -91,11 +91,11 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
                 <?php foreach ($pendingModules as $module) :
                     $professorSlug = strtolower(str_replace(' ', '_', $module['firstName'] . ' ' . $module['lastName']));
                 ?>
-                    <div class="col-12 col-md-6 col-lg-4 filterable-item"
+                    <div class="col-12 col-md-6 col-lg-4 filterable-item mb-4"
                         data-semester="<?= htmlspecialchars(strtolower($module['semester'])) ?>"
                         data-filiere="<?= htmlspecialchars(strtolower(str_replace(' ', '_', $module['filiere_name']))) ?>"
                         data-professor="<?= htmlspecialchars($professorSlug) ?>">
-                        <div class="card h-80 shadow-sm rounded-4 border-0 hover-shadow transition-300 mb-3">
+                        <div class="card h-100 shadow-sm rounded-4 border-0 hover-shadow transition-300 mb-2">
                             <div class="card-header bg-transparent border-0 pt-4 px-4">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 class="card-title text-primary fw-bold mb-0">

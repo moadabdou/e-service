@@ -51,9 +51,9 @@ function professorModuleChoicesView(array $professors): string {
                 $statusBadge = '<span class="badge bg-success text-white"><i class="ti ti-circle-check"></i> Correcte</span>';
             }
         ?>
-        <div class="col-12 col-md-6 col-lg-4 professor-card"
+        <div class="col-12 col-md-6 col-lg-4 professor-card mb-3"
              data-status="<?= $statusLabel ?>">
-            <div class="card shadow rounded-4 border-2 <?= $statusClass ?>">
+            <div class="card shadow h-100 rounded-4 border-2 hover-shadow transition-300 <?= $statusClass ?>">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
                         <div class="d-flex align-items-center gap-3 mb-3">
@@ -88,8 +88,8 @@ function professorModuleChoicesView(array $professors): string {
                     </div>
                     <div class="text-center">
                         <a href="/e-service/internal/members/common/view_profile.php?id=<?= $prof['id_user'] ?>"
-                           class="btn btn-outline-primary btn-sm">
-                            <i class="ti ti-user-circle"></i> Voir profil
+                           class="btn btn-outline-primary w-100">
+                            <i class="ti ti-user-circle me-1"></i> Voir profil
                         </a>
                     </div>
                 </div>
@@ -98,6 +98,21 @@ function professorModuleChoicesView(array $professors): string {
         <?php endforeach; ?>
     </div>
 </div>
+<style>
+    .transition-300 {
+        transition: all 0.3s ease;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-3px);
+        transition: transform 0.3s ease;
+    }
+    .btn {
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+</style>
 
 <?php
     return ob_get_clean();
