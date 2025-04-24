@@ -304,16 +304,12 @@ class ModuleModel extends  Model
                   JOIN user u ON cm.by_professor = u.id_user
                   WHERE cm.status = 'in progress'
                     AND f.id_deparetement = ?
-                    AND YEAR(cm.date_creation) = ?
-                    AND cm.id_module NOT IN (
-                        SELECT id_module
-                        FROM choix_module
-                        WHERE status = 'validated' AND YEAR(date_reponce) = ?
-                    )";
+                    AND YEAR(cm.date_creation) = ?";
     
-        if ($this->db->query($query, [$departmentId, $currentYear, $currentYear])) {
+        if ($this->db->query($query, [$departmentId, $currentYear])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
+            var_dump($this->db->getError());
             return [];
         }
     }
