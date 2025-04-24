@@ -9,7 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/filiere.p
 
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor/chef_deparetement"]);
+$userController->checkCurrentUserAuthority(allowedRoles: ["professor/chef_deparetement"]);
 
 $moduleModel = new ModuleModel();
 $FiliereModel = new FiliereModel();
@@ -17,7 +17,7 @@ $FiliereModel = new FiliereModel();
 
 $departmentId = $_SESSION['id_deparetement'] ?? null;
 $chefId = $_SESSION['id_user'] ?? null;
-$filliere=$FiliereModel->getFilieresByDepartment($departmentId);
+$filliere=$FiliereModel->getFilieresByDepartment(departmentId: $departmentId);
 if (!$departmentId || !$chefId) {
     die("Données de session manquantes.");
 }
@@ -25,15 +25,15 @@ if (!$departmentId || !$chefId) {
 $info = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $moduleId = intval($_POST['module_id'] ?? 0);
-    $professorId = intval($_POST['professor_id'] ?? 0);
+    $moduleId = intval(value: $_POST['module_id'] ?? 0);
+    $professorId = intval(value: $_POST['professor_id'] ?? 0);
     $action = $_POST['action'] ?? '';
 
-    if ($moduleId && $professorId && in_array($action, ['validate', 'decline'])) {
+    if ($moduleId && $professorId && in_array(needle: $action, haystack: ['validate', 'decline'])) {
 
         $status = $action === 'validate' ? 'validated' : 'declined';
 
-        $success = $moduleModel->assignModuleToProfessor($moduleId, $professorId, $status);
+        $success = $moduleModel->assignModuleToProfessor(moduleId: $moduleId, professorId: $professorId, status: $status);
 
         if ($success) {
             $_SESSION['info'] = [

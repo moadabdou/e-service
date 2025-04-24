@@ -1,13 +1,13 @@
 <div class="mb-4 col-lg-6 col-xxl-6 col-md-6 col-sm-12 col-12">
-    <label for="id_deparetement" class="form-label">departement</label>
-    <select class="form-select <?= isset($errors["id_deparetement"]) ? "is-invalid" : "" ?>" name="id_deparetement" id="id_deparetement">
-    <?php foreach($departements as $departement){?>
-        <option value="<?=$departement["id_deparetement"]?>"><?=$departement["title"]?></option>
+    <label for="id_speciality" class="form-label">speciality</label>
+    <select class="form-select <?= isset($errors["id_speciality"]) ? "is-invalid" : "" ?>" name="id_speciality" id="id_speciality">
+    <?php foreach($specialities as $speciality){?>
+        <option value="<?=$speciality["id_speciality"]?>"><?=$speciality["title"]?></option>
     <?php }?>
     </select>
-    <?php if (isset($errors["id_deparetement"])) {?>
+    <?php if (isset($errors["id_speciality"])) {?>
         <div class="invalid-feedback">
-            <?= $errors["id_deparetement"] ?>
+            <?= $errors["id_speciality"] ?>
         </div>
     <?php }?>
 </div>

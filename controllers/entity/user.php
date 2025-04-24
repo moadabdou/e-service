@@ -120,6 +120,8 @@ class UserController{
                 return strtotime($value) && (time() - strtotime($value)) >= (24 * 365 * 24 * 60 * 60);
             case 'id_deparetement':
                 return is_numeric($value) && $value > 0;
+            case 'id_speciality':
+                return is_numeric($value) && $value > 0;
             case 'max_hours':
                 return is_numeric($value) && $value > 0;
             case 'min_hours':

@@ -53,8 +53,8 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
         $errors["birth_date"] = "A valid birth date is required (older than 24 yrs old)";
     }
 
-    if (empty($_POST['id_deparetement']) || !$userController->isValidUserData('id_deparetement', $_POST['id_deparetement'])) {
-        $errors["id_deparetement"] = "Department is required and must be a valid ID";
+    if (empty($_POST['id_speciality']) || !$userController->isValidUserData('id_speciality', $_POST['id_speciality'])) {
+        $errors["id_speciality"] = "Speciality is required and must be a valid ID";
     }
 
     if (empty($_POST['max_hours']) || !$userController->isValidUserData('max_hours', $_POST['max_hours'])) {
@@ -81,7 +81,7 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
             $_POST['phone'],
             $_POST['address'],
             $_POST['birth_date'],
-            $_POST['id_deparetement'],
+            $_POST['id_speciality'],
             $_POST['max_hours'],
             $_POST['min_hours']
         );

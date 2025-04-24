@@ -1,6 +1,6 @@
 <div class="container px-1 px-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
-        <h2 class="fw-bold text-primary mb-2 mb-md-0"> <i class="ti ti-checklist"></i> Vos modules déjà sélectionnés</h2>
+        <h2 class="fw-bold text-primary mb-2 mb-md-0"> <i class="ti ti-checklist"></i> Mes modules déjà sélectionnés</h2>
         <a href="/e-service/internal/members/professor/choose_units.php" class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm">
             <i class="ti ti-arrow-back-up"></i> Retour à la sélection
         </a>

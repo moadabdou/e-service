@@ -84,23 +84,23 @@ In your web app, the department head should be able to:
 [x] List Professors	See all profs in their department.
 [x] Assign Modules	Assign one or more UEs to professors.
 [x] Validate Requests	Approve/Reject professors’ preferences.
-[ ] Generate Load	Auto-generate total hours per professor.
-[ ] Detect Underload	Highlight profs under minimum hours.
-[ ] View Vacant UEs	See unassigned UEs and validate.
-[ ] View History	See assignments from previous years.
+[x] Generate Load	Auto-generate total hours per professor.
+[x] Detect Underload	Highlight profs under minimum hours.
+[x] View Vacant UEs	See unassigned UEs and validate.
+[x] View History	See assignments from previous years.
 [ ] Reporting	Generate summaries/statistics.
-[ ] Excel Import/Export	Export and import data via Excel.
+[x] Excel Export	Export and import data via Excel.
 
 # Technically, you need to:
 
 [ ] Build a secured dashboard with a list of all profs and UEs.
 
-[ ] Allow manual assignment and approval of UEs.
+[x] Allow manual assignment and approval of UEs.
 
-[ ] Calculate total hours per prof.
+[x] Calculate total hours per prof.
 
-[ ] Highlight profs with insufficient load (use a red color or something 🔥).
+[x] Highlight profs with insufficient load (use a red color or something 🔥).
 
-[ ] Allow export/import of data using Excel.
+[x] Allow export of data using Excel.
 
 [ ] Show stats like bar charts or tables for reporting.

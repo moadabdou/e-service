@@ -66,6 +66,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     
     die();
     
+}else if($_SERVER["REQUEST_METHOD"] === "DELETE"){  
+
+    if($departementModel->deleteHead($id_dep)){
+
+        http_response_code(200);
+
+    }else {
+        var_dump($departementModel->getError());
+        http_response_code(400);
+
+    }
+    
+    die();
+    
 }
 
 

@@ -9,7 +9,7 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
     }
     ?>
 
-    <div class="container mt-4 px-4 px-md-5">
+    <div class="container mt-2 px-4 px-md-5">
         <div class="row">
             <div class="col-12">
                 <!-- Header Section -->
@@ -55,7 +55,7 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
                                     <i class="ti ti-clock fs-6"></i>
                                 </div>
                                 <div>
-                                    <h5 class="mb-0 fw-bold">Charge horaire totale</h5>
+                                    <h5 class="mb-0 fw-bold">Charge horaire totale choisi</h5>
                                     <p class="text-muted mb-0">
                                         <?= $minHours ?>h minimum - <?= $maxHours ?>h maximum
                                     </p>

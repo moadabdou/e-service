@@ -22,21 +22,21 @@
 
     <hr class="my-5" />
 
-    <!-- Head of Department Section -->
+    <!-- coor of Department Section -->
     <div class="mb-4">
     <h4 class="mb-4">Coordinateur de Filière</h4>
 
     <?php if (is_array($coor_data) && count($coor_data) > 0): ?>
-      <!-- Case 1: Head of Department Assigned -->
-      <div class="d-flex align-items-center mb-3 p-3 bg-light rounded border" id="current-head-info">
+      <!-- Case 1: coor of Department Assigned -->
+      <div class="d-flex align-items-center mb-3 p-3 bg-light rounded border" id="current-coor-info">
         <img
         src="<?= $coor_data['img'] ?>" alt="Avatar Chef"
         class="rounded-circle me-4" width="60" height="60"
-        id="head-avatar"
+        id="coor-avatar"
          />
         <div class="flex-grow-1">
-        <h6 class="mb-1" id="head-name"> Dr.<?= htmlspecialchars($coor_data['firstName']." ".$coor_data['lastName']) ?></h6>
-        <small class="text-muted d-block" id="head-email"><?= htmlspecialchars($coor_data['email']) ?></small>
+        <h6 class="mb-1" id="coor-name"> Dr.<?= htmlspecialchars($coor_data['firstName']." ".$coor_data['lastName']) ?></h6>
+        <small class="text-muted d-block" id="coor-email"><?= htmlspecialchars($coor_data['email']) ?></small>
         </div>
         <div class="ms-3 d-flex flex-column flex-sm-row gap-3">
         <a href="/e-service/internal/members/common/view_profile.php?id=<?= $coor_data['id_user'] ?>" class="btn btn-outline-secondary">
@@ -50,11 +50,16 @@
          >
            <i class="ti ti-edit me-1"></i> Modifier
         </button>
+        <button
+            type="button"
+            class="btn btn-outline-danger delete-coor">
+            <i class="ti ti-trash me-1"></i> Supprimer
+        </button>
         </div>
       </div>
     <?php else: ?>
       <!-- Case 2: No Coordinator Assigned -->
-      <div class="alert alert-warning d-flex justify-content-between align-items-center p-3" role="alert" id="no-head-info">
+      <div class="alert alert-warning d-flex justify-content-between align-items-center p-3" role="alert" id="no-coor-info">
          <span class="me-3">Aucun coordinateur de filière n'est actuellement assigné.</span>
          <button type="button" class="btn btn-primary text-nowrap" data-bs-toggle="modal" data-bs-target="#changeCoorModal">
            <i class="ti ti-user-plus me-1"></i> Assigner un Coordinateur
@@ -66,12 +71,12 @@
 </div> <!-- End card -->
 
 <!-- ###################################################### -->
-<!-- ##      Modal for Changing Head of Department       ## -->
+<!-- ##      Modal for Changing coor of Department       ## -->
 <!-- ###################################################### -->
 <div class="modal fade" id="changeCoorModal" tabindex="-1" aria-labelledby="changeCoorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-coorer">
                 <h5 class="modal-title" id="changeCoorModalLabel">Changer le Coordinateur de Filière</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -96,7 +101,7 @@
 <!-- Toast Notification -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="notification-toast" class="toast" role="alert" aria-live="polite" aria-atomic="true">
-        <div class="toast-header">
+        <div class="toast-coorer">
             <i id="toast-icon" class="ti ti-info-circle me-2"></i>
             <strong class="me-auto" id="toast-title">Notification</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -172,14 +177,14 @@ function showNotification(message, type = 'info') {
                                         <small class="text-muted">${user.email}</small>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-primary set-head-button" data-user-id="${user.id_user}">
+                                <button type="button" class="btn btn-primary set-coor-button" data-user-id="${user.id_user}">
                                     <i class="ti ti-check me-1"></i> Définir comme Coordinateur
                                 </button>
                             </div>`;
                         $('#user-candidate-list').append(userHtml);
                     });
 
-                    setUpSetHeadListeners();
+                    setUpSetcoorListeners();
 
                 } else {
                     // Show message when no candidates found
@@ -192,8 +197,9 @@ function showNotification(message, type = 'info') {
         });
     });
 
-    function setUpSetHeadListeners() {
-        document.querySelectorAll(".set-head-button").forEach(btn => {
+    function setUpSetcoorListeners() {
+        document.querySelectorAll(".set-coor-button").forEach(btn => {
+            if(!btn) return; 
             $(btn).click(e => {
                 $.ajax({
                     url: window.location.href,
@@ -212,4 +218,20 @@ function showNotification(message, type = 'info') {
         });
     }
   
+    const deletecoorBtn = document.querySelector("button.delete-coor");
+    if (deletecoorBtn){
+        deletecoorBtn.addEventListener("click", e => {
+        $.ajax({
+        url: window.location.href,
+        method: "DELETE",
+        success: function(response) {
+            window.location.reload();
+        },
+        error: function() {
+            showNotification("Échec de la suppression du coordinateur de filière", "error");
+        }
+        })
+    })
+  }
+
 </script>
