@@ -9,7 +9,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
     foreach ($pendingModules as $mod) {
         $label = $mod['firstName'] . ' ' . $mod['lastName'];
         $value = strtolower(str_replace(' ', '_', $label));
-        if (!in_array($value, array_column($professorOptions, 'value'))) {
+        if (!in_array(needle: $value, haystack: array_column(array: $professorOptions, column_key: 'value'))) {
             $professorOptions[] = [
                 "value" => $value,
                 "label" => $label
