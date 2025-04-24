@@ -12,7 +12,7 @@ if (isset($_SESSION["role"])){
 }
 
 
-$userModel = new UserModel();
+$ProfessorModel = new ProfessorModel();
 $auth = new Auth();
 
 
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
         $errors["email"] = "please insert a valid email !";
     }else {
-        $user_info = $userModel->getUserByEmail($_POST['email']);
+        $user_info = $ProfessorModel->getUserByEmail($_POST['email']);
         if ($user_info === false){ 
             $errors["email"] = "looks like no one has the email you sent .."; 
         }else if((!isset($_POST["password"]) || password_verify($_POST["password"] , $user_info["password"]) === false)){

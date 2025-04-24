@@ -92,7 +92,18 @@ class SideBar {
                     "title" => "Affectation des modules",
                     "icon" => "ti-link",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/assign_modules.php"
+                ],
+                "workload" => [
+                "title" => "Charge des professeurs",
+                "icon" => "ti-calendar-stats",
+                "url" => "/e-service/internal/members/professor/chef_deparetement/workload.php"
+                ],
+                "professorChoices" => [
+                    "title" => "Choix des professeurs",
+                    "icon" => "ti-list-check",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/professor_module_choices.php"
                 ]
+
             ]
         ],
 
