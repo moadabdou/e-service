@@ -20,10 +20,10 @@ class ModuleModel extends  Model
     }
 
 
-    public function getAvailableModulesByDepartment($departmentId, $professorId)
+    public function getAvailableModulesByDepartment($departmentId)
     {
-        $query = "SELECT m.* 
-                FROM module m,  f.title AS filiere_name
+        $query = "SELECT m.*,f.title AS filiere_name
+                FROM module m
                 JOIN filiere f ON m.id_filiere = f.id_filiere
                 WHERE f.id_deparetement = ?  AND m.id_module
                 NOT IN (( SELECT af.id_module FROM 
@@ -32,9 +32,12 @@ class ModuleModel extends  Model
         if ($this->db->query($query, [$departmentId, $_SESSION['id_user']])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
+            var_dump($this->db->getError());
             return $this->db->getError();
         }
     }
+
+
     public function getAllModulesByDepartment($departmentId) {
                             $query = "SELECT m.*, 
                         f.title AS filiere_name
