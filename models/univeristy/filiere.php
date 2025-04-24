@@ -92,4 +92,34 @@ class FiliereModel extends Model
 
     }
 
+    public function deleteCoordinator(int $id_filiere) : bool {
+        
+        $this->db->beginTransaction();
+
+        //get and remove the old coordinator
+        if (!$this->db->query("SELECT id_coordonnateur FROM coordonnateur WHERE id_filiere = ?", [$id_filiere])) {
+            $this->db->rollBack();
+            return false;
+        }
+
+        $coordinator = $this->db->fetch();
+
+        if (!$this->db->query("DELETE FROM coordonnateur WHERE id_filiere = ?", [$id_filiere])) {
+            $this->db->rollBack();
+            return false;
+        }
+
+        if ($coordinator) {
+            // Reset the old coordinator's role to normal
+            if (!$this->db->query("UPDATE professor SET role='normal' WHERE id_professor=?", [$coordinator['id_coordonnateur']])) {
+                $this->db->rollBack();
+                return false;
+            }
+        }
+
+        $this->db->commit();
+        return true;
+
+    }
+
 }

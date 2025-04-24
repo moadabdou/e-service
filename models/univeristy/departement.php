@@ -34,6 +34,14 @@ class DepartementModel extends Model{
         }
     }
 
+    public function deleteHead($dep_id): bool{
+        if ($this->db->query("UPDATE professor SET role='normal' WHERE id_deparetement=? AND professor.role='chef_deparetement'", [$dep_id])){
+            return $this->db->rowCount() > 0;
+        }else {
+            return false;
+        }
+    }
+
     public function creatDepartement(string $title, string $description):string|false{
         if ($this->db->query("INSERT INTO deparetement(title, description) VALUES (?, ?)", 
             [$title, $description])) {

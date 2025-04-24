@@ -1,6 +1,7 @@
 <?php 
 require_once __DIR__."/user.php"; 
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/passwordGenerator/passwordGenerator.php"; 
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/speciality.php";
 
 class ProfessorModel  extends UserModel{
 
@@ -22,7 +23,7 @@ class ProfessorModel  extends UserModel{
         int $phone,
         string $address,
         string $birth_date,
-        int $departement_id,
+        int $speciality_id,
         int $max_hours,
         int $min_hours
         ): array | false {
@@ -35,13 +36,20 @@ class ProfessorModel  extends UserModel{
             return false; 
         }
 
-        if ($this->db->query("INSERT INTO professor(id_professor, max_hours, min_hours, role, id_deparetement) VALUES (?, ?, ?, ?,?)", 
-            [$user_id, $max_hours, $min_hours, "normal", $departement_id])) {
+        $departement_id =  (new SpecialityModel())->getDeparetementID($speciality_id);
+        
+
+        if (!is_int($departement_id)){
+            return false;
+        }
+
+        if ($this->db->query("INSERT INTO professor(id_professor, max_hours, min_hours, role, id_deparetement, id_speciality) VALUES (?, ?, ?, ?,?, ?)", 
+            [$user_id, $max_hours, $min_hours, "normal", $departement_id, $speciality_id])) {
 
             return [$user_id, $password];
 
         }else { 
-
+            var_dump($this->db->getError());
             //user created but an error occured in  the second phase 
             //remove the created user 
 
