@@ -21,7 +21,7 @@ if ( !isset($_GET["id"]) || ($notification = $notificationModel->isNotificationO
 $notification = $notificationModel->resolveNotificationData([$notification])[0];
 
 //mark  the notification as read
-$notificationModel->markAllAsReadByID($_GET["id"], $_SESSION["id_user"]);
+$notificationModel->markAsReadByID($_GET["id"], $_SESSION["id_user"]);
 
 $dashboard = new DashBoard();
 $notificationPage = new NotificationPage();

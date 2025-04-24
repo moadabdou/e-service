@@ -9,7 +9,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor"]);
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
+
 
 $moduleModel = new ModuleModel();
 $FiliereModel = new FiliereModel();
@@ -22,10 +23,9 @@ $professorId = $_SESSION['id_user'];
 $departmentId = $_SESSION['id_deparetement'] ?? null;
 $filliere=$FiliereModel->getFilieresByDepartment($departmentId);
 
-$availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId, $professorId);
+$availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId);
 $selectedModules = $moduleModel->getSelectedModulesByProfessor($professorId);
 
-// Get professor limits
 $professorData = $moduleModel->getProfessorHours($professorId); 
 
 $totalHours = $moduleModel->getTotalHoursFromChoix($professorId);
@@ -46,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $selectedModuleIds = $_POST['modules'];
 
-        // Calculate total hours
         foreach ($selectedModuleIds as $moduleId) {
             $module = $moduleModel->getModuleById($moduleId);
             if ($module) {
@@ -63,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ];
         } else {
 
-            // Notification for normal success
             $moduleNames = [];
             foreach ($selectedModuleIds as $moduleId) {
                 $module = $moduleModel->getModuleById($moduleId);
@@ -75,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $moduleList = implode(", ", $moduleNames);
             $message = "Vos choix de modules ont bien été enregistrés : " . $moduleList;
 
-            // Check hour limits
             if ($totalHours < $minHours) {
                 $message .= ". ⚠️ Attention : votre charge horaire ($totalHours h) est inférieure au minimum requis ($minHours h).";
             } elseif ($totalHours > $maxHours) {
@@ -105,8 +102,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 if (isset($_SESSION['info'])) {
     $info = $_SESSION['info'];
     unset($_SESSION['info']);
+
+
 }
 $content = chooseUnitsFormView($filliere,$availableModules, $selectedModules, $errors, $info, $totalHours,$minHours,$maxHours);
 $dashboard = new DashBoard();
-$dashboard->view("professor", "chooseUnits", $content);
+$dashboard->view($_SESSION["role"], "chooseUnits", $content);
 ?>

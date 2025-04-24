@@ -8,7 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor"]);
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
 
 $moduleModel = new ModuleModel();
 $filiereModel = new FiliereModel();
@@ -36,5 +36,6 @@ ob_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/SelectedUnits.php";
 
 $dashboard = new DashBoard();
-$dashboard->view("professor", "chooseUnits", $content);
+
+$dashboard->view($_SESSION["role"], "chooseUnits", $content);
 ?>

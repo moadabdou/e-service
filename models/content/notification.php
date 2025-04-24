@@ -107,7 +107,7 @@ class NotificationModel extends Model{
 
     }
 
-    public function markAllAsReadByID(int $id, int $id_user) : bool {
+    public function markAsReadByID(int $id, int $id_user) : bool {
         
         if ($this->db->query("UPDATE notifications  SET status='read'  WHERE id_user=? AND id_notification=? ", [$id_user, $id])) {
             return true;
