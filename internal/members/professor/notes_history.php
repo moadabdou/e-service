@@ -24,12 +24,9 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
 
 $notes = $noteModel->getNotesByProfessor($professorId);
 
-$filliere=$FiliereModel->getFilieresByDepartment($departmentId);
+$filliere = $FiliereModel->getFilieresByDepartment($departmentId);
 
 $content = notesHistoryView($filliere, $notes, $successMessage, $errorMessage);
 
 $dashboard = new DashBoard();
 $dashboard->view($_SESSION["role"], "NotesHistory", $content);
-
-?>
-

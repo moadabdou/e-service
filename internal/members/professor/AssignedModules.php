@@ -26,4 +26,3 @@ $content = assignedModulesView($assignedModules, $totalHours);
 
 $dashboard = new DashBoard();
 $dashboard->view($_SESSION['role'], "assignedModules", $content);
-?>

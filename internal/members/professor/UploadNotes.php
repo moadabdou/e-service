@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_module']) &&
     if (!empty($_FILES['notes_file']['tmp_name'])) {
         $fileTmp = $_FILES['notes_file']['tmp_name'];
         $fileType = mime_content_type($fileTmp);
-        $Id = $noteModel->generateFileId(); 
+        $Id = $noteModel->generateFileId();
 
         $fileId = getFileExtensionByType($fileType, $Id);
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_module']) &&
         if (in_array($fileType, $allowedTypes)) {
             $moduleId = intval($_POST['selected_module']);
             $sessionType = $_POST['session_type'];
-            
+
             $saveResult = $noteModel->saveUploadedNote($moduleId, $professorId, $sessionType, $fileId);
 
             if ($saveResult && isset($saveResult['file_id'])) {
@@ -59,8 +59,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_module']) &&
 $content = uploadNotesView($assignedModules, $info);
 $dashboard = new DashBoard();
 $dashboard->view($_SESSION["role"], "UploadNotes", $content);
-
-
-
-
-?>

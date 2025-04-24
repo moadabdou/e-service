@@ -38,4 +38,3 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/Selec
 $dashboard = new DashBoard();
 
 $dashboard->view($_SESSION["role"], "chooseUnits", $content);
-?>
