@@ -17,7 +17,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
         }
     }
 ?>
-    <div class="container mt-4 px-4 px-md-5">
+    <div class="container mt-2 px-4 px-md-5">
         <!-- Page Header with improved styling -->
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 border-bottom pb-3">
             <h2 class="fw-bold text-primary mb-0">

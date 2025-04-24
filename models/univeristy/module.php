@@ -385,6 +385,60 @@ class ModuleModel extends  Model
             return [];
         }
     }
+
+    public function getHistoricalAffectations(int $departmentId): array {
+        $query = "SELECT 
+                    ap.annee,
+                    u.id_user,
+                    u.firstName,
+                    u.lastName,
+                    u.email,
+                    u.img,
+                    m.title AS module_title,
+                    f.title AS filiere_name,
+                    m.volume_horaire
+                  FROM affectation_professor ap
+                  JOIN user u ON ap.to_professor = u.id_user
+                  JOIN module m ON ap.id_module = m.id_module
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE f.id_deparetement = ?
+                  ORDER BY ap.annee DESC, u.lastName";
+    
+        if ($this->db->query($query, [$departmentId])) {
+            $results = $this->db->fetchAll(PDO::FETCH_ASSOC);
+            $grouped = [];
+    
+            foreach ($results as $row) {
+                $year = $row['annee'];
+                $userId = $row['id_user'];
+    
+                if (!isset($grouped[$year])) {
+                    $grouped[$year] = [];
+                }
+    
+                if (!isset($grouped[$year][$userId])) {
+                    $grouped[$year][$userId] = [
+                        'firstName' => $row['firstName'],
+                        'lastName' => $row['lastName'],
+                        'email' => $row['email'],
+                        'img' => $row['img'],
+                        'modules' => []
+                    ];
+                }
+    
+                $grouped[$year][$userId]['modules'][] = [
+                    'title' => $row['module_title'],
+                    'filiere' => $row['filiere_name'],
+                    'hours' => $row['volume_horaire']
+                ];
+            }
+    
+            return $grouped;
+        }
+    
+        return [];
+    }
+    
      
     
 }

@@ -108,7 +108,11 @@ class SideBar
                     "title" => "Modules vacants",
                     "icon" => "ti-notebook",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/vacant_modules.php"
-                ],
+                ],"yearHistory" => [
+                    "title" => "Historique des années",
+                    "icon" => "ti-calendar-stats",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/history.php"
+                ]
 
             ]
         ],
