@@ -1,6 +1,9 @@
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/notes.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
+$userController = new UserController();
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement", "professor/coordonnateur"]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_id'])) {
     $fileId = $_POST['file_id'];

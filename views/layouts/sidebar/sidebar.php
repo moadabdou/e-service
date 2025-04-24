@@ -1,12 +1,14 @@
-<?php 
+<?php
 
-class SideBar {
+class SideBar
+{
 
     private array $nav;
     private string $logo = "test";
 
     public function __construct(string $role)
     {
+        
         $this->nav[$role] = self::$NAVIGATION[$role];
         if ($role === "professor/chef_deparetement" || $role === "professor/coordonnateur" ){
             unset(self::$NAVIGATION["professor"]["menu"]["main"]); 
@@ -20,18 +22,18 @@ class SideBar {
     {
         $nav = $this->nav;
         ob_start();
-        require __DIR__."/sidebar.view.php";
+        require __DIR__ . "/sidebar.view.php";
         $content = ob_get_clean();
         return $content;
     }
 
-    private static array $NAVIGATION =[
+    private static array $NAVIGATION = [
         "General" => [
-            "title" => "Générale", 
-            "menu" => 
+            "title" => "Generale",
+            "menu" =>
             [
                 "profile" => [
-                    "title" => "Profil", 
+                    "title" => "Profile",
                     "icon" => "ti-user",
                     "url" => "/e-service/internal/members/common/profile.php"
                 ],
@@ -43,7 +45,7 @@ class SideBar {
             ]
         ],
 
-        "admin" => 
+        "admin" =>
         [
             "title" => "Administration",
             "menu" => [
@@ -66,11 +68,11 @@ class SideBar {
                     "title" => "Départements",
                     "icon" => "ti-building",
                     "url" => "/e-service/internal/members/admin/Departements.php"
-                ] 
+                ]
             ]
         ],
 
-        "professor/chef_deparetement" => 
+        "professor/chef_deparetement" =>
         [
             "title"=> "Gérer Département",
             "menu" =>[
@@ -111,19 +113,25 @@ class SideBar {
             ]
         ],
 
-        "professor/coordonnateur" => 
+        "professor/coordonnateur" =>
         [
             "title"=> "Gérer Filière",
             "menu" =>[
                 "main" => [
                     "title" => "Accueil", 
                     "icon" => "ti-atom",
-                    "url" => "/e-service/internal/members/coordonnateur"
+                    "url" => "/e-service/internal/members/professor/coordonnateur"
+                ],
+                "ModuleListing" => [
+                    "title" => "Liste Des Modules",
+                    "icon" => "ti-book",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/liste_modules.php"
+
                 ]
             ]
         ],
 
-        "professor" => 
+        "professor" =>
         [
             "title"=> "Panneau Professeur",
             "menu" =>[
@@ -133,7 +141,7 @@ class SideBar {
                     "url" => "/e-service/internal/members/professor"
                 ],
                 "chooseUnits" => [
-                    "title" => "Choisir Des Modules", 
+                    "title" => "Choisir Des Modules",
                     "icon" => "ti-book",
                     "url" => "/e-service/internal/members/professor/choose_units.php"
                 ],
@@ -156,7 +164,7 @@ class SideBar {
             ]
         ],
 
-        "vacataire" => 
+        "vacataire" =>
         [
             "title"=> "Panneau Vacataire",
             "menu" =>[
@@ -169,7 +177,4 @@ class SideBar {
         ]
 
     ];
-
 }
-
-?>

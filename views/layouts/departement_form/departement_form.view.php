@@ -1,5 +1,10 @@
 <!-- Start of Add Department Form -->
 <div class="card shadow-sm">
+    <?php if ($info) {?>
+        <div class="alert alert-<?= $info["type"] ?> text-center mb-3 w-50 mx-auto " role="alert">
+            <?= $info["msg"] ?>
+        </div>
+    <?php }?>
   <div class="card-header bg-light">
     <h5 class="mb-0">Ajouter un nouveau département</h5>
   </div>
@@ -7,9 +12,9 @@
     <!-- 
       Replace 'process_add_department.php' with the actual path 
       to your server-side script that handles the form submission.
-    -->
-    <form action="process_add_department.php" method="POST">
-
+      -->
+      <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>?filter=1" method="POST">
+      
       <!-- Department Title Field -->
       <div class="mb-3">
         <label for="departmentTitle" class="form-label">Titre du département <span class="text-danger">*</span></label>
@@ -43,7 +48,7 @@
           aria-describedby="descriptionHelp"
         ></textarea>
          <div id="descriptionHelp" class="form-text">
-          Une description plus détaillée (optionnel, max 400 caractères).
+          Une description plus détaillée (min 200 , max 400 caractères).
         </div>
          <!-- Optional: Add div for validation feedback -->
          <!-- <div class="invalid-feedback">La description est trop longue.</div> -->
@@ -58,8 +63,8 @@
         <button type="submit" class="btn btn-primary">
            <i class="ti ti-plus me-1"></i> Ajouter le département
         </button>
-      </div>
 
+      </div>
     </form>
   </div> <!-- End card-body -->
 </div> <!-- End card -->

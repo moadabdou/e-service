@@ -8,8 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.ph
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/notes.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
-
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement", "professor/coordonnateur"]);
 $professorId = $_SESSION['id_user'];
 $moduleModel = new ModuleModel();
 $noteModel = new NoteModel();
@@ -21,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_module']) &&
     if (!empty($_FILES['notes_file']['tmp_name'])) {
         $fileTmp = $_FILES['notes_file']['tmp_name'];
         $fileType = mime_content_type($fileTmp);
-        $Id = $noteModel->generateFileId(); 
+        $Id = $noteModel->generateFileId();
 
         $fileId = getFileExtensionByType($fileType, $Id);
 
@@ -30,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_module']) &&
         if (in_array($fileType, $allowedTypes)) {
             $moduleId = intval($_POST['selected_module']);
             $sessionType = $_POST['session_type'];
-            
+
             $saveResult = $noteModel->saveUploadedNote($moduleId, $professorId, $sessionType, $fileId);
 
             if ($saveResult && isset($saveResult['file_id'])) {
@@ -60,8 +59,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_module']) &&
 $content = uploadNotesView($assignedModules, $info);
 $dashboard = new DashBoard();
 $dashboard->view($_SESSION["role"], "UploadNotes", $content);
-
-
-
-
-?>

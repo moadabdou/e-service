@@ -9,8 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
-
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement", "professor/coordonnateur"]);
 
 $moduleModel = new ModuleModel();
 $FiliereModel = new FiliereModel();
@@ -21,12 +20,12 @@ $info = null;
 
 $professorId = $_SESSION['id_user'];
 $departmentId = $_SESSION['id_deparetement'] ?? null;
-$filliere=$FiliereModel->getFilieresByDepartment($departmentId);
+$filliere = $FiliereModel->getFilieresByDepartment($departmentId);
 
 $availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId);
 $selectedModules = $moduleModel->getSelectedModulesByProfessor($professorId);
 
-$professorData = $moduleModel->getProfessorHours($professorId); 
+$professorData = $moduleModel->getProfessorHours($professorId);
 
 $totalHours = $moduleModel->getTotalHoursFromChoix($professorId);
 
@@ -66,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             foreach ($selectedModuleIds as $moduleId) {
                 $module = $moduleModel->getModuleById($moduleId);
                 if ($module) {
-                    $moduleNames[] = $module['title']; 
+                    $moduleNames[] = $module['title'];
                 }
             }
 
@@ -102,10 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 if (isset($_SESSION['info'])) {
     $info = $_SESSION['info'];
     unset($_SESSION['info']);
-
-
 }
-$content = chooseUnitsFormView($filliere,$availableModules, $selectedModules, $errors, $info, $totalHours,$minHours,$maxHours);
+$content = chooseUnitsFormView($filliere, $availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours);
 $dashboard = new DashBoard();
 $dashboard->view($_SESSION["role"], "chooseUnits", $content);
-?>

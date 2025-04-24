@@ -6,6 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/passwordGenerator/passwordGenerator.php"; 
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/email/prepared_emails.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/navigation/navigation.php";
 
 session_start();
 
@@ -19,6 +20,10 @@ $userModel = new UserModel();
 
 $info = null;
 $id = (int)$_GET["id"]??-1;
+
+if ($id === $_SESSION["id_user"]){
+   Navigation::redirect("/e-service/internal/members/common/profile.php"); 
+}
 
 $user_data = $userModel->getNonCriticalDataById($id);
 

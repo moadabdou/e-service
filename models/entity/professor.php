@@ -4,6 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/passwordGenerator/passw
 
 class ProfessorModel  extends UserModel{
 
+    private static array  $roles = ['normal','chef_deparetement','coordonnateur'];
+
     private PasswordGenerator $passGen; 
 
     public function __construct()
@@ -43,7 +45,7 @@ class ProfessorModel  extends UserModel{
             //user created but an error occured in  the second phase 
             //remove the created user 
 
-            $this->error = $this->db->getError(); //store the error
+ //store the error
             parent::deleteUserById($user_id); //delete the user, the  order is  important to not lose the previous error
             return false;
         }
@@ -65,7 +67,7 @@ class ProfessorModel  extends UserModel{
         if ($this->db->query(sql: "SELECT id_deparetement FROM professor WHERE id_professor = ?", params: [$userId])) {
             return $this->db->fetch(); // returns ['id_deparetement' => ...]
         } else {
-            $this->error = $this->db->getError();
+
             return false;
         }
     }
@@ -86,8 +88,27 @@ class ProfessorModel  extends UserModel{
 
     }
 
-    // Get all professors in a department except the prof who is in the page
-    public function getProfessorsByDepartmentex(int $departmentId, int $profId): array {
+    public function setAsDepartementHead(int $id_prof) : bool{
+
+        $query = "
+            UPDATE professor SET 
+            role = CASE 
+            WHEN id_professor = ? THEN 'chef_deparetement'
+            WHEN role = 'chef_deparetement' THEN 'normal'
+            END
+            WHERE id_professor = ? OR role = 'chef_deparetement'
+        ";
+        if ($this->db->query($query, [$id_prof,$id_prof])) {
+            return $this->db->rowCount() > 0;
+        } else {
+
+            return false;
+        }
+
+    }
+
+     // Get all professors in a department except the prof who is in the page
+     public function getProfessorsByDepartmentex(int $departmentId, int $profId): array {
         $query = "SELECT 
                     u.id_user,
                     u.firstName,
@@ -109,6 +130,56 @@ class ProfessorModel  extends UserModel{
         } else {
             return [];
         }
+    }
+
+    public function updateProfessorDepartment(int $professorId, int $departmentId): bool {
+        $query = "UPDATE professor 
+                 SET id_deparetement = ? 
+                 WHERE id_professor = ?";
+
+        return $this->db->query($query, [$departmentId, $professorId]);
+    }
+
+    public function setAsFiliereCoordinator(int $id_prof,  int $id_filiere): bool {
+        $this->db->beginTransaction();
+
+        //get and remove the old coordinator
+        if (!$this->db->query("SELECT id_coordonnateur FROM coordonnateur WHERE id_filiere = ?", [$id_filiere])) {
+            $this->db->rollBack();
+            return false;
+        }
+        $old_coordinator = $this->db->fetch();
+
+        if (!$this->db->query("DELETE FROM coordonnateur WHERE id_filiere = ?", [$id_filiere])) {
+            $this->db->rollBack();
+            return false;
+        }
+
+        if ($old_coordinator) {
+            // Reset the old coordinator's role to normal
+            if (!$this->db->query("UPDATE professor SET role='normal' WHERE id_professor=?", [$old_coordinator['id_coordonnateur']])) {
+                $this->db->rollBack();
+                return false;
+            }
+        }
+
+        //insert the new coordinator 
+
+        if (!$this->db->query("INSERT INTO coordonnateur(
+            id_coordonnateur, id_filiere) VALUES (? ,?)", [$id_prof, $id_filiere])){
+            
+            $this->db->rollBack();
+            return false;
+        }
+
+        //change role of the new coordinator
+        if (!$this->db->query("UPDATE professor  SET role='coordonnateur'  WHERE id_professor=?", [$id_prof])) {
+            $this->db->rollBack();
+            return false;
+        }
+
+        $this->db->commit();
+        return true;
     }
         // Get all professors in a department
         public function getProfessorsByDepartment(int $departmentId): array {
