@@ -8,7 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement", "professor/coordonnateur"]);
 
 $moduleModel = new ModuleModel();
 $filiereModel = new FiliereModel();

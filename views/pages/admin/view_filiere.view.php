@@ -202,8 +202,7 @@ function showNotification(message, type = 'info') {
                         id_prof: e.target.getAttribute("data-user-id") 
                     }),
                     success: function(response) {
-                        
-                        //window.location.reload();
+                        window.location.reload();
                     },
                     error: function() {
                         showNotification("Échec de la mise à jour du coordinateur de filière", "error");

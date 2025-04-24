@@ -8,8 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.ph
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/notes.php";
 
 $userController = new UserController();
-$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement"]);
-
+$userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement", "professor/coordonnateur"]);
 $professorId = $_SESSION['id_user'];
 $moduleModel = new ModuleModel();
 $noteModel = new NoteModel();
