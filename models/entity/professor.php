@@ -213,10 +213,6 @@ class ProfessorModel  extends UserModel{
             }
         }
         
-        
-
-        
-
 }
 
 ?>

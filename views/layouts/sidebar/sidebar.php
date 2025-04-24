@@ -102,7 +102,11 @@ class SideBar {
                     "title" => "Choix des professeurs",
                     "icon" => "ti-list-check",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/professor_module_choices.php"
-                ]
+                ],"vacantModules" => [
+                    "title" => "Modules vacants",
+                    "icon" => "ti-notebook",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/vacant_modules.php"
+                ],
 
             ]
         ],
