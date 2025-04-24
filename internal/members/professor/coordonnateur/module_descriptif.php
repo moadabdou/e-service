@@ -9,7 +9,7 @@ session_start();
 $userController = new UserController();
 $userController->checkCurrentUserAuthority(["professor/coordonnateur"]);
 
-
+$filiereModel = new FiliereModel();     
 
 
 
