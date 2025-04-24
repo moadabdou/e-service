@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+-- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: eservice
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server version	10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin` (
   `id_admin` int(11) NOT NULL,
   UNIQUE KEY `id_admin` (`id_admin`),
@@ -44,7 +44,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `affectation_professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `affectation_professor` (
   `to_professor` int(11) NOT NULL,
   `by_chef_deparetement` int(11) NOT NULL,
@@ -76,7 +76,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `affectation_vacataire`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `affectation_vacataire` (
   `to_vacataire` int(11) NOT NULL,
   `by_coordonnateur` int(11) NOT NULL,
@@ -106,7 +106,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `chef_deparetement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `chef_deparetement` (
   `id_chef_deparetement` int(11) NOT NULL,
   UNIQUE KEY `id_chef_deparetement` (`id_chef_deparetement`),
@@ -130,7 +130,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `choix_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `choix_module` (
   `by_professor` int(11) NOT NULL,
   `id_module` int(11) NOT NULL,
@@ -160,7 +160,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `coordonnateur`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `coordonnateur` (
   `id_coordonnateur` int(11) NOT NULL,
   `id_filiere` int(11) NOT NULL,
@@ -187,7 +187,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `deparetement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `deparetement` (
   `id_deparetement` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -213,7 +213,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `filiere`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `filiere` (
   `id_filiere` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -242,7 +242,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `module` (
   `id_module` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -251,10 +251,16 @@ CREATE TABLE `module` (
   `semester` enum('s1','s2','s3','s4','s5','s6') DEFAULT NULL,
   `credits` int(11) NOT NULL,
   `id_filiere` int(11) NOT NULL,
+  `responsable` int(11) NOT NULL,
+  `speciality` int(11) NOT NULL,
   PRIMARY KEY (`id_module`),
   UNIQUE KEY `title` (`title`),
   KEY `id_filiere` (`id_filiere`),
-  CONSTRAINT `module_ibfk_1` FOREIGN KEY (`id_filiere`) REFERENCES `filiere` (`id_filiere`)
+  KEY `speciality` (`speciality`),
+  KEY `responsable` (`responsable`),
+  CONSTRAINT `module_ibfk_1` FOREIGN KEY (`id_filiere`) REFERENCES `filiere` (`id_filiere`),
+  CONSTRAINT `module_ibfk_2` FOREIGN KEY (`speciality`) REFERENCES `speciality` (`id_speciality`),
+  CONSTRAINT `module_ibfk_3` FOREIGN KEY (`responsable`) REFERENCES `professor` (`id_professor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -264,7 +270,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES (1,'Web Dev','HTML,CSS,JS,PHP, and its framworks',120,'s2',0,1),(2,'C++','cpp, oop,..',110,'s2',0,1),(3,'mecanique','mecanique mecanique mecanique mecanique mecanique mecanique',100,'s1',12,1),(4,'francais','h-100 h-100 francais',90,'s1',1,1),(5,'engalais','engalais engalais languaeengalais engalais languaes languae',100,'s1',2,1);
+INSERT INTO `module` VALUES (1,'Web Dev','HTML,CSS,JS,PHP, and its framworks',120,'s2',0,1,0,0),(2,'C++','cpp, oop,..',110,'s2',0,1,0,0),(3,'mecanique','mecanique mecanique mecanique mecanique mecanique mecanique',100,'s1',12,1,0,0),(4,'francais','h-100 h-100 francais',90,'s1',1,1,0,0),(5,'engalais','engalais engalais languaeengalais engalais languaes languae',100,'s1',2,1,0,0);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +280,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notes` (
   `id_note` int(11) NOT NULL AUTO_INCREMENT,
   `id_module` int(11) NOT NULL,
@@ -310,7 +316,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notifications` (
   `id_notification` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
@@ -341,17 +347,20 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `professor` (
   `id_professor` int(11) NOT NULL,
   `max_hours` int(11) NOT NULL CHECK (`max_hours` > 0),
   `min_hours` int(11) NOT NULL CHECK (`min_hours` >= 0),
   `role` enum('normal','chef_deparetement','coordonnateur') NOT NULL,
   `id_deparetement` int(11) NOT NULL,
+  `speciality` int(11) NOT NULL,
   UNIQUE KEY `id_professor` (`id_professor`),
   KEY `id_deparetement` (`id_deparetement`),
+  KEY `speciality` (`speciality`),
   CONSTRAINT `professor_ibfk_1` FOREIGN KEY (`id_deparetement`) REFERENCES `deparetement` (`id_deparetement`),
-  CONSTRAINT `professor_ibfk_2` FOREIGN KEY (`id_professor`) REFERENCES `user` (`id_user`)
+  CONSTRAINT `professor_ibfk_2` FOREIGN KEY (`id_professor`) REFERENCES `user` (`id_user`),
+  CONSTRAINT `professor_ibfk_3` FOREIGN KEY (`speciality`) REFERENCES `speciality` (`id_speciality`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -361,8 +370,35 @@ CREATE TABLE `professor` (
 
 LOCK TABLES `professor` WRITE;
 /*!40000 ALTER TABLE `professor` DISABLE KEYS */;
-INSERT INTO `professor` VALUES (2,130,120,'chef_deparetement',1),(3,150,120,'normal',1),(4,200,150,'coordonnateur',1);
+INSERT INTO `professor` VALUES (2,130,120,'chef_deparetement',1,0),(3,150,120,'normal',1,0),(4,200,150,'coordonnateur',1,0);
 /*!40000 ALTER TABLE `professor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `speciality`
+--
+
+DROP TABLE IF EXISTS `speciality`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `speciality` (
+  `id_speciality` int(11) NOT NULL AUTO_INCREMENT,
+  `title` char(50) NOT NULL,
+  `id_deparetement` int(11) NOT NULL,
+  PRIMARY KEY (`id_speciality`),
+  UNIQUE KEY `title` (`title`),
+  KEY `id_deparetement` (`id_deparetement`),
+  CONSTRAINT `speciality_ibfk_1` FOREIGN KEY (`id_deparetement`) REFERENCES `deparetement` (`id_deparetement`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `speciality`
+--
+
+LOCK TABLES `speciality` WRITE;
+/*!40000 ALTER TABLE `speciality` DISABLE KEYS */;
+/*!40000 ALTER TABLE `speciality` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -371,7 +407,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `firstName` char(30) NOT NULL,
@@ -408,7 +444,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `vacataire`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vacataire` (
   `id_vacataire` int(11) NOT NULL,
   `id_coordonnateur` int(11) DEFAULT NULL,
@@ -437,4 +473,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-24 17:27:42
+-- Dump completed on 2025-04-24 18:14:27

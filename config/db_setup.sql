@@ -21,6 +21,13 @@ INSERT INTO deparetement (title, description) VALUES
 
 
 
+CREATE TABLE IF NOT EXISTS speciality(
+    id_speciality INT  PRIMARY KEY AUTO_INCREMENT, 
+    title CHAR(50) UNIQUE NOT NULL,
+    id_deparetement INT NOT NULL, 
+    FOREIGN KEY(id_deparetement) REFERENCES deparetement(id_deparetement)
+);
+
 
 CREATE TABLE IF NOT EXISTS filiere(
     id_filiere INT  PRIMARY KEY AUTO_INCREMENT,
