@@ -1,30 +1,47 @@
-<?php 
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
-
+<?php
 session_start();
 
-$userController =  new UserController();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/notes.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/entity/professor.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/dashboard_professor_view.php";
 
-$userController->checkCurrentUserAuthority(["professor"]);
+$userController = new UserController();
+$userController->checkCurrentUserAuthority(["professor", "professor/chef_deparetement", "professor/coordonnateur"]);
 
+$professorId = $_SESSION['id_user'] ?? null;
+
+$moduleModel = new ModuleModel();
+$noteModel = new NoteModel();
+$professorModel = new ProfessorModel();
+
+$chosenModules = $moduleModel->getSelectedModulesByProfessor($professorId);
+$assignedModules = $moduleModel->getApprovedModulesByProfessor($professorId);
+$uploadedNotes = $noteModel->getNotesByProfessor($professorId);
+$activityHistory = $noteModel->getRecentProfessorActivities($professorId);
+$pendingNotes = $moduleModel->getModulesWithoutNotes($professorId);
+$upcomingDeadlines = [
+    0=>"12"
+]; 
+
+$professorInfo = $professorModel->getProfessorInfo($professorId);
+$professorName = $professorInfo['firstName'] . " " . $professorInfo['lastName'];
+$department = $professorInfo['department_name'] ?? '';
+$academicYear = date('Y');
+
+$content = professorDashboard(
+    $chosenModules,
+    $assignedModules,
+    $uploadedNotes,
+    $activityHistory,
+    $pendingNotes,
+    $upcomingDeadlines,
+    $professorName,
+    $department,
+    $academicYear
+);
 
 $dashboard = new DashBoard();
-
-ob_start();
-?>
-
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title fw-semibold mb-4">Sample Page</h5>
-        <p class="mb-0">This is the  professor's main page </p>
-    </div>
-</div>
-
-<?php
-$content = ob_get_clean();
-
-$dashboard->view($_SESSION["role"], "main", $content);
-
-
-?>
+$dashboard->view($_SESSION['role'], "main", $content);

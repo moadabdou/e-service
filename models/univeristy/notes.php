@@ -98,6 +98,92 @@ class NoteModel extends Model {
     public function generateFileId(): string {
         return strval(random_int(100000000, 2147483647)); 
     }
+
+    public function getRecentProfessorActivities(int $professorId): array {
+    $activities = [];
+
+    // 1. Notes envoyées
+    $queryNotes = "SELECT n.date_upload AS date, m.title AS module_title, n.session
+                   FROM notes n
+                   JOIN module m ON m.id_module = n.id_module
+                   WHERE n.id_professor = ?
+                   ORDER BY n.date_upload DESC
+                   LIMIT 6";
+    if ($this->db->query($queryNotes, [$professorId])) {
+        foreach ($this->db->fetchAll(PDO::FETCH_ASSOC) as $note) {
+            $activities[] = [
+                'type' => 'note_upload',
+                'description' => "Notes envoyées pour <strong>" . htmlspecialchars($note['module_title']) . "</strong> (" . ucfirst($note['session']) . ").",
+                'date' => $note['date']
+            ];
+        }
+    }
+
+    // 2. Choix de modules
+    $queryChoices = "SELECT cm.date_creation AS date, m.title AS module_title
+                     FROM choix_module cm
+                     JOIN module m ON cm.id_module = m.id_module
+                     WHERE cm.by_professor = ?
+                     ORDER BY cm.date_creation DESC
+                     LIMIT 6";
+    if ($this->db->query($queryChoices, [$professorId])) {
+        foreach ($this->db->fetchAll(PDO::FETCH_ASSOC) as $choice) {
+            $activities[] = [
+                'type' => 'module_choice',
+                'description' => "Module <strong>" . htmlspecialchars($choice['module_title']) . "</strong> sélectionné.",
+                'date' => $choice['date']
+            ];
+        }
+    }
+
+    // 3. Modules validés
+    $queryAffectations = "SELECT ap.date_affectation AS date, m.title AS module_title
+                          FROM affectation_professor ap
+                          JOIN module m ON ap.id_module = m.id_module
+                          WHERE ap.to_professor = ?
+                          ORDER BY ap.date_affectation DESC
+                          LIMIT 6";
+    if ($this->db->query($queryAffectations, [$professorId])) {
+        foreach ($this->db->fetchAll(PDO::FETCH_ASSOC) as $affectation) {
+            $activities[] = [
+                'type' => 'module_assigned',
+                'description' => "Affectation du module <strong>" . htmlspecialchars($affectation['module_title']) . "</strong> confirmée.",
+                'date' => $affectation['date']
+            ];
+        }
+    }
+
+    // 🌀 Maintenant, on trie toutes les activités par date DESC
+    usort($activities, function ($a, $b) {
+        return strtotime($b['date']) - strtotime($a['date']);
+    });
+
+    // 🔥 Et on limite aux 5 plus récentes pour afficher dans le dashboard
+    return array_slice($activities, 0, 6);
+}
+
+public function getNotesGroupedByYear(int $professorId): array {
+    $query = "SELECT YEAR(date_upload) AS year, title, session, date_upload
+              FROM notes n
+              JOIN module m ON n.id_module = m.id_module
+              WHERE id_professor = ?
+              ORDER BY year DESC, date_upload DESC";
+
+    if ($this->db->query($query, [$professorId])) {
+        $notes = $this->db->fetchAll(PDO::FETCH_ASSOC);
+        $grouped = [];
+
+        foreach ($notes as $note) {
+            $grouped[$note['year']][] = $note;
+        }
+
+        return $grouped;
+    } else {
+        return [];
+    }
+}
+
+    
 }
 
 function getFileExtensionByType(string $fileType, string $fileId): string {

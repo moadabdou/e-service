@@ -283,6 +283,29 @@ class ProfessorModel  extends UserModel{
                 return [];
             }
         }
+
+        public function getProfessorCountByDepartment(int $departmentId): int {
+            $query = "SELECT COUNT(*) FROM professor WHERE id_deparetement = ?";
+            
+            if ($this->db->query($query, [$departmentId])) {
+                return (int) $this->db->fetchColumn();
+            } else {
+                return 0;
+            }
+        }
+        
+        public function getProfessorInfo(int $professorId): array {
+            $query = "SELECT u.firstName, u.lastName, d.title AS department_name
+                      FROM user u
+                      JOIN professor p ON p.id_professor = u.id_user
+                      JOIN deparetement d ON d.id_deparetement = p.id_deparetement
+                      WHERE u.id_user = ?";
+        
+            return $this->db->query($query, [$professorId]) 
+                ? $this->db->fetch(PDO::FETCH_ASSOC) 
+                : [];
+        }
+        
         
 }
 

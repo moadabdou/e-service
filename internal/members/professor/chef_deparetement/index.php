@@ -1,30 +1,49 @@
-<?php 
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
-
+<?php
 session_start();
 
-$userController =  new UserController();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/statistics.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/chef_deparetement/dashboard_chef_view.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/entity/professor.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
 
+$userController = new UserController();
 $userController->checkCurrentUserAuthority(["professor/chef_deparetement"]);
 
+$departmentId = $_SESSION['id_deparetement'] ?? null;
+if (!$departmentId) die("Département manquant.");
 
+$StatisticsModel = new StatisticsModel();
+$ProfessorModel = new ProfessorModel();
+$moduleModel = new ModuleModel();
+
+$totalHoursAssigned = $moduleModel->getTotalAssignedHoursByDepartment($departmentId);
+$totalProfsCount = $ProfessorModel->getProfessorCountByDepartment($departmentId);
+$workloadDistribution = $StatisticsModel->getWorkloadDistribution($departmentId);
+$moduleChoicesStats = $StatisticsModel->getModuleChoicesStats($departmentId);
+$validationStats = $StatisticsModel->getModuleValidationStats($departmentId);
+$professorStats = $ProfessorModel->getProfessorsWithWorkload($departmentId); 
+$modulesData = $StatisticsModel->getModuleChoicesStats($departmentId);      
+$recentActivities = $StatisticsModel->getRecentModuleActivities($departmentId);
+$pendingValidations = $StatisticsModel->getPendingValidationsCount($departmentId);
+$modules = $moduleModel->getAllModulesByDepartment($departmentId);
+$vacantModulesCount = $StatisticsModel->getVacantModulesCount($departmentId);
+
+
+$content = departmentHeadDashboard(
+    $workloadDistribution,    
+    $moduleChoicesStats,      
+    $validationStats,         
+    $professorStats,
+    $modulesData,
+    $recentActivities,
+    $totalProfsCount,
+    $totalHoursAssigned,
+    $pendingValidations,
+    $modules,
+    $vacantModulesCount
+);
 
 $dashboard = new DashBoard();
-
-ob_start();
-?>
-
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title fw-semibold mb-4">Sample Page</h5>
-        <p class="mb-0">This is the  Chef_deparetement's main page </p>
-    </div>
-</div>
-
-<?php
-$content = ob_get_clean();
-
 $dashboard->view("professor/chef_deparetement", "main", $content);
-
-?>
