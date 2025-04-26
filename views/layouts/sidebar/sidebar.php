@@ -11,7 +11,6 @@ class SideBar
         
         $this->nav[$role] = self::$NAVIGATION[$role];
         if ($role === "professor/chef_deparetement" || $role === "professor/coordonnateur" ){
-            unset(self::$NAVIGATION["professor"]["menu"]["main"]); 
             $this->nav["professor"] = self::$NAVIGATION["professor"]; 
         }
         
@@ -76,11 +75,12 @@ class SideBar
         [
             "title"=> "Gérer Département",
             "menu" =>[
-                "main" => [
+                "main_chef" => [
                     "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/professor/chef_deparetement"
-                ],        "modules" => [
+                ],
+                "modules" => [
                     "title" => "Unités d’enseignement",
                     "icon" => "ti-book",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/dep_units.php"
@@ -121,7 +121,7 @@ class SideBar
         [
             "title"=> "Gérer Filière",
             "menu" =>[
-                "main" => [
+                "main_coor" => [
                     "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/professor/coordonnateur"
@@ -157,12 +157,16 @@ class SideBar
                 "UploadNotes" => [
                     "title" => "Uploader les notes", 
                     "icon" => "ti-upload",
-                    "url" => "/e-service/internal/members/professor/UploadNotes.php"
+                    "url" => "/e-service/internal/members/professor/uploadNotes.php"
                 ],
                 "NotesHistory" => [
                     "title" => "Mes notes envoyées",
                     "icon" => "ti-files",
                     "url" => "/e-service/internal/members/professor/notes_history.php"
+                ],"ProfHistory" => [
+                    "title" => "Historique des années",
+                    "icon" => "ti-calendar-stats",
+                    "url" => "/e-service/internal/members/professor/historique.php"
                 ]
 
             ]

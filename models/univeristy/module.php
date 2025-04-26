@@ -225,28 +225,31 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getApprovedModulesByProfessor($professorId) {
-            $query = "SELECT 
-                        m.id_module, 
-                        m.title, 
-                        m.description, 
-                        m.semester, 
-                        m.volume_horaire, 
-                        f.title AS filiere_name
-                      FROM affectation_professor ap
-                      JOIN module m ON ap.id_module = m.id_module
-                      JOIN filiere f ON m.id_filiere = f.id_filiere
-                      WHERE ap.to_professor = ?";
-        
-            // Execute the query with the professor ID
-            if ($this->db->query($query, [$professorId])) {
-                // Return the results as an associative array
-                return $this->db->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                // Return false if there's an error
-                return false;
-            }
+    public function getApprovedModulesByProfessor(int $professorId): array|false {
+        $query = "SELECT 
+                    m.id_module, 
+                    m.title, 
+                    m.description, 
+                    m.semester, 
+                    m.volume_horaire, 
+                    f.title AS filiere_name,
+                    (SELECT COUNT(*) 
+                     FROM notes 
+                     WHERE notes.id_module = m.id_module 
+                       AND notes.id_professor = ?) AS notes_uploaded
+                  FROM affectation_professor ap
+                  JOIN module m ON ap.id_module = m.id_module
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE ap.to_professor = ?";
+    
+        // Execute the query with professorId twice (once for subquery and once for main query)
+        if ($this->db->query($query, [$professorId, $professorId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return false;
         }
+    }
+    
         
 
     public function getUnassignedValidatedModules(int $departmentId): array {
@@ -387,6 +390,22 @@ class ModuleModel extends  Model
         }
     }
 
+    public function getTotalAssignedHoursByDepartment(int $departmentId): int {
+        $query = "SELECT SUM(m.volume_horaire) AS total_hours
+                  FROM affectation_professor ap
+                  JOIN module m ON ap.id_module = m.id_module
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE f.id_deparetement = ?";
+    
+        if ($this->db->query($query, [$departmentId])) {
+            $result = $this->db->fetch(PDO::FETCH_ASSOC);
+            return (int) ($result['total_hours'] ?? 0);
+        } else {
+            return 0;
+        }
+    }
+    
+
     public function getHistoricalAffectations(int $departmentId): array {
         $query = "SELECT 
                     ap.annee,
@@ -439,8 +458,67 @@ class ModuleModel extends  Model
     
         return [];
     }
+
+
+    // Get all modules in a department
+    public function getModulesByDepartment(int $departmentId): array {
+        $query = "SELECT id_module, title, volume_horaire
+                  FROM module
+                  WHERE id_deparetement = ?";
+
+        if ($this->db->query($query, [$departmentId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
+    // Get a professor's assigned modules
+    public function getProfessorModules(int $professorId): array {
+        $query = "SELECT m.id_module, m.title, m.volume_horaire
+                  FROM module m
+                  JOIN affectation_professor ap ON ap.id_module = m.id_module
+                  WHERE ap.to_professor = ?";
+
+        if ($this->db->query($query, [$professorId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
+    public function getModulesWithoutNotes(int $professorId): array {
+        $query = "SELECT m.* FROM module m
+                  JOIN affectation_professor ap ON ap.id_module = m.id_module
+                  WHERE ap.to_professor = ?
+                  AND m.id_module NOT IN (SELECT id_module FROM notes WHERE id_professor = ?)";
+        
+        return $this->db->query($query, [$professorId, $professorId]) 
+            ? $this->db->fetchAll(PDO::FETCH_ASSOC) 
+            : [];
+    }
     
-     
+    public function getModuleChoicesGroupedByYear(int $professorId): array {
+        $query = "SELECT YEAR(date_creation) AS year, m.title, cm.status, cm.date_creation
+                  FROM choix_module cm
+                  JOIN module m ON cm.id_module = m.id_module
+                  WHERE cm.by_professor = ?
+                  ORDER BY year DESC, cm.date_creation DESC";
+    
+        if ($this->db->query($query, [$professorId])) {
+            $choices = $this->db->fetchAll(PDO::FETCH_ASSOC);
+            $grouped = [];
+    
+            foreach ($choices as $choice) {
+                $grouped[$choice['year']][] = $choice;
+            }
+    
+            return $grouped;
+        } else {
+            return [];
+        }
+    }
+    
     
 }
 //functions for selected units
