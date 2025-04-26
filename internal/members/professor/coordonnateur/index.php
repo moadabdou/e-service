@@ -23,6 +23,6 @@ ob_start();
 <?php
 $content = ob_get_clean();
 
-$dashboard->view("professor/coordonnateur", "main", $content);
+$dashboard->view("professor/coordonnateur", "main_coor", $content);
 
 ?>

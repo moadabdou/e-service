@@ -46,4 +46,4 @@ $content = departmentHeadDashboard(
 );
 
 $dashboard = new DashBoard();
-$dashboard->view("professor/chef_deparetement", "main", $content);
+$dashboard->view("professor/chef_deparetement", "main_chef", $content);
