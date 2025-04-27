@@ -1,13 +1,37 @@
 <?php
 require_once __DIR__ . "/../model.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/core/Database.php";
 
 class ModuleModel extends  Model
 {
-
     public function __construct()
     {
         parent::__construct();
     }
+
+    public function createModule($data)
+    {
+        $title = addslashes($data['title']);
+        $description = addslashes($data['description']);
+        $volume_horaire = (int)$data['volume_horaire'];
+        $semester = addslashes($data['semester']);
+        $credits = (int)$data['credits'];
+        $id_filiere = (int)$data['id_filiere'];
+        $responsable = (int)$data['responsable'];
+        $speciality = (int) $data['speciality'];
+
+        $query = "INSERT INTO module (title, description, volume_horaire, semester, credits, id_filiere, responsable, speciality)
+                  VALUES ('$title', '$description', $volume_horaire, '$semester', $credits, $id_filiere, $responsable, $speciality)";
+
+        $result = $this->db->query($query);
+
+        if (!$result) {
+            echo $this->db->getError();
+            return false;
+        }
+        return true;
+    }
+
 
     public function getModulesByFiliereId($filiereId)
     {
@@ -38,19 +62,20 @@ class ModuleModel extends  Model
     }
 
 
-    public function getAllModulesByDepartment($departmentId) {
-                            $query = "SELECT m.*, 
+    public function getAllModulesByDepartment($departmentId)
+    {
+        $query = "SELECT m.*, 
                         f.title AS filiere_name
                     FROM module m
                     JOIN filiere f ON m.id_filiere = f.id_filiere
                     WHERE f.id_deparetement = ? ";
 
-                            if ($this->db->query($query, [$departmentId])) {
-                                return $this->db->fetchAll(PDO::FETCH_ASSOC);
-                            } else {
-                                return $this->db->getError();
-                            }
-                    }
+        if ($this->db->query($query, [$departmentId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return $this->db->getError();
+        }
+    }
 
     public function getSelectedModulesByProfessor($professorId)
     {
@@ -137,45 +162,46 @@ class ModuleModel extends  Model
         }
     }
 
-    public function affectModuleToProf($moduleId, $professorId) {
-        $year = date("Y"); 
+    public function affectModuleToProf($moduleId, $professorId)
+    {
+        $year = date("Y");
 
         require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
         $notificationModel = new NotificationModel();
         $professorId = intval($professorId);
         $moduleId = intval($moduleId);
         $chefId = intval($_SESSION['id_user']);
-        
+
         $moduleQuery = "SELECT title FROM module WHERE id_module = ?";
         if ($this->db->query($moduleQuery, [$moduleId])) {
             $module = $this->db->fetch(PDO::FETCH_ASSOC);
             $moduleName = $module['title'];
         } else {
-            return false; 
+            return false;
         }
 
 
         $query = "INSERT INTO affectation_professor (to_professor, by_chef_deparetement, id_module, annee) 
                   VALUES (?, ?, ?, ?)";
-        
+
         if ($this->db->query($query, [$professorId, $chefId, $moduleId, $year])) {
 
-    
+
             $notificationModel->createNotification(
                 $professorId,
                 "🎓 Module Affecté",
                 "Le module '$moduleName' a été affecté à vous pour l'année $year par le chef de département.",
                 null
             );
-    
-            return true;  
+
+            return true;
         } else {
-            return false;  
+            return false;
         }
     }
-    
-    
-    
+
+
+
 
     public function getProfessorHours($professorId)
     {
@@ -225,8 +251,9 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getApprovedModulesByProfessor($professorId) {
-            $query = "SELECT 
+    public function getApprovedModulesByProfessor($professorId)
+    {
+        $query = "SELECT 
                         m.id_module, 
                         m.title, 
                         m.description, 
@@ -237,19 +264,20 @@ class ModuleModel extends  Model
                       JOIN module m ON ap.id_module = m.id_module
                       JOIN filiere f ON m.id_filiere = f.id_filiere
                       WHERE ap.to_professor = ?";
-        
-            // Execute the query with the professor ID
-            if ($this->db->query($query, [$professorId])) {
-                // Return the results as an associative array
-                return $this->db->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                // Return false if there's an error
-                return false;
-            }
-        }
-        
 
-    public function getUnassignedValidatedModules(int $departmentId): array {
+        // Execute the query with the professor ID
+        if ($this->db->query($query, [$professorId])) {
+            // Return the results as an associative array
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            // Return false if there's an error
+            return false;
+        }
+    }
+
+
+    public function getUnassignedValidatedModules(int $departmentId): array
+    {
         $query = "SELECT m.*, f.title AS filiere_name
                   FROM module m
                   JOIN filiere f ON m.id_filiere = f.id_filiere
@@ -265,13 +293,14 @@ class ModuleModel extends  Model
         }
     }
 
-    function assignModuleToProfessor(int $moduleId, int $professorId, string $status): bool {
+    function assignModuleToProfessor(int $moduleId, int $professorId, string $status): bool
+    {
         $db = new Database();
         $db = new Database();
         require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
         $notificationModel = new NotificationModel();
         $db->beginTransaction();
-    
+
         try {
             // Fetch the module title before using it in the notification
             $moduleQuery = "SELECT title FROM module WHERE id_module = ?";
@@ -281,19 +310,19 @@ class ModuleModel extends  Model
             } else {
                 throw new Exception("Module not found.");
             }
-    
+
             // Update the status of the module choice
             $updateQuery = "UPDATE choix_module SET status = ?, date_reponce = NOW()
                             WHERE id_module = ? AND by_professor = ?";
             $db->query($updateQuery, [$status, $moduleId, $professorId]);
-    
+
             $chefId = $_SESSION['id_user'] ?? null;
             $year = date("Y");
-    
+
             if (!$chefId) {
                 throw new Exception("Chef ID manquant.");
             }
-    
+
             if ($status === 'validated') {
                 // Insert into affectation_professor table if the status is 'validated'
                 $db->query(
@@ -301,7 +330,7 @@ class ModuleModel extends  Model
                      VALUES (?, ?, ?, ?)",
                     [$professorId, $chefId, $moduleId, $year]
                 );
-    
+
                 // Send notification to the professor about the module validation
                 $notificationModel->createNotification(
                     $professorId,
@@ -309,7 +338,7 @@ class ModuleModel extends  Model
                     "Votre demande pour le module '$moduleName' a été validée pour l'année $year.",
                     null
                 );
-    
+
                 // Decline the module choices of other professors if any
                 $db->query(
                     "SELECT by_professor FROM choix_module 
@@ -317,10 +346,10 @@ class ModuleModel extends  Model
                     [$moduleId, $professorId, $year]
                 );
                 $others = $db->fetchAll(PDO::FETCH_ASSOC);
-    
+
                 foreach ($others as $other) {
                     $otherProf = $other['by_professor'];
-    
+
                     $db->query(
                         "UPDATE choix_module SET status = 'declined', date_reponce = NOW()
                          WHERE id_module = ? AND by_professor = ?",
@@ -335,20 +364,20 @@ class ModuleModel extends  Model
                     );
                 }
             }
-    
+
             $db->commit();
             return true;
-    
         } catch (Exception $e) {
             $db->rollBack();
             error_log("Erreur assignModuleToProfessor: " . $e->getMessage());
             return false;
         }
     }
-    
-    
-    
-    public function getVacantModules(int $departmentId): array {
+
+
+
+    public function getVacantModules(int $departmentId): array
+    {
         $query = "SELECT m.*, f.title AS filiere_name 
                   FROM module m
                   JOIN filiere f ON m.id_filiere = f.id_filiere
@@ -359,14 +388,15 @@ class ModuleModel extends  Model
                   AND m.id_module NOT IN (
                       SELECT id_module FROM affectation_professor
                   )";
-        
+
         return $this->db->query($query, [$departmentId]) ? $this->db->fetchAll(PDO::FETCH_ASSOC) : [];
     }
-    
-    
-    public function getPendingModuleChoices(int $departmentId): array {
+
+
+    public function getPendingModuleChoices(int $departmentId): array
+    {
         $currentYear = date("Y");
-    
+
         $query = "SELECT cm.id_module, cm.by_professor, cm.status, cm.date_creation,
                          m.title AS module_title, m.description, m.semester, m.volume_horaire,
                          f.title AS filiere_name,
@@ -378,7 +408,7 @@ class ModuleModel extends  Model
                   WHERE cm.status = 'in progress'
                     AND f.id_deparetement = ?
                     AND YEAR(cm.date_creation) = ?";
-    
+
         if ($this->db->query($query, [$departmentId, $currentYear])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
@@ -387,7 +417,8 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getHistoricalAffectations(int $departmentId): array {
+    public function getHistoricalAffectations(int $departmentId): array
+    {
         $query = "SELECT 
                     ap.annee,
                     u.id_user,
@@ -404,19 +435,19 @@ class ModuleModel extends  Model
                   JOIN filiere f ON m.id_filiere = f.id_filiere
                   WHERE f.id_deparetement = ?
                   ORDER BY ap.annee DESC, u.lastName";
-    
+
         if ($this->db->query($query, [$departmentId])) {
             $results = $this->db->fetchAll(PDO::FETCH_ASSOC);
             $grouped = [];
-    
+
             foreach ($results as $row) {
                 $year = $row['annee'];
                 $userId = $row['id_user'];
-    
+
                 if (!isset($grouped[$year])) {
                     $grouped[$year] = [];
                 }
-    
+
                 if (!isset($grouped[$year][$userId])) {
                     $grouped[$year][$userId] = [
                         'firstName' => $row['firstName'],
@@ -426,22 +457,19 @@ class ModuleModel extends  Model
                         'modules' => []
                     ];
                 }
-    
+
                 $grouped[$year][$userId]['modules'][] = [
                     'title' => $row['module_title'],
                     'filiere' => $row['filiere_name'],
                     'hours' => $row['volume_horaire']
                 ];
             }
-    
+
             return $grouped;
         }
-    
+
         return [];
     }
-    
-     
-    
 }
 //functions for selected units
 function formatSemester($code)
