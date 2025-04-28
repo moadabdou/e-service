@@ -1,5 +1,5 @@
-<?php 
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
+<?php
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php"; 
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/admin/view_filiere.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/filiere.php";
@@ -61,6 +61,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     }else {
 
         http_response_code(500);
+
+    }
+    
+    die();
+    
+}else if($_SERVER["REQUEST_METHOD"] === "DELETE"){  
+
+    if($filiereModel->deleteCoordinator($id_filiere)){
+
+        http_response_code(200);
+
+    }else {
+        var_dump($filiereModel->getError());
+        http_response_code(400);
 
     }
     

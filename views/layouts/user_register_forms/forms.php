@@ -1,14 +1,14 @@
 <?php 
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/departement.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/speciality.php";
 
 class Form{
 
     public function professorFormView(array $errors = [], ?array $info){
 
         
-        $depModel = new DepartementModel();
+        $specialityModel = new SpecialityModel();
 
-        $departements = $depModel->getAll();
+        $specialities = $specialityModel->getAll();
 
         ob_start();
         require __DIR__."/professor_form.view.php";
