@@ -11,7 +11,6 @@ class SideBar
         
         $this->nav[$role] = self::$NAVIGATION[$role];
         if ($role === "professor/chef_deparetement" || $role === "professor/coordonnateur" ){
-            unset(self::$NAVIGATION["professor"]["menu"]["main"]); 
             $this->nav["professor"] = self::$NAVIGATION["professor"]; 
         }
         
@@ -76,7 +75,7 @@ class SideBar
         [
             "title"=> "Gérer Département",
             "menu" =>[
-                "main" => [
+                "main_chef" => [
                     "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/professor/chef_deparetement"
@@ -122,7 +121,7 @@ class SideBar
         [
             "title"=> "Gérer Filière",
             "menu" =>[
-                "main" => [
+                "main_coor" => [
                     "title" => "Accueil", 
                     "icon" => "ti-atom",
                     "url" => "/e-service/internal/members/professor/coordonnateur"
