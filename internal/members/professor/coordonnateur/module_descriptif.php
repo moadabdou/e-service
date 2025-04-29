@@ -14,8 +14,7 @@ $userController->checkCurrentUserAuthority(["professor/coordonnateur"]);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $moduleModel = new ModuleModel();
 
-
-    $semester = isset($_POST['semestre']) ? $_POST['semestre'] : null;
+    $semester = $_POST['semester'] ?? null;
 
     $data = [
         'title' => $_POST['title'],
@@ -42,8 +41,15 @@ $specialityModel = new SpecialityModel();
 $specialities = $specialityModel->getAllSpecialities();
 
 ob_start();
-include $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/coordonnateur/module_form.php";
-$content = ob_get_clean();
+?>
 
+<a href="/e-service/internal/members/professor/coordonnateur/module_import_form.php" class="btn btn-success mb-3">
+    Importer des modules (CSV)
+</a>
+
+<?php include $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/coordonnateur/module_form.php"; ?>
+<?php $content = ob_get_clean(); ?>
+
+<?php
 $dashboard = new DashBoard();
 $dashboard->view("professor/coordonnateur", "ModuleDescriptif", $content);
