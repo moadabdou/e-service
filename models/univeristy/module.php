@@ -37,9 +37,9 @@ class ModuleModel extends  Model
     {
         $query = "SELECT id_module, title, volume_horaire FROM module WHERE id_filiere = ?";
         if ($this->db->query($query, [$filiereId])) {
-            return $this->db->fetchAll(PDO::FETCH_ASSOC); // Liste des modules de la filière
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
-            return []; // Retourne un tableau vide si erreur
+            return [];
         }
     }
 

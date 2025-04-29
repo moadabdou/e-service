@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $moduleModel = new ModuleModel();
 
 
-    $semester = isset($_POST['semester']) ? $_POST['semester'] : null;
+    $semester = isset($_POST['semestre']) ? $_POST['semestre'] : null;
 
     $data = [
         'title' => $_POST['title'],
