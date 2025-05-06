@@ -68,7 +68,7 @@ function chefDepModulesListView(array $modules, array $filliers): string {
                                         <?= htmlspecialchars($module['description'] ?? 'Aucune description') ?>
                                     </p>
                                     <ul class="list-unstyled mb-3">
-                                        <li><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_horaire']) ?> heures</li>
+                                        <li><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_cours']) ?> heures</li>
                                         <li><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></li>
                                         <li><strong>Filière :</strong> <?= htmlspecialchars($module['filiere_name'] ?? '') ?></li>
                                     </ul>

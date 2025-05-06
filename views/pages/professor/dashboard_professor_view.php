@@ -33,7 +33,7 @@ function professorDashboard(
     // Calculate total teaching hours
     $totalHours = 0;
     foreach ($assignedModules as $module) {
-        $totalHours += isset($module['volume_horaire']) ? (int)$module['volume_horaire'] : 0;
+        $totalHours += isset($module['volume_cours']) ? (int)$module['volume_cours'] : 0;
     }
     
     // Get current semester based on date
@@ -202,7 +202,7 @@ function professorDashboard(
                                             <i class="ti ti-calendar"></i> <?= htmlspecialchars($module['semester'] ?? 'S1') ?>
                                         </span>
                                         <span class="module-hours">
-                                            <i class="ti ti-clock"></i> <?= htmlspecialchars($module['volume_horaire'] ?? '0') ?>h
+                                            <i class="ti ti-clock"></i> <?= htmlspecialchars($module['volume_cours'] ?? '0') ?>h
                                         </span>
                                         <span class="module-department">
                                             <i class="ti ti-building"></i> <?= htmlspecialchars($module['filiere_name'] ?? 'Département') ?>

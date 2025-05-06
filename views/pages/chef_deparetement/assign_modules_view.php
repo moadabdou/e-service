@@ -102,7 +102,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
                                         <?= htmlspecialchars($module['module_title']) ?>
                                     </h5>
                                     <span class="badge bg-info-subtle text-info rounded-pill px-3 py-2">
-                                        <?= htmlspecialchars($module['volume_horaire']) ?>h
+                                        <?= htmlspecialchars($module['volume_cours']) ?>h
                                     </span>
                                 </div>
                             </div>

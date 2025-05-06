@@ -83,7 +83,7 @@ function vacantModulesView(array $modules, array $filieres, array $availableProf
                                     <h5 class="fw-bold text-primary mt-1 mb-3 d-flex justify-content-between">
                                         <span><?= htmlspecialchars($module['title']) ?></span>
                                         <span class="badge bg-light text-primary">
-                                            <?= $module['volume_horaire'] ?>h
+                                            <?= $module['volume_cours'] ?>h
                                         </span>
                                     </h5>
 

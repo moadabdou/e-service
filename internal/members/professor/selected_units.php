@@ -36,5 +36,4 @@ ob_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/SelectedUnits.php";
 
 $dashboard = new DashBoard();
-$content="";
 $dashboard->view($_SESSION["role"], "chooseUnits", $content);

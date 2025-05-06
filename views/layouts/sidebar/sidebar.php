@@ -130,7 +130,10 @@ class SideBar
                     "title" => "Liste Des Modules",
                     "icon" => "ti-book",
                     "url" => "/e-service/internal/members/professor/coordonnateur/liste_modules.php"
-
+                ],"AjouterModule" => [
+                    "title" => "Ajouter Des Modules",
+                    "icon" => "ti-list",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/ajouterModule.php"
                 ]
             ]
         ],

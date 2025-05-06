@@ -533,7 +533,7 @@ function departmentHeadDashboard(
                 <i class="ti ti-clock text-white"></i>
             </div>
             <div class="stat-info text-success">
-                <h2  class="text-success"><?= array_sum(array_column($modules, 'volume_horaire')) ?> h</h2>
+                <h2  class="text-success"><?= array_sum(array_column($modules, 'volume_cours')) ?> h</h2>
                 <p>Volume Horaire Total</p>
             </div>
         </div>
@@ -668,7 +668,7 @@ function departmentHeadDashboard(
                                 <tr class="module-row" 
                                     data-id="<?= $module['id_module'] ?>"
                                     data-title="<?= htmlspecialchars($module['title']) ?>"
-                                    data-hours="<?= $module['volume_horaire'] ?>"
+                                    data-hours="<?= $module['volume_cours'] ?>"
                                     data-semester="<?= strtoupper($module['semester']) ?>"
                                     data-credits="<?= $module['credits'] ?>"
                                     data-department="<?= htmlspecialchars($module['filiere_name']) ?>">
@@ -679,7 +679,7 @@ function departmentHeadDashboard(
                                             <?= htmlspecialchars($module['description']) ?>
                                         </div>
                                     </td>
-                                    <td><?= $module['volume_horaire'] ?> h</td>
+                                    <td><?= $module['volume_cours'] ?> h</td>
                                     <td>
                                         <span class="semester-badge <?= strtolower($module['semester']) ?>">
                                             <?= strtoupper($module['semester']) ?>

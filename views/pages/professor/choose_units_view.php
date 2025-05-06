@@ -182,7 +182,7 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
                                                                 type="checkbox" 
                                                                 name="modules[]" 
                                                                 value="<?= htmlspecialchars($module['id_module']) ?>"
-                                                                data-hours="<?= htmlspecialchars($module['volume_horaire']) ?>"
+                                                                data-hours="<?= htmlspecialchars($module['volume_cours']) ?>"
                                                                 id="module-<?= htmlspecialchars($module['id_module']) ?>"
                                                                 <?= $isSelected ? 'checked' : '' ?>
                                                             >
@@ -202,7 +202,7 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
                                                             </h5>
                                                             <div class="d-flex align-items-center gap-2">
                                                                 <span class="badge bg-secondary-subtle text-secondary rounded-pill">
-                                                                    <?= htmlspecialchars($module['volume_horaire']) ?> heures
+                                                                    <?= htmlspecialchars($module['volume_cours']) ?> heures
                                                                 </span>
                                                                 <span class="badge bg-info-subtle text-info rounded-pill">
                                                                     <?= formatSemester($module['semester'] ?? '') ?>

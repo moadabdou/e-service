@@ -12,10 +12,10 @@ class StatisticsModel extends Model {
                         p.id_professor,
                         p.min_hours,
                         p.max_hours,
-                        COALESCE(SUM(m.volume_horaire), 0) AS total_assigned,
+                        COALESCE(SUM(m.volume_cours), 0) AS total_assigned,
                         CASE 
-                            WHEN COALESCE(SUM(m.volume_horaire), 0) < p.min_hours THEN 'Insuffisante'
-                            WHEN COALESCE(SUM(m.volume_horaire), 0) > p.max_hours THEN 'Dépassée'
+                            WHEN COALESCE(SUM(m.volume_cours), 0) < p.min_hours THEN 'Insuffisante'
+                            WHEN COALESCE(SUM(m.volume_cours), 0) > p.max_hours THEN 'Dépassée'
                             ELSE 'Correcte'
                         END AS workload_status
                     FROM professor p
