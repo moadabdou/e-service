@@ -10,7 +10,7 @@ require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Modernize Free Bootstrap Admin Template by Adminmart</title>
-  <link rel="shortcut icon" type="image/png" href="<?=$RESOURCES_PATH?>/assets/images/logos/favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="/e-service/storage/image/logo/logo.png" />
   <link rel="stylesheet" href="<?=$RESOURCES_PATH?>/assets/css/styles.min.css" />
 </head>
 

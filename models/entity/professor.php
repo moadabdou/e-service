@@ -228,7 +228,7 @@ class ProfessorModel  extends UserModel{
                     u.email,
                     p.min_hours,
                     p.max_hours,
-                    COALESCE(SUM(m.volume_horaire), 0) AS assigned_hours
+                    COALESCE(SUM(m.volume_cours), 0) AS assigned_hours
                 FROM professor p
                 JOIN user u ON u.id_user = p.id_professor
                 JOIN filiere f ON f.id_deparetement = ?
@@ -254,7 +254,7 @@ class ProfessorModel  extends UserModel{
                         u.img,
                         p.min_hours,
                         p.max_hours,
-                        SUM(m.volume_horaire) AS assigned_hours,
+                        SUM(m.volume_cours) AS assigned_hours,
                         GROUP_CONCAT(CONCAT(m.title, '::', f.title) SEPARATOR '||') AS modules_data
                       FROM affectation_professor ap
                       JOIN user u ON ap.to_professor = u.id_user
@@ -291,6 +291,29 @@ class ProfessorModel  extends UserModel{
                 return [];
             }
         }
+
+        public function getProfessorCountByDepartment(int $departmentId): int {
+            $query = "SELECT COUNT(*) FROM professor WHERE id_deparetement = ?";
+            
+            if ($this->db->query($query, [$departmentId])) {
+                return (int) $this->db->fetchColumn();
+            } else {
+                return 0;
+            }
+        }
+        
+        public function getProfessorInfo(int $professorId): array {
+            $query = "SELECT u.firstName, u.lastName, d.title AS department_name
+                      FROM user u
+                      JOIN professor p ON p.id_professor = u.id_user
+                      JOIN deparetement d ON d.id_deparetement = p.id_deparetement
+                      WHERE u.id_user = ?";
+        
+            return $this->db->query($query, [$professorId]) 
+                ? $this->db->fetch(PDO::FETCH_ASSOC) 
+                : [];
+        }
+        
         
 }
 

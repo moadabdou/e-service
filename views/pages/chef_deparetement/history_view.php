@@ -8,19 +8,21 @@ function yearHistoryView(array $historicalData): string {
     
     <div class="container mt-2 px-4 px-md-5">
         <div class="row mb-0">
-            <div class="col">
-                <h2 class="fw-bold text-primary d-flex align-items-center">
-                    <i class="ti ti-history"></i> Historique des affectations
-                </h2>
+        <header class="d-flex justify-content-between align-items-center flex-wrap mb-0">
+            <h2 class="fw-bold text-primary">
+                <i class="ti ti ti-history" aria-hidden="true"></i> Historique des affectations
+            </h2>
+        </header>
                 <p class="text-muted">Historique des affectations de modules aux professeurs par année académique</p>
-            </div>
         </div>
+
+        <?php if (!empty($historicalData)): ?>
         <div class="text-end mb-0">
                 <button class="btn btn-outline-success btn-lg " id="exportToExcel">
                     <i class="ti ti-file-spreadsheet me-1"></i> Exporter vers Excel
                 </button>
             </div>
-
+        <?php endif; ?>
         <?php if (empty($historicalData)): ?>
             <div class="alert alert-info rounded-4 shadow-sm border-0 d-flex align-items-center" role="alert">
                 <i class="ti ti-info-circle fs-3 me-3"></i>
@@ -269,7 +271,6 @@ function yearHistoryView(array $historicalData): string {
         <?php endif; ?>
     </div>
 
-    <!-- Include SheetJS for Excel export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <script>

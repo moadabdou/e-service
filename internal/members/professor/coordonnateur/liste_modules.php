@@ -46,7 +46,7 @@ ob_start();
                         <tr>
                             <td><?= htmlspecialchars($module['id_module']) ?></td>
                             <td><?= htmlspecialchars($module['title']) ?></td>
-                            <td><?= htmlspecialchars($module['volume_horaire']) ?>h</td>
+                            <td><?= htmlspecialchars($module['volume_cours']) ?>h</td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

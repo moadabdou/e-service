@@ -30,14 +30,14 @@ function assignedModulesView(array $assignedModules, int $totalHours): string {
                                 <h5 class="card-title text-dark fw-bold d-flex justify-content-between align-items-center">
                                     <?= htmlspecialchars($module['title']) ?>
                                     <span class="badge bg-primary-subtle text-primary fw-normal">
-                                        <?= htmlspecialchars($module['volume_horaire']) ?>h
+                                        <?= htmlspecialchars($module['volume_cours']) ?>h
                                     </span>
                                 </h5>
                                 <ul class="list-unstyled lh-lg">
                                     <li><strong>Filière :</strong> <?= htmlspecialchars($module['filiere_name'] ?? 'Non spécifiée') ?></li>
                                     <li><strong>Description :</strong> <?= htmlspecialchars($module['description'] ?? 'Non disponible.') ?></li>
                                     <li><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></li>
-                                    <li><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_horaire']) ?> heures</p></li>
+                                    <li><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_cours']) ?> heures</p></li>
 
                                 </ul>
                             </div>
