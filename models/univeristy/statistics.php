@@ -118,6 +118,35 @@ class StatisticsModel extends Model {
             return 0;
         }
     }
+
+    public function getHistoricalData(int $departmentId): array {
+        $query = "SELECT 
+                    YEAR(ap.annee) AS annee,
+                    CONCAT(u.firstName, ' ', u.lastName) AS professeur,
+                    u.email,
+                    SUM(m.volume_cours + m.volume_td + m.volume_tp + m.volume_autre) AS total_heures,
+                    GROUP_CONCAT(DISTINCT m.title SEPARATOR ', ') AS modules,
+                    GROUP_CONCAT(DISTINCT f.title SEPARATOR ', ') AS filieres,
+                    SUM(m.volume_cours) AS volume_cour,
+                    SUM(m.volume_td) AS volume_td,
+                    SUM(m.volume_tp) AS volume_tp,
+                    SUM(m.volume_autre) AS volume_autre
+                FROM affectation_professor ap
+                JOIN module m ON m.id_module = ap.id_module
+                JOIN filiere f ON f.id_filiere = m.id_filiere
+                JOIN user u ON u.id_user = ap.to_professor
+                JOIN professor p ON p.id_professor = u.id_user
+                WHERE f.id_deparetement = ?
+                GROUP BY annee, ap.to_professor
+                ORDER BY annee DESC, professeur ASC";
+    
+        if ($this->db->query($query, [$departmentId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+    
     
     
 }

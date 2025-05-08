@@ -50,7 +50,36 @@ class ModuleModel extends  Model
                             } else {
                                 return $this->db->getError();
                             }
-                    }
+    }
+
+    public function getSousModulesCountByDepartment(int $departmentId): int {
+        $query = "SELECT COUNT(*) AS total
+                  FROM module m
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE f.id_deparetement = ? AND m.evaluation != 0";
+    
+        if ($this->db->query($query, [$departmentId])) {
+            $result = $this->db->fetch();
+            return $result ? (int)$result['total'] : 0;
+        }
+    
+        return 0;
+    }
+
+    public function getModulesCountByDepartment(int $departmentId): int {
+        $query = "SELECT COUNT(*) AS total
+                  FROM module m
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE f.id_deparetement = ?";
+    
+        if ($this->db->query($query, [$departmentId])) {
+            $result = $this->db->fetch();
+            return $result ? (int)$result['total'] : 0;
+        }
+    
+        return 0;
+    }
+    
 
     public function getSelectedModulesByProfessor($professorId)
     {
@@ -77,7 +106,12 @@ class ModuleModel extends  Model
 
     public function getTotalHoursFromChoix($professorId)
     {
-        $query = "SELECT SUM(m.volume_cours) AS total 
+        $query = "SELECT SUM(
+                        COALESCE(m.volume_cours, 0)
+                        + COALESCE(m.volume_td,     0)
+                        + COALESCE(m.volume_tp,     0)
+                        + COALESCE(m.volume_autre,  0)
+                        ) AS total 
                   FROM module m
                   JOIN choix_module cm ON m.id_module = cm.id_module
                   WHERE cm.by_professor = ?";
@@ -369,18 +403,46 @@ class ModuleModel extends  Model
     
     public function getPendingModuleChoices(int $departmentId): array {
         $currentYear = date("Y");
-    
-        $query = "SELECT cm.id_module, cm.by_professor, cm.status, cm.date_creation,
-                         m.title AS module_title, m.description, m.semester, m.volume_cours,
-                         f.title AS filiere_name,
-                         u.firstName, u.lastName, u.email, u.phone
-                  FROM choix_module cm
-                  JOIN module m ON cm.id_module = m.id_module
-                  JOIN filiere f ON m.id_filiere = f.id_filiere
-                  JOIN user u ON cm.by_professor = u.id_user
-                  WHERE cm.status = 'in progress'
-                    AND f.id_deparetement = ?
-                    AND YEAR(cm.date_creation) = ?";
+
+        $query = "SELECT cm.id_module,
+                        cm.by_professor,
+                        cm.status,
+                        cm.date_creation,
+                        m.title        AS module_title,
+                        m.description,
+                        m.semester,
+                        SUM(
+                            COALESCE(m.volume_cours, 0)
+                        + COALESCE(m.volume_td,     0)
+                        + COALESCE(m.volume_tp,     0)
+                        + COALESCE(m.volume_autre,  0)
+                        )               AS volume_total,
+                        f.title        AS filiere_name,
+                        u.firstName,
+                        u.lastName,
+                        u.email,
+                        u.phone
+                        FROM choix_module cm
+                        JOIN module    m ON cm.id_module   = m.id_module
+                        JOIN filiere   f ON m.id_filiere   = f.id_filiere
+                        JOIN user      u ON cm.by_professor= u.id_user
+                        WHERE cm.status = 'in progress'
+                        AND f.id_deparetement = ?
+                        AND YEAR(cm.date_creation) = ?
+                        GROUP BY
+                        cm.id_module,
+                        cm.by_professor,
+                        cm.status,
+                        cm.date_creation,
+                        m.title,
+                        m.description,
+                        m.semester,
+                        f.title,
+                        u.firstName,
+                        u.lastName,
+                        u.email,
+                        u.phone;
+                        ";
     
         if ($this->db->query($query, [$departmentId, $currentYear])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
@@ -390,39 +452,58 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getTotalAssignedHoursByDepartment(int $departmentId): int {
-        $query = "SELECT SUM(m.volume_cours) AS total_hours
+    public function getTotalAssignedHoursByDepartment(int $departmentId): array | null {
+        $query = "SELECT SUM(m.volume_cours) AS total_cours,
+                         SUM(m.volume_td) AS total_td,
+                         SUM(m.volume_tp) AS total_tp,
+                         SUM(m.volume_autre) AS total_autre
                   FROM affectation_professor ap
                   JOIN module m ON ap.id_module = m.id_module
                   JOIN filiere f ON m.id_filiere = f.id_filiere
                   WHERE f.id_deparetement = ?";
     
         if ($this->db->query($query, [$departmentId])) {
-            $result = $this->db->fetch(PDO::FETCH_ASSOC);
-            return (int) ($result['total_hours'] ?? 0);
+            return $result = $this->db->fetch(PDO::FETCH_ASSOC);
+
         } else {
-            return 0;
+            return null;
         }
     }
     
 
     public function getHistoricalAffectations(int $departmentId): array {
-        $query = "SELECT 
-                    ap.annee,
-                    u.id_user,
-                    u.firstName,
-                    u.lastName,
-                    u.email,
-                    u.img,
-                    m.title AS module_title,
-                    f.title AS filiere_name,
-                    m.volume_cours
-                  FROM affectation_professor ap
-                  JOIN user u ON ap.to_professor = u.id_user
-                  JOIN module m ON ap.id_module = m.id_module
-                  JOIN filiere f ON m.id_filiere = f.id_filiere
-                  WHERE f.id_deparetement = ?
-                  ORDER BY ap.annee DESC, u.lastName";
+        $query = "SELECT ap.annee,
+                        u.id_user,
+                        u.firstName,
+                        u.lastName,
+                        u.email,
+                        u.img,
+                        m.title AS module_title,
+                        f.title AS filiere_name,
+                        m.volume_cours, 
+                        m.volume_td, 
+                        m.volume_tp,
+                        m.volume_autre,
+                        m.credits,
+                        m.semester,
+                        m.code_module,
+                        SUM(COALESCE(m.volume_cours, 0) + COALESCE(m.volume_td, 0) + COALESCE(m.volume_tp, 0) + COALESCE(m.volume_autre, 0)) AS volume_total
+                    FROM affectation_professor ap
+                    JOIN user u ON ap.to_professor = u.id_user
+                    JOIN module m ON ap.id_module = m.id_module
+                    JOIN filiere f ON m.id_filiere = f.id_filiere
+                    WHERE f.id_deparetement = ?
+                    GROUP BY 
+                        ap.annee,
+                        u.id_user,
+                        u.firstName,
+                        u.lastName,
+                        u.email,
+                        u.img,
+                        m.title,
+                        f.title
+                    ORDER BY ap.annee DESC, u.lastName;
+                    ";
     
         if ($this->db->query($query, [$departmentId])) {
             $results = $this->db->fetchAll(PDO::FETCH_ASSOC);
@@ -449,7 +530,14 @@ class ModuleModel extends  Model
                 $grouped[$year][$userId]['modules'][] = [
                     'title' => $row['module_title'],
                     'filiere' => $row['filiere_name'],
-                    'hours' => $row['volume_cours']
+                    'hours' => $row['volume_total'],
+                    'volume_cours'  => $row['volume_cours'],
+                    'volume_td'=> $row['volume_td'],
+                    'volume_tp'=> $row['volume_tp'],
+                    'volume_autre'=> $row['volume_autre'],
+                    'credits'=> $row['credits'],
+                    'semester'=> $row['semester'],
+                    'code_module'=> $row['code_module']
                 ];
             }
     

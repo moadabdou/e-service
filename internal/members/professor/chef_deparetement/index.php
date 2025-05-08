@@ -28,6 +28,8 @@ $modulesData = $StatisticsModel->getModuleChoicesStats($departmentId);
 $recentActivities = $StatisticsModel->getRecentModuleActivities($departmentId);
 $pendingValidations = $StatisticsModel->getPendingValidationsCount($departmentId);
 $modules = $moduleModel->getAllModulesByDepartment($departmentId);
+$SousModuleCount = $moduleModel->getSousModulesCountByDepartment($departmentId);
+$ModuleCount = $moduleModel->getModulesCountByDepartment($departmentId);
 $vacantModulesCount = $StatisticsModel->getVacantModulesCount($departmentId);
 
 
@@ -42,7 +44,9 @@ $content = departmentHeadDashboard(
     $totalHoursAssigned,
     $pendingValidations,
     $modules,
-    $vacantModulesCount
+    $vacantModulesCount,
+    $SousModuleCount,
+    $ModuleCount,
 );
 
 $dashboard = new DashBoard();

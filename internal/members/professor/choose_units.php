@@ -102,6 +102,7 @@ if (isset($_SESSION['info'])) {
     $info = $_SESSION['info'];
     unset($_SESSION['info']);
 }
+
 $content = chooseUnitsFormView($filliere, $availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours);
 $dashboard = new DashBoard();
 $dashboard->view($_SESSION["role"], "chooseUnits", $content);

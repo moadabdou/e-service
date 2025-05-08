@@ -16,6 +16,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
             ];
         }
     }
+
 ?>
     <div class="container mt-2 px-4 px-md-5">
         <!-- Page Header with improved styling -->
@@ -102,7 +103,7 @@ function pendingModulesView(array $pendingModules, array $filliers, ?array $info
                                         <?= htmlspecialchars($module['module_title']) ?>
                                     </h5>
                                     <span class="badge bg-info-subtle text-info rounded-pill px-3 py-2">
-                                        <?= htmlspecialchars($module['volume_cours']) ?>h
+                                        <?= htmlspecialchars($module['volume_total']) ?> h
                                     </span>
                                 </div>
                             </div>

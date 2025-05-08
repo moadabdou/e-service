@@ -7,12 +7,16 @@ function departmentHeadDashboard(
     array $modulesData = [],
     array $recentActivities = [],
     int $totalProfsCount = 0,
-    int $totalHoursAssigned = 0,
+    array $totalHoursAssigned,
     int $pendingValidations = 0,
     array $modules,
-    int $vacantModulesCount
+    int $vacantModulesCount,
+    int $SousModuleCount,
+    int $ModuleCount,
+
 ): string {
-    
+
+
     $workloadDistribution = is_array($workloadDistribution) ? $workloadDistribution : [];
     $moduleChoicesStats = is_array($moduleChoicesStats) ? $moduleChoicesStats : [];
     $validationStats = is_array($validationStats) ? $validationStats : [];
@@ -32,10 +36,13 @@ function departmentHeadDashboard(
             }
         }
     }
-    $vacantModules = $vacantModulesCount ?? 0;
-    $totalModules = $totalModulesCount ?? 1; 
 
-    $vacantRate = round(($vacantModules / $totalModules) * 100);
+
+    $vacantModules = $vacantModulesCount ?? 0;
+
+    $totalModules = ($totalModulesCount > 0) ? $totalModulesCount : 1; 
+
+    $vacantRate = round(($vacantModules / $ModuleCount) * 100);
     $assignmentRate = ($totalModulesCount > 0) ? round(($validatedModules/ $totalModulesCount) * 100) : 0;
     
     $validatedChoices = 0;
@@ -47,9 +54,12 @@ function departmentHeadDashboard(
     $totalChoices = $totalModulesCount; 
     $validationRate = ($totalChoices > 0) ? round(($validatedChoices / $totalChoices) * 100) : 0;
     
-    // Calculate CM/TD/TP hours 
-    $tdTpHours = 0; 
-    $cmHours = $totalHoursAssigned - $tdTpHours; 
+    
+    $totalAssignedCour=$totalHoursAssigned['total_cours'] ?? 0;
+    $totalAssignedTD=$totalHoursAssigned['total_td'] ?? 0;
+    $totalAssignedTP=$totalHoursAssigned['total_tp'] ?? 0;
+    $totalAssignedAutre=$totalHoursAssigned['total_autre'] ?? 0;
+    $totalAssigned=$totalAssignedCour+$totalAssignedTD+$totalAssignedTP+$totalAssignedAutre;
     
     $workloadJson = json_encode($workloadDistribution, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     $moduleChoicesJson = json_encode($moduleChoicesStats, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
@@ -86,11 +96,41 @@ function departmentHeadDashboard(
                 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="ti ti-clock"></i>
+                        <i class="ti ti-presentation"></i>
                     </div>
                     <div class="stat-info">
-                        <h2><?= $totalHoursAssigned ?> h</h2>
-                        <p>Volume total assigné</p>
+                        <h2><?= $totalAssignedCour ?> h</h2>
+                        <p>Volume total cours assigné</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ti ti-clipboard"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h2><?= $totalAssignedTD ?> h</h2>
+                        <p>Volume total TD assigné</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ti ti-tool"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h2><?= $totalAssignedTP ?> h</h2>
+                        <p>Volume total TP assigné</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ti ti-tool"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h2><?= $totalAssignedAutre ?> h</h2>
+                        <p>Volume total autre assigné</p>
                     </div>
                 </div>
             </div>
@@ -125,7 +165,7 @@ function departmentHeadDashboard(
                 </div>
                 <div class="progress-info">
                     <span><?= $vacantModules ?> modules</span>
-                    <span>sur <?= $totalModulesCount ?> modules</span>
+                    <span>sur <?= $ModuleCount ?> modules</span>
                 </div>
             </div>
         </div>
@@ -158,25 +198,62 @@ function departmentHeadDashboard(
                 </div>
                 <div>
                     <p>Volume horaire total</p>
-                    <h3><?= $totalHoursAssigned ?> h</h3>
+                    <h3><?= $totalAssigned ?> h</h3>
                 </div>
             </div>
+
             <div class="hours-distribution">
                 <div class="hours-type">
-                    <span class="hours-label">CM:</span>
-                    <span class="hours-value"><?= $cmHours ?>h</span>
-                </div>
-                <div class="hours-type">
-                    <span class="hours-label">TD/TP:</span>
-                    <span class="hours-value"><?= $tdTpHours ?>h</span>
+                    <span class="hours-label text-primary">CM:</span>
+                    <span class="hours-value text-primary "><?= $totalAssignedCour ?>h</span>
                 </div>
             </div>
+
+            <div class="progress-container stacked">
+                    <div class="progress-bar">
+                        <div class="progress-fill primary" style="width: <?= ($totalAssigned > 0) ? ($totalAssignedCour / $totalAssigned) * 100 : 0 ?>%;"></div>
+                    </div>
+            </div>
+
+            <div class="hours-distribution">
+                <div class="hours-type">
+                        <span class="hours-label text-success">TD:</span>
+                        <span class="hours-value text-success"><?= $totalAssignedTD ?>h</span>
+                </div>
+            </div>
+
             <div class="progress-container stacked">
                 <div class="progress-bar">
-                    <div class="progress-fill primary" style="width: <?= ($totalHoursAssigned > 0) ? ($cmHours / $totalHoursAssigned) * 100 : 0 ?>%;"></div>
-                    <div class="progress-fill success" style="width: <?= ($totalHoursAssigned > 0) ? ($tdTpHours / $totalHoursAssigned) * 100 : 0 ?>%;"></div>
+                    <div class="progress-fill success" style="width: <?= ($totalAssigned > 0) ? ($totalAssignedTD / $totalAssigned) * 100 : 0 ?>%;"></div>
                 </div>
             </div>
+
+            <div class="hours-distribution">
+                <div class="hours-type">
+                        <span class="hours-label text-warning">TP:</span>
+                        <span class="hours-value text-warning"><?= $totalAssignedTP ?>h</span>
+                </div>
+            </div>
+
+            <div class="progress-container stacked">
+                <div class="progress-bar">
+                    <div class="progress-fill warning" style="width: <?= ($totalAssigned > 0) ? ($totalAssignedTP / $totalAssigned) * 100 : 0 ?>%;"></div>
+                </div>
+            </div>
+
+            <div class="hours-distribution">
+                <div class="hours-type">
+                    <span class="hours-label text-danger">Autre:</span>
+                    <span class="hours-value text-danger"><?= $totalAssignedAutre ?>h</span>
+                </div>
+            </div>
+
+            <div class="progress-container stacked">
+                <div class="progress-bar">
+                    <div class="progress-fill danger" style="width: <?= ($totalAssigned > 0) ? ($totalAssignedAutre / $totalAssigned) * 100 : 0 ?>%;"></div>
+                </div>
+            </div>
+
         </div>
         
         <div class="metric-card">
@@ -189,9 +266,11 @@ function departmentHeadDashboard(
                     <h3><?= $pendingValidations ?></h3>
                 </div>
             </div>
+            <?php if((!empty($pendingValidations ))) : ?>
             <div class="alert-message">
                 <p>Validations en attente à traiter</p>
             </div>
+            <?php endif; ?>
             <a href="/e-service/internal/members/professor/chef_deparetement/assign_modules.php">
             <button class="btn-view-requests">
                 <i class="ti ti-eye"></i> Voir les demandes
@@ -516,6 +595,7 @@ function departmentHeadDashboard(
 
             
 <div class="tab-pane" id="modules">
+
     <!-- Module Statistics Cards -->
     <div class="module-stats-grid">
         <div class="stat-card module-stat">
@@ -530,13 +610,14 @@ function departmentHeadDashboard(
         
         <div class="stat-card module-stat">
             <div class="stat-icon bg-success">
-                <i class="ti ti-clock text-white"></i>
+                <i class="ti ti-layers-subtract text-white"></i>
             </div>
             <div class="stat-info text-success">
-                <h2  class="text-success"><?= array_sum(array_column($modules, 'volume_cours')) ?> h</h2>
-                <p>Volume Horaire Total</p>
+                <h2 class="text-success"><?= $SousModuleCount ?></h2>
+                <p>Sous-modules enregistrés</p>
             </div>
         </div>
+
         
         <?php
         // Count modules by semester
@@ -585,6 +666,52 @@ function departmentHeadDashboard(
             </div>
         </div>
     </div>
+    <div class="module-stats-grid">
+    <!-- Cours -->
+    <div class="stat-card module-stat">
+        <div class="stat-icon p-3" style="background-color: #6D28D9;"> 
+            <i class="ti ti-presentation text-white "></i>
+        </div>
+        <div class="stat-info">
+            <h2 style="color: #6D28D9;"><?= array_sum(array_column($modules, 'volume_cours')) ?> h</h2>
+            <p style="color: #6D28D9;">Volume Horaire Cours Total</p>
+        </div>
+    </div>
+
+    <!-- TD -->
+    <div class="stat-card module-stat">
+        <div class="stat-icon" style="background-color: #F87171;">
+            <i class="ti ti-pencil text-white"></i>
+        </div>
+        <div class="stat-info">
+            <h2 style="color: #F87171;"><?= array_sum(array_column($modules, 'volume_td')) ?> h</h2>
+            <p style="color: #F87171;">Volume Horaire TD Total</p>
+        </div>
+    </div>
+
+    <!-- TP -->
+    <div class="stat-card module-stat">
+        <div class="stat-icon" style="background-color: #9333EA;"> 
+            <i class="ti ti-tool text-white"></i>
+        </div>
+        <div class="stat-info">
+            <h2 style="color: #9333EA;"><?= array_sum(array_column($modules, 'volume_tp')) ?> h</h2>
+            <p style="color: #9333EA;">Volume Horaire TP Total</p>
+        </div>
+    </div>
+
+    <!-- Autre -->
+    <div class="stat-card module-stat">
+        <div class="stat-icon p-3" style="background-color: #DB2777;"> <!-- Darker Purple -->
+            <i class="ti ti-package text-white"></i>
+        </div>
+        <div class="stat-info">
+            <h2 style="color: #DB2777;"><?= array_sum(array_column($modules, 'volume_autre')) ?> h</h2>
+            <p style="color: #DB2777;">Volume Horaire Total Pour Autre </p>
+        </div>
+    </div>
+</div>
+
 
     <!-- Module Management Card -->
     <div class="dashboard-card full-width">
@@ -653,39 +780,38 @@ function departmentHeadDashboard(
                 <table class="modules-table">
                     <thead>
                         <tr>
-                            <th class="sortable" data-sort="id">ID <i class="ti ti-arrow-down"></i></th>
+                            <th>Code Module</th>
                             <th class="sortable" data-sort="title">Titre <i class="ti ti-arrows-sort"></i></th>
                             <th>Description</th>
-                            <th class="sortable" data-sort="hours">Heures <i class="ti ti-arrows-sort"></i></th>
+                            <th class="sortable" data-sort="hours">Heures Total <i class="ti ti-arrows-sort"></i></th>
                             <th class="sortable" data-sort="semester">Semestre <i class="ti ti-arrows-sort"></i></th>
                             <th class="sortable" data-sort="credits">Crédits <i class="ti ti-arrows-sort"></i></th>
                             <th class="sortable" data-sort="department">Filière <i class="ti ti-arrows-sort"></i></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($modules)): ?>
+                        <?php if (!empty($modules)):?>
                             <?php foreach ($modules as $module): ?>
                                 <tr class="module-row" 
-                                    data-id="<?= $module['id_module'] ?>"
                                     data-title="<?= htmlspecialchars($module['title']) ?>"
                                     data-hours="<?= $module['volume_cours'] ?>"
                                     data-semester="<?= strtoupper($module['semester']) ?>"
                                     data-credits="<?= $module['credits'] ?>"
                                     data-department="<?= htmlspecialchars($module['filiere_name']) ?>">
-                                    <td><?= $module['id_module'] ?></td>
+                                    <td><?= $module['code_module'] ?></td>
                                     <td class="module-title"><?= htmlspecialchars($module['title']) ?></td>
                                     <td class="module-description">
                                         <div class="description-truncate">
                                             <?= htmlspecialchars($module['description']) ?>
                                         </div>
                                     </td>
-                                    <td><?= $module['volume_cours'] ?> h</td>
+                                    <td class=" text-center"><?= $module['volume_cours']+$module['volume_td']+$module['volume_tp']+$module['volume_autre'] ?> h</td>
                                     <td>
                                         <span class="semester-badge <?= strtolower($module['semester']) ?>">
                                             <?= strtoupper($module['semester']) ?>
                                         </span>
                                     </td>
-                                    <td><?= $module['credits'] ?></td>
+                                    <td class=" text-center"><?= $module['credits'] ?></td>
                                     <td><?= htmlspecialchars($module['filiere_name']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -878,7 +1004,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const title = row.getAttribute('data-title').toLowerCase();
             const semester = row.getAttribute('data-semester');
             const department = row.getAttribute('data-department');
-            
             const matchesSearch = title.includes(searchTerm);
             const matchesSemester = !semesterValue || semester === semesterValue;
             const matchesDepartment = !departmentValue || department === departmentValue;
@@ -962,7 +1087,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let valueB = b.getAttribute(`data-${sortBy}`);
                 
                 // Handle numeric values
-                if (sortBy === 'id' || sortBy === 'hours' || sortBy === 'credits') {
+                if ( sortBy === 'hours' || sortBy === 'credits') {
                     valueA = parseInt(valueA);
                     valueB = parseInt(valueB);
                 }
