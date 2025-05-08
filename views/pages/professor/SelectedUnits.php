@@ -73,8 +73,13 @@
                     data-filiere="<?= htmlspecialchars(strtolower(str_replace(' ', '_', $module['filiere_name'] ?? ''))) ?>"
                     data-status="<?= str_replace(' ', '_', strtolower($module['status'] ?? 'in_progress')) ?>">
                     <div class="card p-4 shadow-sm rounded-4 h-100 overflow-hidden hover-shadow transition-300 mb-3">
-                        <h5 class="card-title mb-2 text-primary fw-bold"><?= htmlspecialchars($module['title']) ?></h5>
-                        <p class="mb-2"><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_cours']) ?> heures</p>
+                    <h5 class="card-title text-primary fw-bold d-flex justify-content-between align-items-center">
+                                    <?= htmlspecialchars($module['title']) ?>
+                                    <span class="badge bg-primary-subtle text-primary fw-normal">
+                                        <?= htmlspecialchars($module['code_module']) ?>
+                                    </span>
+                                </h5>
+                        <p class="mb-2"><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_total']) ?> heures</p>
                         <p class="mb-2"><strong>Description :</strong><br><?= htmlspecialchars($module['description'] ?? 'Aucune description disponible.') ?></p>
                         <p><strong>Filière :</strong> <?= htmlspecialchars($module['filiere_name'] ?? 'Aucune') ?></p>
                         <p class="mb-2"><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></p>

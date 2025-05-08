@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
 // Include the export functionality
-require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/utils/export_history_excel.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/utils/Export/export_history_excel.php";
 
 function yearHistoryView(array $historicalData): string {
     // Check if an export request was made

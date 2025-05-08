@@ -91,18 +91,13 @@ function vacantModulesView(array $modules, array $filieres, array $availableProf
         <div class="row g-4" id="moduleCards">
             <?php if (empty($modules)): ?>
                 <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                        <div class="card-body p-5 text-center">
-                            <div class="mb-4">
-                                <div class="bg-light rounded-circle p-4 d-inline-flex">
-                                    <i class="ti ti-check-circle text-success fs-1"></i>
-                                </div>
-                            </div>
-                            <h4 class="fw-bold text-primary mb-3">Aucun module vacant</h4>
-                            <p class="text-muted mb-0">Tous les modules ont déjà été assignés à des professeurs.</p>
-                        </div>
+                    <div class="alert alert-warning text-center shadow-sm rounded-4 p-4">
+                        <i class="ti ti-circle-check fs-4 d-block mb-3 text-success"></i>
+                        <h5 class="mb-2">Aucun module vacant</h5>
+                        <p class="text-muted mb-0">Tous les modules ont déjà été assignés à des professeurs.</p>
                     </div>
                 </div>
+
             <?php else: ?>
                 <?php foreach ($modules as $module): ?>
                     <div class="col-12 col-md-6 col-xl-4 module-card mb-2"
