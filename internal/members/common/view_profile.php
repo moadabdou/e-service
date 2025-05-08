@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_SESSION["role"] === "admin" && !e
 
                 $activityModel->createActivity(
                     "Le compte de l'utilisateur ".$user_data["firstName"]." ".$user_data["lastName"]." a été désactivé par l'administrateur ".$_SESSION["full_name"].".", 
-                    $_SESSION["id_user"]
+                    "fa-user-slash"
                 );
                 
             }else {

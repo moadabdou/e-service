@@ -39,7 +39,7 @@ if ( $_SERVER["REQUEST_METHOD"] === 'POST'){
 
             $activityModel->createActivity(
                 "L'annonce ".$title." a été créée par l'administrateur ".$_SESSION["full_name"].".", 
-                $_SESSION["id_user"]
+                "fa-bullhorn"
             );
         }
     } else {

@@ -103,7 +103,7 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 
             $activityModel->createActivity(
                 "Un nouveau professeur " . $_POST["firstName"] . " " . $_POST["lastName"] . " a été ajouté",
-                "user-plus"
+                "fa-user-plus"
             );
 
             //professor is ready, sending the email 

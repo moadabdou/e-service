@@ -2,10 +2,9 @@
 require_once __DIR__."/user.php"; 
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/passwordGenerator/passwordGenerator.php"; 
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/speciality.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/vacataire.php";
 
 class VacataireModel  extends UserModel{
-
-    private static array  $roles = ['normal','chef_deparetement','coordonnateur'];
 
     private PasswordGenerator $passGen; 
 
@@ -15,7 +14,7 @@ class VacataireModel  extends UserModel{
         $this->passGen = new PasswordGenerator();
     }
 
-    public function newVaca ( 
+    public function newVacataire ( 
         string $firstName, 
         string $lastName,
         string $cin,
@@ -24,38 +23,41 @@ class VacataireModel  extends UserModel{
         string $address,
         string $birth_date,
         int $speciality_id,
-        int $max_hours,
-        int $min_hours
+        int $id_coordonnateur
         ): array | false {
         
         $password = $this->passGen->generate();
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-        $user_id  =  parent::newUser($firstName, $lastName, $cin, $email, "professor", $password_hash, $phone, $address, $birth_date);
+        $user_id  =  parent::newUser($firstName, $lastName, $cin, $email, "vacataire", $password_hash, $phone, $address, $birth_date);
         if ($user_id ===  false){
             return false; 
         }
 
-        $departement_id =  (new SpecialityModel())->getDeparetementID($speciality_id);
-        
-
-        if (!is_int($departement_id)){
-            return false;
-        }
-
-        if ($this->db->query("INSERT INTO professor(id_professor, max_hours, min_hours, role, id_deparetement, id_speciality) VALUES (?, ?, ?, ?,?, ?)", 
-            [$user_id, $max_hours, $min_hours, "normal", $departement_id, $speciality_id])) {
+        if ($this->db->query("INSERT INTO vacataire(id_vacataire, speciality, id_coordonnateur) VALUES (?,?, ?)", 
+            [$user_id, $speciality_id, $id_coordonnateur])) {
 
             return [$user_id, $password];
 
         }else { 
             var_dump($this->db->getError());
-            //user created but an error occured in  the second phase 
-            //remove the created user 
-
- //store the error
-            parent::deleteUserById($user_id); //delete the user, the  order is  important to not lose the previous error
+            parent::deleteUserById($user_id); 
             return false;
+        }
+
+    }
+
+    public function resolveVacataireOperationError(): ?string{
+        if (!$this->getError()){
+            return null;
+        }
+
+        $user_error = parent::resolveUserOperationError();
+
+        if ($user_error){
+            return $user_error;
+        }else{
+            return null;
         }
 
     }
