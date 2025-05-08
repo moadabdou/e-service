@@ -33,19 +33,16 @@ function professorDashboard(
     // Calculate total teaching hours
     $totalHours = 0;
     foreach ($assignedModules as $module) {
-        $totalHours += isset($module['volume_cours']) ? (int)$module['volume_cours'] : 0;
+        $totalHours += isset($module['volume_total']) ? (int)$module['volume_total'] : 0;
     }
     
-    // Get current semester based on date
     $currentMonth = (int)date('m');
     $currentSemester = ($currentMonth >= 2 && $currentMonth <= 7) ? 'S2' : 'S1';
     
-    // Start building the HTML output
     ob_start();
 ?>
 <link rel="stylesheet" href="/e-service/resources/assets/css/prof_dashboard.css">
 <div class="professor-dashboard">
-    <!-- Modern Welcome Header Section -->
     <div class="welcome-header">
         <div class="welcome-content">
             <h1>Bienvenue, <?= htmlspecialchars($professorName) ?></h1>
@@ -224,13 +221,15 @@ function professorDashboard(
                         <?php endforeach; ?>
                     </div>
                 <?php else: ?>
-                    <div class="empty-state">
-                        <i class="ti ti-book-off"></i>
-                        <p>Aucun module affecté pour le moment</p>
-                        <a href="/e-service/internal/members/professor/choose_units.php" class="btn-primary">
-                            <i class="ti ti-plus"></i> Choisir des modules
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center p-4 rounded-3 shadow-sm bg-light border" style="max-width: 400px; margin: auto;">
+                        <i class="ti ti-book-off display-4 text-muted mb-3"></i>
+                        <p class="mb-3 fs-5 text-secondary">Aucun module affecté pour le moment</p>
+                        <a href="/e-service/internal/members/professor/choose_units.php" class="btn btn-primary d-flex align-items-center gap-2">
+                            <i class="ti ti-plus"></i>
+                            Choisir des modules
                         </a>
                     </div>
+
                 <?php endif; ?>
             </div>
         </div>

@@ -1,28 +1,36 @@
 <?php
-
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
+// Include the export functionality
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/utils/Export/export_history_excel.php";
 
 function yearHistoryView(array $historicalData): string {
+    // Check if an export request was made
+    if (isset($_POST['export']) && $_POST['export'] == '1') {
+        exportHistoryToExcel($historicalData);
+        exit; // The export function will handle the response
+    }
+    
     ob_start();
     ?>
     
     <div class="container mt-2 px-4 px-md-5">
-        <div class="row mb-0">
-        <header class="d-flex justify-content-between align-items-center flex-wrap mb-0">
-            <h2 class="fw-bold text-primary">
-                <i class="ti ti ti-history" aria-hidden="true"></i> Historique des affectations
-            </h2>
-        </header>
+    <div class="row mb-3">
+            <div class="col-12">
+                <header class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                    <h2 class="fw-bold text-primary">
+                        <i class="ti ti-history me-2" aria-hidden="true"></i> Historique des affectations
+                    </h2>
+                    <?php if (!empty($historicalData)): ?>
+                        <button class="btn btn-primary btn-lg rounded-3 shadow-sm" id="exportToExcel">
+                            <i class="ti ti-file-spreadsheet me-2"></i> Exporter vers Excel
+                        </button>
+                    <?php endif; ?>
+                </header>
                 <p class="text-muted">Historique des affectations de modules aux professeurs par année académique</p>
+                <hr class="opacity-25">
+            </div>
         </div>
 
-        <?php if (!empty($historicalData)): ?>
-        <div class="text-end mb-0">
-                <button class="btn btn-outline-success btn-lg " id="exportToExcel">
-                    <i class="ti ti-file-spreadsheet me-1"></i> Exporter vers Excel
-                </button>
-            </div>
-        <?php endif; ?>
         <?php if (empty($historicalData)): ?>
             <div class="alert alert-info rounded-4 shadow-sm border-0 d-flex align-items-center" role="alert">
                 <i class="ti ti-info-circle fs-3 me-3"></i>
@@ -59,8 +67,6 @@ function yearHistoryView(array $historicalData): string {
             );
             ?>
             
-
-
             <!-- Stats overview -->
             <div class="row g-4 mb-4">
                 <div class="col-md-4">
@@ -130,52 +136,6 @@ function yearHistoryView(array $historicalData): string {
                 </div>
             </div>
 
-            <table id="exportTable" class="d-none">
-                <thead>
-                    <tr>
-                        <th>Année</th>
-                        <th>Professeur</th>
-                        <th>Email</th>
-                        <th>Total Heures</th>
-                        <th>Modules</th>
-                        <th>Filières</th>
-                        <th>Volume Horaire</th>
-                        <th>Unités</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($historicalData as $year => $professors): ?>
-                        <?php foreach ($professors as $profId => $professor): ?>
-                            <?php 
-                            $totalHours = 0;
-                            $modulesList = [];
-                            $filieresList = [];
-                            $hoursList = [];
-                            $unitsList = [];
-                            
-                            foreach ($professor['modules'] as $module) {
-                                $totalHours += $module['hours'] ?? 0;
-                                $modulesList[] = $module['title'];
-                                $filieresList[] = $module['filiere'];
-                                $hoursList[] = $module['hours'] ?? 0;
-                                $unitsList[] = $module['unit'] ?? 'N/A';
-                            }
-                            ?>
-                            <tr>
-                                <td><?= $year ?></td>
-                                <td><?= htmlspecialchars($professor['firstName'] . ' ' . $professor['lastName']) ?></td>
-                                <td><?= htmlspecialchars($professor['email']) ?></td>
-                                <td><?= $totalHours ?></td>
-                                <td><?= htmlspecialchars(implode(", ", $modulesList)) ?></td>
-                                <td><?= htmlspecialchars(implode(", ", $filieresList)) ?></td>
-                                <td><?= implode(", ", $hoursList) ?></td>
-                                <td><?= htmlspecialchars(implode(", ", $unitsList)) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-
             <div id="historyContainer">
                 <?php foreach ($historicalData as $year => $professors): ?>
                     <div class="year-section mb-5" data-year="<?= $year ?>">
@@ -199,9 +159,6 @@ function yearHistoryView(array $historicalData): string {
                                 foreach ($professor['modules'] as $module) {
                                     $totalHours += $module['hours'] ?? 0;
                                     $modulesByFiliere[$module['filiere']][] = $module;
-                                }
-                                foreach ($professor['modules'] as $module) {
-                                    $totalHours += $module['hours'] ?? 0;
                                 }
                                 ?>
                                 <div class="col-md-6 col-xl-4 professor-card" 
@@ -248,11 +205,8 @@ function yearHistoryView(array $historicalData): string {
                                                                 <?php foreach ($modules as $module): ?>
                                                                     <li><?= htmlspecialchars($module['title']) ?>
                                                                         <?php if (isset($module['hours']) && $module['hours'] > 0): ?>
-                                                                            <span class="ms-2 badge bg-light text-dark"><?= $module['hours'] ?>h</span>
-                                                                        <?php endif; ?>
-                                                                        <?php if (isset($module['unit'])): ?>
-                                                                            <span class="ms-2 badge bg-info-subtle text-info"><?= htmlspecialchars($module['unit']) ?></span>
-                                                                        <?php endif; ?>
+                                                                            <span class="ms-2 badge bg-info-subtle text-info"><?= $module['hours'] ?>h</span>
+                                                                        <?php endif; ?>                                                                    
                                                                     </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
@@ -271,128 +225,40 @@ function yearHistoryView(array $historicalData): string {
         <?php endif; ?>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-
         const exportBtn = document.getElementById('exportToExcel');
-        
-        if (exportBtn) {
-            exportBtn.addEventListener('click', exportToExcel);
-        }
-        
-        function exportToExcel() {
-    const table = document.getElementById('exportTable');
-    
-    // Create a new workbook
-    const wb = XLSX.utils.book_new();
-    
-    // Convert table to worksheet
-    const ws = XLSX.utils.table_to_sheet(table);
-    
-    // Set column widths
-    const cols = [
-        {wch: 15}, // Année
-        {wch: 25}, // Professeur
-        {wch: 30}, // Email
-        {wch: 12}, // Total Heures
-        {wch: 40}, // Modules
-        {wch: 30}, // Filières
-        {wch: 20}, // Volume Horaire
-        {wch: 20}  // Unités
-    ];
-    ws['!cols'] = cols;
-    
-    // Add the worksheet to workbook with formatted name
-    XLSX.utils.book_append_sheet(wb, ws, 'Historique Affectations');
-    
-    // Create summary sheet
-    const summaryData = [
-        ['Résumé des Affectations', ''],
-        ['Date d\'exportation', new Date().toLocaleDateString()],
-        ['', ''],
-    ];
-    
-    const years = new Set();
-    const professors = new Set();
-    const modules = new Set();
-    let totalHours = 0;
-    
-    const rows = table.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-        const year = row.cells[0].textContent;
-        const prof = row.cells[1].textContent;
-        const hours = parseInt(row.cells[3].textContent) || 0;
-        const modulesList = row.cells[4].textContent.split(', ');
-        
-        years.add(year);
-        professors.add(prof);
-        modulesList.forEach(m => modules.add(m));
-        totalHours += hours;
-    });
-    
-    // Add statistics to summary data
-    summaryData.push(['Nombre d\'années académiques', years.size]);
-    summaryData.push(['Nombre total de professeurs', professors.size]);
-    summaryData.push(['Nombre total de modules', modules.size]);
-    summaryData.push(['Volume horaire total', totalHours + ' heures']);
-    
-    // Create summary worksheet
-    const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
-    
-    // Set column widths for summary
-    summaryWs['!cols'] = [{wch: 30}, {wch: 20}];
-    
-    // Add summary sheet to workbook
-    XLSX.utils.book_append_sheet(wb, summaryWs, 'Résumé');
-    
-    // Generate filename with current date
-    const now = new Date();
-    const fileName = `historique_affectations_${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}.xlsx`;
-    
-    // Save the file
-    XLSX.writeFile(wb, fileName);
-    
-    showNotification('Exportation réussie', 'Le fichier Excel a été téléchargé avec succès.');
-}
-        
-        function showNotification(title, message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification-toast';
-            notification.innerHTML = `
-                <div class="toast show bg-white border-0 shadow-sm rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header bg-success text-white border-0">
-                        <i class="ti ti-check me-2"></i>
-                        <strong class="me-auto">${title}</strong>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        ${message}
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
 
-            setTimeout(() => {
-                notification.classList.add('notification-hide');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', function() {
+                // Show loading indicator
+                const originalText = exportBtn.innerHTML;
+                exportBtn.innerHTML = '<i class="ti ti-loader ti-spin me-2"></i>Exportation en cours...';
+                exportBtn.disabled = true;
+
+                // Create a form to submit the request
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = window.location.href;
+
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'export';
+                input.value = '1';
+                form.appendChild(input);
+
+                document.body.appendChild(form);
+                form.submit();
+
+                // Optional: Reset button state after timeout (in case server fails)
                 setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 5000);
-            
-            const closeBtn = notification.querySelector('.btn-close');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    notification.classList.add('notification-hide');
-                    setTimeout(() => {
-                        document.body.removeChild(notification);
-                    }, 300);
-                });
-            }
+                    exportBtn.innerHTML = originalText;
+                    exportBtn.disabled = false;
+                }, 5000);
+            });
         }
-        
+
+        // Animate professor cards
         const professorCards = document.querySelectorAll('.professor-card');
         professorCards.forEach((card, index) => {
             card.style.animationDelay = `${index * 0.05}s`;
@@ -400,6 +266,7 @@ function yearHistoryView(array $historicalData): string {
         });
     });
     </script>
+
 
     <style>
     .year-heading {
@@ -456,4 +323,3 @@ function yearHistoryView(array $historicalData): string {
     <?php
     return ob_get_clean();
 }
-?>
