@@ -143,6 +143,11 @@ class SideBar
                     "title" => "Ajouter Des Modules",
                     "icon" => "ti ti-list",
                     "url" => "/e-service/internal/members/professor/coordonnateur/ajouterModule.php"
+                ],
+                "addVacataire" => [
+                    "title" => "Ajouter Vacataire",
+                    "icon" => "ti ti-user-plus",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/addVacataire.php"
                 ]
             ]
         ],
