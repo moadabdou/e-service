@@ -9,6 +9,17 @@ class SpecialityModel extends Model
         parent::__construct();
     }
 
+    public function getTitleById($id)
+    {
+        $query = "SELECT title FROM speciality WHERE id_speciality = ?";
+        if ($this->db->query($query, [$id])) {
+            $result = $this->db->fetch(PDO::FETCH_ASSOC);
+            return $result['title'] ?? null;
+        }
+        return null;
+    }
+
+
     public function getAll(): array|string|null
     {
         if ($this->db->query("SELECT s.id_speciality as id_speciality, CONCAT( s.title ,'/', d.title ) as title FROM speciality s JOIN deparetement d ON s.id_deparetement = d.id_deparetement")) {

@@ -36,18 +36,20 @@ class ModuleModel extends  Model
     public function getModulesByFiliereId($filiereId)
     {
         $query = "SELECT 
-                    id_module,
-                    code_module,
-                    title,
-                    volume_cours,
-                    volume_td,
-                    volume_tp,
-                    volume_autre,
-                    credits,
-                    semester,
-                    evaluation
-                  FROM module 
-                  WHERE id_filiere = ?";
+                id_module,
+                code_module,
+                title,
+                volume_cours,
+                volume_td,
+                volume_tp,
+                volume_autre,
+                credits,
+                semester,
+                evaluation,
+                responsable,
+                id_speciality
+              FROM module 
+              WHERE id_filiere = ?";
 
         if ($this->db->query($query, [$filiereId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
@@ -55,6 +57,7 @@ class ModuleModel extends  Model
             return [];
         }
     }
+
 
 
     public function getAvailableModulesByDepartment($departmentId)
