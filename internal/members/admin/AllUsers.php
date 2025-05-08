@@ -24,14 +24,15 @@ $userController->checkCurrentUserAuthority(["admin"]);
 $dashboard = new DashBoard();
 $userModel = new UserModel();
 
-$type  = (int)($_GET["filter"]?? 0) ;
-$users_data  =  $userModel->getUsersByRole($type);
+$role  = (int)($_GET["role"]?? 0) ;
+$status = $_GET["status"]?? 0 ;
+$users_data  =  $userModel->getUsersByRole($role, $status);
 
 if ($users_data === false){
     echo  $userModel->getError();
 }
 
-$content = (new AllUsersView())->view($type, $users_data === false ?  [] : $users_data);
+$content = (new AllUsersView())->view($role, $status, $users_data === false ?  [] : $users_data);
 
 $dashboard->view("admin", "allUsers", $content);
 

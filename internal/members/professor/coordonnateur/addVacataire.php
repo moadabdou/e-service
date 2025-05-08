@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/layouts/user_register_forms/forms.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/professor.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/vacataire.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/email/prepared_emails.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
@@ -12,8 +12,7 @@ session_start();
 
 $userController =  new UserController();
 
-$userController->checkCurrentUserAuthority(["admin"]);
-
+$userController->checkCurrentUserAuthority(["professor/coordonnateur"]);
 
 
 $form = new Form();
@@ -24,7 +23,7 @@ $errors = [];
 $info = null;
 
 if($_SERVER["REQUEST_METHOD"] ==  "POST"){
-    //professor is ready, sending the email 
+
     if (empty($_POST['firstName']) || !$userController->isValidUserData('firstName', $_POST['firstName'])) {
         $errors["firstName"] = "Le prénom est requis et ne doit contenir que des lettres, espaces, ' et -";
     }
@@ -57,23 +56,15 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
         $errors["id_speciality"] = "La spécialité est requise et doit être un ID valide";
     }
 
-    if (empty($_POST['max_hours']) || !$userController->isValidUserData('max_hours', $_POST['max_hours'])) {
-        $errors["max_hours"] = "Le nombre maximum d'heures doit être un nombre positif";
-    }
-
-    if (empty($_POST['min_hours']) || !$userController->isValidUserData('min_hours', $_POST['min_hours'])) {
-        $errors["min_hours"] = "Le nombre minimum d'heures doit être un nombre positif";
-    }
-
     if (count($errors)){
         $info =  [
             "msg" => "Nous avons trouvé un problème avec le format des données lors de l'ajout de ce professeur",
             "type" => "danger"
         ];
     }else {
-        $profModel = new ProfessorModel();
+        $vacataireModel = new VacataireModel();
 
-        $res = $profModel->newProfessor(
+        $res = $vacataireModel->newVacataire(
             $_POST['firstName'],
             $_POST['lastName'],
             $_POST['CIN'],
@@ -82,27 +73,27 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
             $_POST['address'],
             $_POST['birth_date'],
             $_POST['id_speciality'],
-            $_POST['max_hours'],
-            $_POST['min_hours']
+            $_SESSION["id_user"]
         );
 
         if ($res === false){
             $info =  [
-                "msg" => "Le format des données semble correct mais une erreur s'est produite lors de l'ajout de ce professeur : ".$profModel->resolveProfessorOperationError(),
+                "msg" => "Le format des données semble correct mais une erreur s'est produite lors de l'ajout de ce professeur : ".$vacataireModel->resolveVacataireOperationError(),
                 "type" => "danger"
             ];
+            var_dump($vacataireModel->resolveVacataireOperationError());
         }else {
 
-            [$prof_id , $new_prof_password] = $res;
+            [$vacataire_id , $new_vacataire_password] = $res;
             $notificationModel->createNotification(
-                $prof_id, 
+                $vacataire_id, 
                 "Bienvenue sur E-service", 
                 "Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.",
                 null
             );
 
             $activityModel->createActivity(
-                "Un nouveau professeur " . $_POST["firstName"] . " " . $_POST["lastName"] . " a été ajouté",
+                "Un nouveau vacataire " . $_POST["firstName"] . " " . $_POST["lastName"] . " a été ajouté par le coordonnateur " . $_SESSION['full_name'],
                 "fa-user-plus"
             );
 
@@ -110,7 +101,7 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 
             $emails = new PreparedEmails();
 
-            $email_sent = $emails->accountIsReadyEmail($_POST["email"], $new_prof_password, $_POST["firstName"]." ".$_POST["lastName"]);
+            $email_sent = $emails->accountIsReadyEmail($_POST["email"], $new_vacataire_password, $_POST["firstName"]." ".$_POST["lastName"]);
 
             if ($email_sent !== true){
                 $info =  [
@@ -131,9 +122,9 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 }
 
 
-$content = $form->professorFormView($errors, $info);
+$content = $form->vacataireFormView($errors, $info);
 
 $dashboard = new DashBoard();
-$dashboard->view("admin", "newProfessor", $content);
+$dashboard->view("professor/coordonnateur", "addVacataire", $content);
 
 ?>

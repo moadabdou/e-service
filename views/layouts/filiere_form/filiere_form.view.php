@@ -1,5 +1,5 @@
 <!-- Start of Add Filiere Form -->
-<div class="card shadow-sm">
+<div class="card shadow-sm p-3">
     <?php if ($info) {?>
         <div class="alert alert-<?= $info["type"] ?> text-center mb-3 w-50 mx-auto " role="alert">
             <?= $info["msg"] ?>

@@ -26,13 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
         if ( !isset($_POST["key"]) || !$userController->isSelfEditable($_POST["key"]) ){
             $info = [
-                "msg" => "Seems like  you dont have the right to edit this Data",
+                "msg" => "Il semble que vous n'ayez pas le droit de modifier ces données",
                 "type" => "danger"
             ];
         }else if(!$value || !$userController->isValidUserData($_POST["key"], $value)){
 
             $info = [
-                "msg" => "we were not able to  update your data because it was invalid",
+                "msg" => "Nous n'avons pas pu mettre à jour vos données car elles étaient invalides",
                 "type" => "danger"
             ];
 
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
                 $user_pp = $newFileName;
             } else {
                 $info = [
-                    "msg" => "a problem in  the server prevented us from updating your profile photo",
+                    "msg" => "Un problème sur le serveur nous a empêché de mettre à jour votre photo de profil",
                     "type" => "danger"
                 ];
             }
@@ -74,17 +74,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
             if($res){
                 $user_info[$_POST["key"]]["value"] =  $value;
                 $info = [
-                    "msg" => "your date is  updated seccessfuly",
+                    "msg" => "Vos données ont été mises à jour avec succès",
                     "type" => "success"
                 ];
             }else {
                 $info = [
-                    "msg" => "we were not able to  update your data because of an occured error ",
+                    "msg" => "Nous n'avons pas pu mettre à jour vos données en raison d'une erreur survenue",
                     "type" => "danger"
                 ];
             }
         }
-    
     
     }else if($type === "settings"){
 
@@ -92,20 +91,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
         if($settingName === "change-password"){
             
-
             $user_full_info = $userModel->getUserByID($_SESSION["id_user"]);
 
             if (!isset($_POST["current_password"]) || password_verify($_POST["current_password"] , $user_full_info["password"]) === false){
 
                 $info = [
-                    "msg" => "we were not able to  update your password : current password incurrect! ",
+                    "msg" => "Nous n'avons pas pu mettre à jour votre mot de passe : mot de passe actuel incorrect !",
                     "type" => "danger"
                 ];
 
             }else if( !isset($_POST["confirm_password"]) || !isset($_POST["new_password"]) || $_POST["new_password"] !== $_POST["confirm_password"]){
 
                 $info = [
-                    "msg" => "we were not able to  update your password : new password and confirm passowrd are not the same! ",
+                    "msg" => "Nous n'avons pas pu mettre à jour votre mot de passe : le nouveau mot de passe et sa confirmation ne correspondent pas !",
                     "type" => "danger"
                 ];
 
@@ -116,12 +114,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
                 $res =  $userModel->updateUserColumn("password", $hashed_password , $_SESSION["id_user"]);
                 if($res){
                     $info = [
-                        "msg" => "your password is  updated seccessfuly",
+                        "msg" => "Votre mot de passe a été mis à jour avec succès",
                         "type" => "success"
                     ];
                 }else {
                     $info = [
-                        "msg" => "we were not able to  update your password because of an occured error ",
+                        "msg" => "Nous n'avons pas pu mettre à jour votre mot de passe en raison d'une erreur survenue",
                         "type" => "danger"
                     ];
                 }

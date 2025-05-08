@@ -6,7 +6,7 @@
       <i class="ti ti-plus me-1"></i> Ajouter un département
     </a>
   </div>
-  <div class="card-body p-0"> 
+  <div class="card-body p-3"> 
     <div class="table-responsive"> 
       <table class="table table-hover table-striped mb-0">
         <thead class="table-light">

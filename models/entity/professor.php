@@ -15,6 +15,7 @@ class ProfessorModel  extends UserModel{
         $this->passGen = new PasswordGenerator();
     }
 
+
     public function newProfessor ( 
         string $firstName, 
         string $lastName,
@@ -304,14 +305,32 @@ class ProfessorModel  extends UserModel{
         
         public function getProfessorInfo(int $professorId): array {
             $query = "SELECT u.firstName, u.lastName, d.title AS department_name
-                      FROM user u
-                      JOIN professor p ON p.id_professor = u.id_user
-                      JOIN deparetement d ON d.id_deparetement = p.id_deparetement
-                      WHERE u.id_user = ?";
+                  FROM user u
+                  JOIN professor p ON p.id_professor = u.id_user
+                  JOIN deparetement d ON d.id_deparetement = p.id_deparetement
+                  WHERE u.id_user = ?";
         
             return $this->db->query($query, [$professorId]) 
-                ? $this->db->fetch(PDO::FETCH_ASSOC) 
-                : [];
+            ? $this->db->fetch(PDO::FETCH_ASSOC) 
+            : [];
+        }
+
+        public function getNormalProfessorsCount(): int {
+            $query = "SELECT COUNT(*) FROM professor";
+            
+            if ($this->db->query($query)) {
+            return (int) $this->db->fetchColumn();
+            }
+            return 0;
+        }
+
+        public function getVacatairesCount(): int {
+            $query = "SELECT COUNT(*) FROM vacataire";
+            
+            if ($this->db->query($query)) {
+            return (int) $this->db->fetchColumn();
+            }
+            return 0;
         }
         
         

@@ -25,7 +25,7 @@ require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
                 <?php foreach($vals["menu"]  as  $key => $comps){?>
                     <li class="sidebar-item">
                         <a class="sidebar-link <?=($key == $active)? "active" :  ""?> " href="<?=htmlspecialchars($comps["url"])?>" aria-expanded="false">
-                            <i class="ti <?=htmlspecialchars($comps["icon"])?>"></i>
+                            <i class="<?=htmlspecialchars($comps["icon"])?>"></i>
                             <span class="hide-menu"><?=htmlspecialchars($comps["title"])?></span>
                         </a>
                     </li>

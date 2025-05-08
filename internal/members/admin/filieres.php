@@ -17,6 +17,7 @@ $userController->checkCurrentUserAuthority(["admin"]);
 $dashboard = new DashBoard();
 $filiereModel = new FiliereModel();
 $filiereController =  new FiliereController();
+$departmentModel =  new  DepartementModel();
 
 $type  = (int)($_GET["filter"]?? 0) ;
 $dep_id  = (int)($_GET["id_dep"]?? -1) ;
@@ -27,7 +28,8 @@ if($dep_id  < 1 ){
     $userController->redirectCurrentUserBasedOnRole();
 }
 
-$dep_data = (new DepartementModel())->getByID($dep_id);
+$dep_data = $departmentModel->getByID($dep_id);
+$deps = $departmentModel->getAll();
 
 if(!is_array($dep_data) || count($dep_data) === 0){
     $userController->redirectCurrentUserBasedOnRole();
@@ -87,8 +89,8 @@ if ($type ===  1){
 
 }
 
-$content = (new FilieresView())->view($inner_content, $type, $dep_id, $dep_data);
+$content = (new FilieresView())->view($inner_content, $deps, $type, $dep_id, $dep_data);
 
-$dashboard->view("admin", "", $content);
+$dashboard->view("admin", "filieres", $content);
 
 ?>

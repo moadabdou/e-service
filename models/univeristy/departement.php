@@ -81,6 +81,23 @@ class DepartementModel extends Model{
         return false;
     }
 
+    public function countDepartements(): int {
+        if ($this->db->query("SELECT COUNT(*) as count FROM deparetement")) {
+            $result = $this->db->fetch(PDO::FETCH_ASSOC);
+            return (int)$result['count'];
+        }
+        return 0;
+    }
+
+    public function updateDepartement(int $id, string $title, string $description): bool {
+        if ($this->db->query("UPDATE deparetement SET title = ?, description = ? WHERE id_deparetement = ?", [$title, $description, $id])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+   
+
 }
 
 ?>

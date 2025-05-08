@@ -3,20 +3,22 @@ require_once __DIR__."../../../layouts/mini_navbar/minNavbar.php";
 
 class FilieresView{
 
-    public function view(string $content, int $active, int $id_dep, $dep_data){
+    public function view(string $content, $departements, int $active, int $id_dep, $dep_data){
+
+
 
 
         $base_url = "/e-service/internal/members/admin/filieres.php?id_dep=".$id_dep."&filter=";
 
-        $roles = ["tous les filières", "ajouter une filière"];
+        $actions = ["tous les filières", "ajouter une filière"];
 
-        foreach($roles as $index => &$role){
+        foreach($actions as $index => &$role){
 
             $role  = [$role, $base_url.(string)$index];
 
         }
 
-        $filters = (new MiniNav($roles , active: $active))->view();
+        $filters = (new MiniNav($actions , active: $active))->view();
 
         ob_start();
         require __DIR__."/filieres.view.php";

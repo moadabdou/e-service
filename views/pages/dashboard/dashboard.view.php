@@ -12,8 +12,13 @@ require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
   <title>Modernize Free Bootstrap Admin Template by Adminmart</title>
   <link rel="shortcut icon" type="image/png" href="/e-service/storage/image/logo/logo.png" />
   <link rel="stylesheet" href="<?=$RESOURCES_PATH?>/assets/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-
+<style>
+  nav i{
+    padding-left: 5px;
+  }
+</style>
 <body>
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -39,6 +44,11 @@ require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
                 <?php if($unread_notifications_count !== 0) {?> 
                   <div class="notification bg-primary rounded-circle"><?=htmlspecialchars($unread_notifications_count)?></div>
                 <?php }?>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="/e-service/internal/members/common/announces.php">
+                <i class="fas fa-bullhorn" style="    font-size: 17px;"></i>
               </a>
             </li>
           </ul>
