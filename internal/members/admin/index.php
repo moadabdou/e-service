@@ -1,6 +1,13 @@
 <?php 
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/admin/main.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/dashboard/dashboard.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/entity/professor.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/filiere.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/departement.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/filiere.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/content/activity.php";
 
 session_start();
 
@@ -10,19 +17,22 @@ $userController->checkCurrentUserAuthority(["admin"]);
 
 
 $dashboard = new DashBoard();
+$userModel =  new UserModel();
+$professorModel = new ProfessorModel();
+$departementModel =  new DepartementModel();
+$filiereModel =  new FiliereModel();
+$activityModel = new ActivityModel();
+$data  = [];
 
-ob_start();
-?>
+$data['allUsers_Active_count'] = $userModel->countAllActive();
+$data['allUsers_Disabled_count'] = $userModel->countAllDisabled();
+$data['prof_count'] = $professorModel->getNormalProfessorsCount();
+$data['vacataire_count'] = $professorModel->getVacatairesCount();
+$data['departement_count'] = $departementModel->countDepartements();
+$data['filiere_count'] = $filiereModel->countFilieres();
+$data["recent_activity"] = $activityModel->getRecentActivities(10);
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title fw-semibold mb-4">Sample Page</h5>
-        <p class="mb-0">This is the  admin's main page </p>
-    </div>
-</div>
-
-<?php
-$content = ob_get_clean();
+$content = (new MainView())->view($data);
 
 $dashboard->view("admin", "main", $content);
 

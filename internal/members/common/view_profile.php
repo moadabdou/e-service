@@ -7,6 +7,8 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/passwordGenerator/passw
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/email/prepared_emails.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/utils/navigation/navigation.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/activity.php";
+$activityModel = new ActivityModel();
 
 session_start();
 
@@ -99,6 +101,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_SESSION["role"] === "admin" && !e
                         "type" => "success"
                     ];
 
+                    
+
                 }
 
             }else {
@@ -119,6 +123,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_SESSION["role"] === "admin" && !e
                     "msg" => "le compte a été désactivé avec succès",
                     "type" => "success"
                 ];
+
+                $activityModel->createActivity(
+                    "Le compte de l'utilisateur ".$user_data["firstName"]." ".$user_data["lastName"]." a été désactivé par l'administrateur ".$_SESSION["full_name"].".", 
+                    $_SESSION["id_user"]
+                );
                 
             }else {
 

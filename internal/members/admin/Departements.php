@@ -12,7 +12,6 @@ $userController =  new UserController();
 
 $userController->checkCurrentUserAuthority(["admin"]);
 
-
 $dashboard = new DashBoard();
 $departementModel = new DepartementModel();
 $departementController =  new DepartementController();

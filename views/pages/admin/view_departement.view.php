@@ -1,6 +1,51 @@
+<style>
+    .modal-coorer{
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+    }
+    .filiere-section a {
+      line-height: 2em;
+    }
+</style>
+
 <!-- Start Department View Content -->
 <div class="card shadow-sm">
   <div class="card-body p-4 p-md-5">
+    <!-- Edit Button -->
+    <div class="d-flex justify-content-end mb-4">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editDepartmentModal">
+        <i class="ti ti-edit me-2"></i>Modifier le département
+      </button>
+    </div>
+
+    <!-- Edit Department Modal -->
+    <div class="modal fade" id="editDepartmentModal"  tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width:700px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modifier le département</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editDepartmentForm">
+              <div class="mb-3">
+                <label class="form-label">Titre</label>
+                <input type="text" class="form-control" id="depTitle" value="<?= htmlspecialchars($dep_data['title']) ?>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" id="depDescription" rows="4"><?= htmlspecialchars($dep_data['description']) ?></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" id="saveDepartment">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Department Title -->
     <div class="mb-5">
@@ -69,7 +114,7 @@
     <!-- Filiere de ce departement -->
     <div class="divider"></div>
 
-    <div class="filiere-section d-flex">
+    <div class="filiere-section d-flex" style="    margin-top: 60px;">
       <h2 class="section-title me-auto">Filières</h2>
       <a class=" btn btn-outline-secondary" href="/e-service/internal/members/admin/filieres.php?id_dep=<?= $dep_data["id_deparetement"] ?>">
         Voir toutes les filières de ce département
@@ -251,5 +296,30 @@
     })
   })
   }
+  document.getElementById('saveDepartment').addEventListener('click', async () => {
+        const data = {
+          title: document.getElementById('depTitle').value,
+          description: document.getElementById('depDescription').value
+        };
+
+        try {
+          const response = await fetch(window.location.href, {
+            method: 'UPDATE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            showNotification('Échec de la mise à jour du département', 'error');
+          }
+        } catch (error) {
+          showNotification('Erreur lors de la mise à jour', 'error');
+        }
+      });
+
 
 </script>

@@ -92,6 +92,14 @@ class FiliereModel extends Model
 
     }
 
+    public function countFilieres(): int {
+        if ($this->db->query("SELECT COUNT(*) as count FROM filiere")) {
+            $result = $this->db->fetch(PDO::FETCH_ASSOC);
+            return (int)$result['count'];
+        }
+        return 0;
+    }
+
     public function deleteCoordinator(int $id_filiere) : bool {
         
         $this->db->beginTransaction();
@@ -121,5 +129,14 @@ class FiliereModel extends Model
         return true;
 
     }
+
+    public function updateFiliere(int $id_filiere, string $title, string $description): bool {
+        if ($this->db->query("UPDATE filiere SET title = ?, description = ? WHERE id_filiere = ?", [$title, $description, $id_filiere])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 
 }

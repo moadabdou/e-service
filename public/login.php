@@ -51,6 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
         $_SESSION["first_name"] = $user_info["firstName"];
         $_SESSION["last_name"] = $user_info["lastName"];
+        $_SESSION["full_name"] = $user_info["firstName"]." ".$user_info["lastName"];
+        $_SESSION["email"] = $user_info["email"];
         $_SESSION["role"] = $user_info["role"];
         $_SESSION["id_user"] = $user_info["id_user"];
         

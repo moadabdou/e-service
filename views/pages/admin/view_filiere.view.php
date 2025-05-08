@@ -1,6 +1,47 @@
+
+<style>
+    .modal-coorer{
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+    }
+</style>
 <!-- Start Department View Content -->
-<div class="card shadow-sm">
-  <div class="card-body p-4 p-md-5">
+<div class="card-body p-4 p-md-5">
+    <!-- Add Edit Button -->
+    <div class="d-flex justify-content-end mb-4">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editFiliereModal">
+            <i class="ti ti-edit me-2"></i>Modifier la filière
+        </button>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editFiliereModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier la filière</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editFiliereForm">
+                        <div class="mb-3">
+                            <label class="form-label">Titre</label>
+                            <input type="text" class="form-control" id="editTitle" value="<?= htmlspecialchars($filiere_data['title']) ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" rows="3"><?= htmlspecialchars($filiere_data['description']) ?></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="saveFiliere">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Department Title -->
     <div class="mb-5">
@@ -233,5 +274,30 @@ function showNotification(message, type = 'info') {
         })
     })
   }
+
+  document.getElementById('saveFiliere').addEventListener('click',async function() {
+        const data = {
+            title: document.getElementById('editTitle').value,
+            description: document.getElementById('editDescription').value
+        };
+
+        const response = await fetch(window.location.href, {
+            method: 'UPDATE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+          
+        
+        if (response.ok) {
+            showNotification("Filière mise à jour avec succès", "success");
+            window.location.reload();
+        } else {    
+            const errorData = await response.json();
+            showNotification("Échec de la mise à jour de la filière", "error");
+        }
+
+    });
 
 </script>

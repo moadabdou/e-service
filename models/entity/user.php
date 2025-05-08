@@ -36,6 +36,14 @@ class UserModel  extends Model{
 
     }
 
+    public  function getfullName(int $id): string {
+        if ($this->db->query("SELECT CONCAT(firstName, ' ', lastName) AS full_name FROM user WHERE id_user = ?", [$id])) {
+            return $this->db->fetchColumn(0);
+        } else {
+            throw new Exception("Database Error: " . $this->db->getError());
+        }
+    }
+
     public function getUserByID(int $id){
 
         if ($this->db->query("SELECT * FROM user WHERE id_user=?", [$id])){
@@ -112,10 +120,11 @@ class UserModel  extends Model{
      *  4 => admins 
     */    
 
-    public function getUsersByRole(int $role): array|false{
+    public function getUsersByRole(int $role, int $status): array|false{
 
         $prefix =  "SELECT id_user,firstName,lastName,CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) as img,email,phone,birth_date,creation_date FROM user ";
         $query = match ($role) {
+            -1 => $prefix."WHERE 1",
             0 => $prefix."WHERE role = 'professor'",
             1 => $prefix."JOIN professor ON id_user=id_professor AND professor.role = 'chef_deparetement'",
             2 => $prefix."JOIN professor ON id_user=id_professor AND professor.role = 'coordonnateur'",
@@ -123,8 +132,34 @@ class UserModel  extends Model{
             4 => $prefix."WHERE role = 'admin'",
         };
 
+        $query .= match ($status) {
+            0 => "",
+            1 => " AND status = 'active'",
+            2 => " AND status = 'disabled'",
+        };
+
         if ($this->db->query($query)) {
             return $this->db->fetchAll();
+        } else {
+            $this->error = $this->db->getError();
+            return false;
+        }
+    }
+
+    public function countAllActive(): int|false {
+        if ($this->db->query("SELECT COUNT(*) as count FROM user WHERE status = 'active'")) {
+            $result = $this->db->fetch();
+            return (int)$result['count'];
+        } else {
+            $this->error = $this->db->getError();
+            return false;
+        }
+    }
+
+    public function countAllDisabled(): int|false {
+        if ($this->db->query("SELECT COUNT(*) as count FROM user WHERE status = 'disabled'")) {
+            $result = $this->db->fetch();
+            return (int)$result['count'];
         } else {
             $this->error = $this->db->getError();
             return false;

@@ -7,6 +7,7 @@ class AllUsersView{
     /**
      * @param type 
      * type is the  type of users you  wanna  show  
+     * -1 => all
      *  0 => professors
      *  1 => departement head  
      *  2 => coordinator 
@@ -14,20 +15,10 @@ class AllUsersView{
      *  4 => admins 
      */
 
-    public function view(int $type = 0, array $users_data){
+    public function view(int $selected_role = -1, int $selected_status = 0, array $users_data){
 
-        $base_url = "/e-service/internal/members/admin/AllUsers.php?filter=";
-
-        $roles = ["professeurs", "chefs des départements", "coordinateurs", "vacataires", "administrateurs"];
-
-        foreach($roles as $index => &$role){
-
-            $role  = [$role, $base_url.(string)$index];
-
-        }
-
-        $filters = (new MiniNav($roles , active: $type))->view();
-
+        $roles = ["Tous les Rôles","professeurs", "chefs des départements", "coordinateurs", "vacataires", "administrateurs"];
+        $status = ["Tous les statuts","Actif", "Inactif"];
 
         $users = "";
         $user_card = new SimpleUserCard();

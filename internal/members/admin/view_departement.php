@@ -4,6 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/views/pages/admin/view_depart
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/univeristy/departement.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/e-service/models/entity/professor.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/activity.php";
+$activityModel = new ActivityModel();
 
 session_start();
 
@@ -32,6 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     if(is_array($head_condidates)){
         echo json_encode($head_condidates);
         header('Content-Type: application/json');
+
+
+
         http_response_code(200);
     }else {
         http_response_code(500);
@@ -51,6 +56,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
         if($professorModel->setAsDepartementHead($id_prof)){
 
+            $activityModel->createActivity(
+                "Le professeur ".$professorModel->getFullName($id_prof)." a été nommé chef de département ".$data_dep["title"]." par l'administrateur ".$_SESSION["full_name"].".", 
+                "fa-user-check"
+            );
+
             http_response_code(200);
         }else {
             var_dump($professorModel->getError());
@@ -58,6 +68,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
         }
     
+    }else if(isset($data["title"]) && isset($data["description"])){
+
+        $title = $data['title'] ?? null;
+        $desc = $data['description'] ?? null;
+
+        if ($departementModel->updateDepartement($id_dep, $title, $desc) === false){
+            http_response_code(400);
+            var_dump($departementModel->getError());    
+        }else {
+            $activityModel->createActivity(
+                "Le département ".$data_dep["title"]." a été modifié par l'administrateur ".$_SESSION["full_name"].".",
+                "fa-user-pen"
+            );
+        }
+
     }else {
 
         http_response_code(500);
@@ -70,6 +95,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
     if($departementModel->deleteHead($id_dep)){
 
+        $activityModel->createActivity(
+            "Le chef de département ".$data_dep["title"]." a été supprimé par l'administrateur ".$_SESSION["full_name"].".", 
+            "fa-user-xmark"
+        );
+        
         http_response_code(200);
 
     }else {
