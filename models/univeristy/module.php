@@ -35,7 +35,20 @@ class ModuleModel extends  Model
 
     public function getModulesByFiliereId($filiereId)
     {
-        $query = "SELECT id_module, title, volume_cours FROM module WHERE id_filiere = ?";
+        $query = "SELECT 
+                    id_module,
+                    code_module,
+                    title,
+                    volume_cours,
+                    volume_td,
+                    volume_tp,
+                    volume_autre,
+                    credits,
+                    semester,
+                    evaluation
+                  FROM module 
+                  WHERE id_filiere = ?";
+
         if ($this->db->query($query, [$filiereId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
@@ -251,7 +264,8 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getApprovedModulesByProfessor(int $professorId): array|false {
+    public function getApprovedModulesByProfessor(int $professorId): array|false
+    {
         $query = "SELECT 
                     m.id_module, 
                     m.title, 
@@ -267,7 +281,7 @@ class ModuleModel extends  Model
                   JOIN module m ON ap.id_module = m.id_module
                   JOIN filiere f ON m.id_filiere = f.id_filiere
                   WHERE ap.to_professor = ?";
-    
+
         // Execute the query with professorId twice (once for subquery and once for main query)
         if ($this->db->query($query, [$professorId, $professorId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
@@ -275,8 +289,8 @@ class ModuleModel extends  Model
             return false;
         }
     }
-    
-        
+
+
 
     public function getUnassignedValidatedModules(int $departmentId): array
     {
@@ -419,13 +433,14 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getTotalAssignedHoursByDepartment(int $departmentId): int {
+    public function getTotalAssignedHoursByDepartment(int $departmentId): int
+    {
         $query = "SELECT SUM(m.volume_cours) AS total_hours
                   FROM affectation_professor ap
                   JOIN module m ON ap.id_module = m.id_module
                   JOIN filiere f ON m.id_filiere = f.id_filiere
                   WHERE f.id_deparetement = ?";
-    
+
         if ($this->db->query($query, [$departmentId])) {
             $result = $this->db->fetch(PDO::FETCH_ASSOC);
             return (int) ($result['total_hours'] ?? 0);
@@ -433,9 +448,10 @@ class ModuleModel extends  Model
             return 0;
         }
     }
-    
 
-    public function getHistoricalAffectations(int $departmentId): array {
+
+    public function getHistoricalAffectations(int $departmentId): array
+    {
         $query = "SELECT 
                     ap.annee,
                     u.id_user,
@@ -490,7 +506,8 @@ class ModuleModel extends  Model
 
 
     // Get all modules in a department
-    public function getModulesByDepartment(int $departmentId): array {
+    public function getModulesByDepartment(int $departmentId): array
+    {
         $query = "SELECT id_module, title, volume_cours
                   FROM module
                   WHERE id_deparetement = ?";
@@ -503,7 +520,8 @@ class ModuleModel extends  Model
     }
 
     // Get a professor's assigned modules
-    public function getProfessorModules(int $professorId): array {
+    public function getProfessorModules(int $professorId): array
+    {
         $query = "SELECT m.id_module, m.title, m.volume_cours
                   FROM module m
                   JOIN affectation_professor ap ON ap.id_module = m.id_module
@@ -516,70 +534,78 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getModulesWithoutNotes(int $professorId): array {
+    public function getModulesWithoutNotes(int $professorId): array
+    {
         $query = "SELECT m.* FROM module m
                   JOIN affectation_professor ap ON ap.id_module = m.id_module
                   WHERE ap.to_professor = ?
                   AND m.id_module NOT IN (SELECT id_module FROM notes WHERE id_professor = ?)";
-        
-        return $this->db->query($query, [$professorId, $professorId]) 
-            ? $this->db->fetchAll(PDO::FETCH_ASSOC) 
+
+        return $this->db->query($query, [$professorId, $professorId])
+            ? $this->db->fetchAll(PDO::FETCH_ASSOC)
             : [];
     }
-    
-    public function getModuleChoicesGroupedByYear(int $professorId): array {
+
+    public function getModuleChoicesGroupedByYear(int $professorId): array
+    {
         $query = "SELECT YEAR(date_creation) AS year, m.title, cm.status, cm.date_creation
                   FROM choix_module cm
                   JOIN module m ON cm.id_module = m.id_module
                   WHERE cm.by_professor = ?
                   ORDER BY year DESC, cm.date_creation DESC";
-    
+
         if ($this->db->query($query, [$professorId])) {
             $choices = $this->db->fetchAll(PDO::FETCH_ASSOC);
             $grouped = [];
-    
+
             foreach ($choices as $choice) {
                 $grouped[$choice['year']][] = $choice;
             }
-    
+
             return $grouped;
         } else {
             return [];
         }
     }
-    
+
     // from here :
-    public function getNextModuleId(): int {
+    public function getNextModuleId(): int
+    {
         $this->db->query("SHOW TABLE STATUS LIKE 'module'");
         $row = $this->db->fetch();
         return $row ? (int)$row['Auto_increment'] : 1;
     }
-    
-    public function generateUniqueEvaluationId(): int {
+
+    public function generateUniqueEvaluationId(): int
+    {
         $this->db->query("SELECT MAX(evaluation) AS max_val FROM module");
         $res = $this->db->fetch();
         return ($res && $res['max_val']) ? $res['max_val'] + 1 : 1;
     }
-    
-    public function getEvaluationIdByModuleId(int $id): int {
+
+    public function getEvaluationIdByModuleId(int $id): int
+    {
         $this->db->query("SELECT evaluation FROM module WHERE id_module = ?", [$id]);
         $res = $this->db->fetch();
         return $res ? (int)$res['evaluation'] : 0;
     }
-    
-    public function getParentModuleIdByEvaluation(int $eval): int {
+
+    public function getParentModuleIdByEvaluation(int $eval): int
+    {
         $this->db->query("SELECT MIN(id_module) AS id FROM module WHERE evaluation = ?", [$eval]);
         $res = $this->db->fetch();
         return $res ? (int)$res['id'] : 0;
     }
-    
-    public function countElementsByEvaluation(int $eval): int {
+
+    public function countElementsByEvaluation(int $eval): int
+    {
         $this->db->query("SELECT COUNT(*) AS total FROM module WHERE evaluation = ?", [$eval]);
         $res = $this->db->fetch();
         return $res ? (int)$res['total'] : 0;
     }
-    
-    public function getModulesWithUniqueEvaluationOnly(): array {
+
+    public function getModulesWithUniqueEvaluationOnly(): array
+    {
         $this->db->query(" SELECT m.* FROM module m
             WHERE evaluation != 0 AND evaluation IN (
                 SELECT evaluation FROM module
@@ -587,20 +613,19 @@ class ModuleModel extends  Model
                 HAVING COUNT(*) = 1
             )
         ");
-        
+
         $results = $this->db->fetchAll();
-    
+
         return $results ?: [];
     }
-    
-    
-    public function insertModule(array $data): bool {
+
+
+    public function insertModule(array $data): bool
+    {
         $query = "INSERT INTO module (title, description, volume_cours, volume_td, volume_tp, volume_autre, evaluation, semester, credits, id_filiere, code_module)
                   VALUES (:title, :description, :volume_cours, :volume_td, :volume_tp, :volume_autre, :evaluation, :semester, :credits, :id_filiere, :code_module)";
         return $this->db->query($query, $data);
     }
-    
-    
 }
 //functions for selected units
 function formatSemester($code)

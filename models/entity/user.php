@@ -145,4 +145,15 @@ class UserModel  extends Model
             return false;
         }
     }
+    public function getFullNameById($userId)
+    {
+        $query = "SELECT CONCAT(firstName, ' ', lastName) AS full_name FROM user WHERE id_user = ?";
+
+        if ($this->db->query($query, [$userId])) {
+            $result = $this->db->fetch(PDO::FETCH_ASSOC);
+            return $result['full_name'] ?? null;
+        }
+
+        return null;
+    }
 }
