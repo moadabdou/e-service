@@ -1,13 +1,13 @@
--- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Win64 (AMD64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eservice
 -- ------------------------------------------------------
--- Server version	10.4.32-MariaDB
+-- Server version	5.5.5-10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `activities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `activities` (
   `id_activite` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
   `create_time` datetime NOT NULL COMMENT 'Create Time',
@@ -47,7 +47,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
   `id_admin` int(11) NOT NULL,
   UNIQUE KEY `id_admin` (`id_admin`),
@@ -70,7 +70,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `affectation_professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `affectation_professor` (
   `to_professor` int(11) NOT NULL,
   `by_chef_deparetement` int(11) NOT NULL,
@@ -102,7 +102,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `affectation_vacataire`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `affectation_vacataire` (
   `to_vacataire` int(11) NOT NULL,
   `by_coordonnateur` int(11) NOT NULL,
@@ -132,7 +132,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `announces`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `announces` (
   `id_announce` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
   `create_time` datetime NOT NULL COMMENT 'Create Time',
@@ -160,7 +160,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `chef_deparetement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chef_deparetement` (
   `id_chef_deparetement` int(11) NOT NULL,
   UNIQUE KEY `id_chef_deparetement` (`id_chef_deparetement`),
@@ -184,7 +184,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `choix_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `choix_module` (
   `by_professor` int(11) NOT NULL,
   `id_module` int(11) NOT NULL,
@@ -214,7 +214,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `coordonnateur`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `coordonnateur` (
   `id_coordonnateur` int(11) NOT NULL,
   `id_filiere` int(11) NOT NULL,
@@ -241,7 +241,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `deparetement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `deparetement` (
   `id_deparetement` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -267,7 +267,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `filiere`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `filiere` (
   `id_filiere` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -296,7 +296,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `module` (
   `id_module` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -330,7 +330,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES (1,'Fran├ºais','Module de fran├ºais avanc├⌐','s1',3,1,'M1.1',10,5,0,0,1,1,3),(2,'Anglais','Module d\'anglais avanc├⌐','s1',3,1,'M1.2',8,6,0,0,1,1,3),(3,'Math├⌐matiques','Analyse math├⌐matique','s2',4,1,'M3.1',20,10,0,0,2,1,3),(17,'tqwvm','mbasdd','s3',22,1,'M17',13,0,0,0,0,1,3),(18,'asdjd','ghhbnjn','s1',2,1,'M3.2',4545,0,0,0,2,1,3),(19,'jhajb','jknmnm','s1',77,1,'M19.1',45,0,0,0,3,1,3);
+INSERT INTO `module` VALUES (1,'Français','Module de français avancé','s1',3,1,'M1.1',10,5,0,0,1,2,4),(2,'Anglais','Module d\'anglais avancé','s1',3,1,'M1.2',8,6,0,0,1,1,4),(3,'Mathématiques','Analyse mathématique','s2',4,1,'M3.1',20,10,0,0,2,23,4),(4,'Algèbre Linéaire','Linear and Bilinear Algebra','s2',3,1,'M4',25,20,1,1,0,23,4);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -340,7 +340,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notes` (
   `id_note` int(11) NOT NULL AUTO_INCREMENT,
   `id_module` int(11) NOT NULL,
@@ -376,7 +376,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notifications` (
   `id_notification` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
@@ -397,7 +397,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (11,1,'2024-02-01 09:00:00','New Module Assignment',NULL,'read','You have been assigned to teach Database Management'),(12,1,'2024-02-01 10:30:00','Grade Submission Reminder',NULL,'read','Please submit grades for Programming 101 by Friday'),(13,1,'2024-02-02 11:15:00','Department Meeting',NULL,'read','Monthly department meeting scheduled for next week'),(14,1,'2024-02-02 14:00:00','Schedule Update',NULL,'read','Your teaching schedule has been updated'),(15,1,'2024-02-03 09:45:00','System Maintenance',NULL,'read','System will be down for maintenance on Sunday'),(16,2,'2025-04-16 22:19:28','Welcome to E-service',NULL,'read','Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.'),(24,3,'2025-04-19 00:39:11','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev'),(25,3,'2025-04-19 00:42:15','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(26,3,'2025-04-19 12:51:05','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev'),(27,3,'2025-04-19 12:51:30','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(28,3,'2025-04-19 13:51:21','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(29,3,'2025-04-19 15:28:13','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(30,3,'2025-04-20 20:14:52','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(31,3,'2025-04-20 20:21:31','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(32,3,'2025-04-20 22:26:17','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(33,3,'2025-04-20 22:47:43','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais, engalais. ΓÜá∩╕Å Attention : votre charge horaire (520 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(40,4,'2025-04-24 15:52:18','Bienvenue sur E-service',NULL,'read','Veuillez changer votre mot de passe temporaire d├¿s que possible pour la s├⌐curit├⌐ de votre compte. Vous pouvez le faire en allant dans les param├¿tres de votre profil.'),(41,4,'2025-04-24 16:22:39','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev. ΓÜá∩╕Å Attention : votre charge horaire (120 h) est inf├⌐rieure au minimum requis (150 h).'),(42,4,'2025-04-28 22:30:59','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : mecanique, francais. ΓÜá∩╕Å Attention : votre charge horaire (310 h) d├⌐passe le maximum autoris├⌐ (200 h).'),(43,4,'2025-04-28 22:32:24','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'mecanique\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(44,4,'2025-04-28 22:32:26','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'Web Dev\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(45,2,'2025-04-28 22:33:05','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais. ΓÜá∩╕Å Attention : votre charge horaire (90 h) est inf├⌐rieure au minimum requis (120 h).'),(46,2,'2025-04-28 22:33:15','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'francais\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(47,3,'2025-04-29 00:14:33','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev, C++, mecanique. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(48,3,'2025-04-29 00:18:00','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'Web Dev\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(49,3,'2025-04-29 00:18:07','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'mecanique\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(50,2,'2025-04-29 00:20:57','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais. ΓÜá∩╕Å Attention : votre charge horaire (90 h) est inf├⌐rieure au minimum requis (120 h).'),(51,4,'2025-04-29 00:23:54','≡ƒÄô Module Affect├⌐',NULL,'read','Le module \'engalais\' a ├⌐t├⌐ affect├⌐ ├á vous pour l\'ann├⌐e 2025 par le chef de d├⌐partement.'),(53,2,'2025-05-06 20:42:57','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Anglais. ΓÜá∩╕Å Attention : votre charge horaire (0 h) est inf├⌐rieure au minimum requis (120 h).'),(55,13,'2025-05-08 18:54:06','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(56,14,'2025-05-08 18:55:37','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.');
+INSERT INTO `notifications` VALUES (11,1,'2024-02-01 09:00:00','New Module Assignment',NULL,'read','You have been assigned to teach Database Management'),(12,1,'2024-02-01 10:30:00','Grade Submission Reminder',NULL,'read','Please submit grades for Programming 101 by Friday'),(13,1,'2024-02-02 11:15:00','Department Meeting',NULL,'read','Monthly department meeting scheduled for next week'),(14,1,'2024-02-02 14:00:00','Schedule Update',NULL,'read','Your teaching schedule has been updated'),(15,1,'2024-02-03 09:45:00','System Maintenance',NULL,'read','System will be down for maintenance on Sunday'),(16,2,'2025-04-16 22:19:28','Welcome to E-service',NULL,'read','Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.'),(24,3,'2025-04-19 00:39:11','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev'),(25,3,'2025-04-19 00:42:15','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(26,3,'2025-04-19 12:51:05','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev'),(27,3,'2025-04-19 12:51:30','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(28,3,'2025-04-19 13:51:21','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(29,3,'2025-04-19 15:28:13','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(30,3,'2025-04-20 20:14:52','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(31,3,'2025-04-20 20:21:31','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(32,3,'2025-04-20 22:26:17','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(33,3,'2025-04-20 22:47:43','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais, engalais. ΓÜá∩╕Å Attention : votre charge horaire (520 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(40,4,'2025-04-24 15:52:18','Bienvenue sur E-service',NULL,'read','Veuillez changer votre mot de passe temporaire d├¿s que possible pour la s├⌐curit├⌐ de votre compte. Vous pouvez le faire en allant dans les param├¿tres de votre profil.'),(41,4,'2025-04-24 16:22:39','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev. ΓÜá∩╕Å Attention : votre charge horaire (120 h) est inf├⌐rieure au minimum requis (150 h).'),(42,4,'2025-04-28 22:30:59','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : mecanique, francais. ΓÜá∩╕Å Attention : votre charge horaire (310 h) d├⌐passe le maximum autoris├⌐ (200 h).'),(43,4,'2025-04-28 22:32:24','≡ƒÄô Module valid├⌐',NULL,'read','Votre demande pour le module \'mecanique\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(44,4,'2025-04-28 22:32:26','≡ƒÄô Module valid├⌐',NULL,'read','Votre demande pour le module \'Web Dev\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(45,2,'2025-04-28 22:33:05','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais. ΓÜá∩╕Å Attention : votre charge horaire (90 h) est inf├⌐rieure au minimum requis (120 h).'),(46,2,'2025-04-28 22:33:15','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'francais\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(47,3,'2025-04-29 00:14:33','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev, C++, mecanique. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(48,3,'2025-04-29 00:18:00','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'Web Dev\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(49,3,'2025-04-29 00:18:07','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'mecanique\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(50,2,'2025-04-29 00:20:57','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais. ΓÜá∩╕Å Attention : votre charge horaire (90 h) est inf├⌐rieure au minimum requis (120 h).'),(51,4,'2025-04-29 00:23:54','≡ƒÄô Module Affect├⌐',NULL,'read','Le module \'engalais\' a ├⌐t├⌐ affect├⌐ ├á vous pour l\'ann├⌐e 2025 par le chef de d├⌐partement.'),(53,2,'2025-05-06 20:42:57','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Anglais. ΓÜá∩╕Å Attention : votre charge horaire (0 h) est inf├⌐rieure au minimum requis (120 h).'),(55,13,'2025-05-08 18:54:06','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(56,14,'2025-05-08 18:55:37','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,7 +407,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `professor` (
   `id_professor` int(11) NOT NULL,
   `max_hours` int(11) NOT NULL CHECK (`max_hours` > 0),
@@ -437,7 +437,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `speciality`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `speciality` (
   `id_speciality` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -464,7 +464,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `firstName` char(30) NOT NULL,
@@ -501,7 +501,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `vacataire`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vacataire` (
   `id_vacataire` int(11) NOT NULL,
   `id_coordonnateur` int(11) DEFAULT NULL,
@@ -534,4 +534,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-08 19:49:00
+-- Dump completed on 2025-05-10 22:07:45
