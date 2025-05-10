@@ -45,6 +45,7 @@ class ModuleModel extends  Model
                 volume_autre,
                 credits,
                 semester,
+                description,
                 evaluation,
                 responsable,
                 id_speciality
