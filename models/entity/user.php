@@ -49,7 +49,7 @@ class UserModel  extends Model{
         if ($this->db->query("SELECT * FROM user WHERE id_user=?", [$id])){
             return $this->db->fetch();
         }else {
-            throw $this->db->getError();
+            throw new Exception($this->db->getError());
         }
 
     }
@@ -59,7 +59,7 @@ class UserModel  extends Model{
         if ($this->db->query("SELECT CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) as img FROM user WHERE id_user=?", [$id])){
             return $this->db->fetch();
         }else {
-            throw $this->db->getError();
+            throw new Exception($this->db->getError());
         }
 
     }

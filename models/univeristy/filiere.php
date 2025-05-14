@@ -51,7 +51,7 @@ class FiliereModel extends Model
         if ($this->db->query("SELECT * FROM filiere WHERE id_filiere=?", [$filiere_id])){
             return $this->db->fetch(PDO::FETCH_ASSOC);
         }else {
-            throw $this->db->getError();
+            throw new Exception($this->db->getError());
         }
     }
 

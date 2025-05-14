@@ -11,7 +11,7 @@ class Model{
     {
         $this->db =  new Database();
         if($this->db->getError()){
-            throw $this->db->getError();  //if an  error happened during initializing just  throw it 
+            throw new Exception($this->db->getError());  //if an  error happened during initializing just  throw it 
         }
     }
 
