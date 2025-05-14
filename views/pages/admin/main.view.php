@@ -264,14 +264,7 @@
                 gap: 1rem;
             }
             .access-tile { padding: 1.25rem; }
-            .activity-item {
-                /* flex-direction: column;
-                align-items: flex-start; */
-            }
-            .activity-time {
-                /* margin-left: 0;
-                margin-top: 0.25rem; */
-            }
+
         }
 
     </style>

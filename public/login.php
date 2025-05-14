@@ -25,23 +25,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
 
     if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-        $errors["email"] = "please insert a valid email !";
+        $errors["email"] = "Veuillez saisir une adresse e-mail valide !";
     }else {
         $user_info = $ProfessorModel->getUserByEmail($_POST['email']);
         if ($user_info === false){ 
-            $errors["email"] = "looks like no one has the email you sent .."; 
+            $errors["email"] = "Il semble que personne ne possède l'adresse e-mail que vous avez envoyée."; 
         }else if((!isset($_POST["password"]) || password_verify($_POST["password"] , $user_info["password"]) === false)){
             $errors["invalid"] = true;
         }else if($user_info["status"] === "disabled"){
             $errors["invalid"] = true;
-            $errors["email"] = "the account with this email is disabled, contact the administration";
+            $errors["email"] = "Le compte associé à cet e-mail est désactivé, veuillez contacter l'administration.";
         }
     }
 
     if (count($errors)){
 
         $info = [
-            "msg" => "we encountred an error while trying letting you in .. check your credentials",
+            "msg" => "Nous avons rencontré une erreur en essayant de vous connecter... Veuillez vérifier vos identifiants.",
             "type" => "danger"
         ];
 
