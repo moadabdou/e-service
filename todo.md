@@ -93,7 +93,7 @@ In your web app, the department head should be able to:
 
 # Technically, you need to:
 
-[ ] Build a secured dashboard with a list of all profs and UEs.
+[x] Build a secured dashboard with a list of all profs and UEs.
 
 [x] Allow manual assignment and approval of UEs.
 
@@ -103,4 +103,4 @@ In your web app, the department head should be able to:
 
 [x] Allow export of data using Excel.
 
-[ ] Show stats like bar charts or tables for reporting.
+[x] Show stats like bar charts or tables for reporting.

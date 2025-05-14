@@ -1188,9 +1188,10 @@ function initializeCharts() {
             const labels = workloadData.map(item => item.status || 'Inconnu');
             const data = workloadData.map(item => item.total || 0);
             const colors = [
+                '#00c853', //success
                 '#4361ee', // Primary
-                '#fa896b',  // Danger
-                '#00c853' //success
+                '#fa896b'  // Danger
+                
             ];
             
             new Chart(workloadCtx, {
@@ -1270,7 +1271,8 @@ function initializeCharts() {
                 ];
             }
             
-            const years = validationStatsData.map(item => item.year || '');
+            const years = validationStatsData.reverse().map(item => item.year || '');
+            
             const validatedCounts = validationStatsData.map(item => item.validated || 0);
             
             new Chart(validationCtx, {

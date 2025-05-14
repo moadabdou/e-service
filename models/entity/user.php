@@ -54,6 +54,16 @@ class UserModel  extends Model{
 
     }
 
+    public function getUserImg(int $id){
+
+        if ($this->db->query("SELECT CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) as img FROM user WHERE id_user=?", [$id])){
+            return $this->db->fetch();
+        }else {
+            throw $this->db->getError();
+        }
+
+    }
+
     protected function deleteUserById(int $id): bool {
         if ($this->db->query("DELETE FROM user WHERE id_user=?", [$id])) {
             return $this->db->rowCount()>0;
@@ -105,7 +115,7 @@ class UserModel  extends Model{
         }else if (strpos($this->getError(), "key 'CIN'") !== false){
             return "CIN is already exists";
         }else{
-            return null;
+            return "unknown ".$this->getError();
         }
 
     }
