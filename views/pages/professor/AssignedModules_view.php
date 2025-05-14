@@ -3,7 +3,7 @@ function assignedModulesView(array $assignedModules, int $totalHours): string {
     ob_start();
 ?>
 
-<div class="container mt-2 px-4 px-md-5">
+<div class="container mt-2 px-4 px-md-5 mb-3">
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
         <h2 class="fw-bold text-primary mb-2 mb-md-0">
             <i class="ti ti-books"></i> Modules Affectés Validés
