@@ -115,7 +115,7 @@ class UserModel  extends Model{
         }else if (strpos($this->getError(), "key 'CIN'") !== false){
             return "CIN is already exists";
         }else{
-            return null;
+            return "unknown ".$this->getError();
         }
 
     }

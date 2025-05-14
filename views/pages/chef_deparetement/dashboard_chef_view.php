@@ -1271,7 +1271,8 @@ function initializeCharts() {
                 ];
             }
             
-            const years = validationStatsData.map(item => item.year || '');
+            const years = validationStatsData.reverse().map(item => item.year || '');
+            
             const validatedCounts = validationStatsData.map(item => item.validated || 0);
             
             new Chart(validationCtx, {
