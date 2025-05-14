@@ -1,4 +1,4 @@
--- Active: 1730824903744@@127.0.0.1@3308@eservice
+-- Active: 1744657143506@@127.0.0.1@3306@eservice
 -- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: eservice
@@ -409,10 +409,13 @@ CREATE TABLE `professor` (
   `min_hours` int(11) NOT NULL CHECK (`min_hours` >= 0),
   `role` enum('normal','chef_deparetement','coordonnateur') NOT NULL,
   `id_deparetement` int(11) NOT NULL,
+  `id_speciality` int(11) NOT NULL,
   UNIQUE KEY `id_professor` (`id_professor`),
   KEY `id_deparetement` (`id_deparetement`),
+  KEY `speciality` (`id_speciality`),
   CONSTRAINT `professor_ibfk_1` FOREIGN KEY (`id_deparetement`) REFERENCES `deparetement` (`id_deparetement`),
-  CONSTRAINT `professor_ibfk_2` FOREIGN KEY (`id_professor`) REFERENCES `user` (`id_user`)
+  CONSTRAINT `professor_ibfk_2` FOREIGN KEY (`id_professor`) REFERENCES `user` (`id_user`),
+  CONSTRAINT `professor_ibfk_3` FOREIGN KEY (`id_speciality`) REFERENCES `speciality` (`id_speciality`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -422,7 +425,7 @@ CREATE TABLE `professor` (
 
 LOCK TABLES `professor` WRITE;
 /*!40000 ALTER TABLE `professor` DISABLE KEYS */;
-INSERT INTO `professor` VALUES (2,130,120,'chef_deparetement',1),(3,150,120,'normal',1),(4,200,150,'coordonnateur',1);
+INSERT INTO `professor` VALUES (2,130,120,'chef_deparetement',1,0),(3,150,120,'normal',1,0),(4,200,150,'coordonnateur',1,0);
 /*!40000 ALTER TABLE `professor` ENABLE KEYS */;
 UNLOCK TABLES;
 
