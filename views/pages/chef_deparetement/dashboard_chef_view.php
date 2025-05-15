@@ -13,9 +13,45 @@ function departmentHeadDashboard(
     int $vacantModulesCount,
     int $SousModuleCount,
     int $ModuleCount,
-
+    // New parameter for deadlines
+    array $activeDeadlines = []
 ): string {
+    // Include the deadline model
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/deadline.php";
+    $deadlineModel = new DeadlineModel();
 
+    // Get active deadlines for key features
+    $features = ['choose_modules', 'upload_notes'];
+    $deadlines = [];
+    $hasUrgentDeadlines = false;
+
+    foreach ($features as $feature) {
+        $totalMinutes = $deadlineModel->getRemainingMinutesForFeature($feature);
+        if ($totalMinutes !== null) {
+            $days = floor($totalMinutes / (24 * 60));
+            $hours = floor(($totalMinutes % (24 * 60)) / 60);
+            $minutes = $totalMinutes % 60;
+            
+            $deadlines[$feature] = [
+                'remaining' => [
+                    'days' => $days,
+                    'hours' => $hours,
+                    'minutes' => $minutes
+                ],
+                'total_minutes' => $totalMinutes,
+                'formatted' => formatRemainingTime([
+                    'days' => $days,
+                    'hours' => $hours,
+                    'minutes' => $minutes
+                ])
+            ];
+
+            // Check if any deadline is urgent (less than 48 hours)
+            if ($totalMinutes < 2880) {
+                $hasUrgentDeadlines = true;
+            }
+        }
+    }
 
     $workloadDistribution = is_array($workloadDistribution) ? $workloadDistribution : [];
     $moduleChoicesStats = is_array($moduleChoicesStats) ? $moduleChoicesStats : [];
@@ -78,6 +114,29 @@ function departmentHeadDashboard(
 <link rel="stylesheet" href="/e-service/resources/assets/css/chef_dashboard.css">
 
 <div class="dashboard-container">
+    
+    <!-- Deadline Alert Banner - Only shown if there are urgent deadlines -->
+    <?php if ($hasUrgentDeadlines): ?>
+    <div class="deadline-alert-banner">
+        <div class="alert alert-warning border-0 shadow-sm mb-4 rounded-4">
+            <div class="d-flex align-items-center">
+                <div class="alert-icon bg-warning-subtle rounded-circle p-3 me-3">
+                    <i class="ti ti-clock-hour-4 fs-4 text-warning"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-1">Échéances importantes à venir</h5>
+                    <p class="mb-0">Des délais importants approchent de leur fin. Veuillez vérifier et prendre les mesures nécessaires.</p>
+                </div>
+                <div class="ms-3">
+                    <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-sm btn-warning">
+                        <i class="ti ti-eye me-1"></i> Voir les échéances
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <div class="welcome-header">
         <div class="welcome-content">
             <h1>Bienvenue, Chef de département</h1>
@@ -135,9 +194,22 @@ function departmentHeadDashboard(
                 </div>
             </div>
             
-            <button class="btn-new-assignment">
-                <a href="/e-service/internal/members/professor/chef_deparetement/assign_modules.php"><i class="ti ti-plus"></i> Nouvelle affectation </a>
-            </button>
+            <div class="d-flex gap-2 mt-3">
+                <button class="btn-new-assignment">
+                    <a href="/e-service/internal/members/professor/chef_deparetement/assign_modules.php"><i class="ti ti-plus"></i> Nouvelle affectation </a>
+                </button>
+                
+                <button class="btn-new-assignment">
+                    <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php"><i class="ti ti-calendar-time"></i> Gérer les échéances </a>
+                </button>
+
+                <form method="POST" action="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php">
+                    <input type="hidden" name="create_announce" value="1">
+                    <button type="submit" class="btn-new-assignment">
+                        <i class="ti ti-speakerphone"></i> Auto Créer une annonce d'échéance
+                    </button>
+                </form>
+            </div>
         </div>
         
         <div class="welcome-decoration">
@@ -149,44 +221,49 @@ function departmentHeadDashboard(
     
     <!-- Key Metrics Section -->
     <div class="metrics-grid">
-        <div class="metric-card">
-            <div class="metric-header">
-                <div class="metric-icon blue">
-                    <i class="ti ti-book-off"></i>
+
+            <div class="metric-card">
+            <div class="metric-section">
+                <div class="metric-header">
+                    <div class="metric-icon blue">
+                        <i class="ti ti-book-off"></i>
+                    </div>
+                    <div>
+                        <p>Taux des modules vacants</p>
+                        <h3><?= $vacantRate ?>%</h3>
+                    </div>
                 </div>
-                <div>
-                    <p>Taux des modules vacants</p>
-                    <h3><?= $vacantRate ?>%</h3>
-                </div>
-            </div>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: <?= $vacantRate ?>%;"></div>
-                </div>
-                <div class="progress-info">
-                    <span><?= $vacantModules ?> modules</span>
-                    <span>sur <?= $ModuleCount ?> modules</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="metric-card">
-            <div class="metric-header">
-                <div class="metric-icon green">
-                    <i class="ti ti-circle-check"></i>
-                </div>
-                <div>
-                    <p>Taux de validation</p>
-                    <h3><?= $validationRate ?>%</h3>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: <?= $vacantRate ?>%;"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span><?= $vacantModules ?> modules</span>
+                        <span>sur <?= $ModuleCount ?> modules</span>
+                    </div>
                 </div>
             </div>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill success" style="width: <?= $validationRate ?>%;"></div>
+
+            <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #ddd;">
+
+            <div class="metric-section">
+                <div class="metric-header">
+                    <div class="metric-icon green">
+                        <i class="ti ti-circle-check"></i>
+                    </div>
+                    <div>
+                        <p>Taux de validation</p>
+                        <h3><?= $validationRate ?>%</h3>
+                    </div>
                 </div>
-                <div class="progress-info">
-                    <span><?= $validatedChoices ?> validés</span>
-                    <span>sur <?= $totalChoices ?> choix</span>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill success" style="width: <?= $validationRate ?>%;"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span><?= $validatedChoices ?> validés</span>
+                        <span>sur <?= $totalChoices ?> choix</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -258,6 +335,65 @@ function departmentHeadDashboard(
         
         <div class="metric-card">
             <div class="metric-header">
+                <div class="metric-icon blue">
+                    <i class="ti ti-calendar-time"></i>
+                </div>
+                <div>
+                    <p>Échéances actives</p>
+                    <h3><?= count($deadlines) ?></h3>
+                </div>
+            </div>
+            
+            <?php if (!empty($deadlines)): ?>
+                <div class="deadlines-list">
+                    <?php foreach ($deadlines as $feature => $deadline): ?>
+                        <?php 
+                            $featureName = $feature === 'choose_modules' ? 'Choix des modules' : 'Dépôt des notes';
+                            $iconClass = $feature === 'choose_modules' ? 'ti-book' : 'ti-file-upload';
+                            $urgencyClass = $deadline['total_minutes'] < 1440 ? 'text-danger' : 
+                                           ($deadline['total_minutes'] < 2880 ? 'text-warning' : 'text-primary');
+                        ?>
+                        <div class="deadline-item">
+                            <div class="d-flex align-items-center">
+                                <i class="ti <?= $iconClass ?> me-2 <?= $urgencyClass ?>"></i>
+                                <span class="fw-medium"><?= $featureName ?></span>
+                            </div>
+                            <div class="countdown <?= $urgencyClass ?> fw-bold">
+                                <?= $deadline['formatted'] ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                
+                <div class="mt-3 text-center">
+                    <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-sm btn-outline-primary w-100">
+                        <i class="ti ti-settings"></i> Gérer les échéances
+                    </a>
+                </div>
+                
+                <div class="mt-2 text-center">
+                    <form method="POST" action="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php">
+                        <input type="hidden" name="create_announce" value="1">
+                        <button type="submit" class="btn btn-sm btn-outline-success w-100">
+                            <i class="ti ti-bell"></i> Créer une annonce
+                        </button>
+                    </form>
+                </div>
+            <?php else: ?>
+                <div class="empty-state text-center py-3">
+                    <i class="ti ti-calendar-off text-muted fs-4 mb-2"></i>
+                    <p class="text-muted mb-0">Aucune échéance active</p>
+                </div>
+                <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php">
+            <button class="btn-view-requestblue">
+                <i class="ti ti-plus"></i> Ajouter une échéance
+            </button>
+            </a>
+            <?php endif; ?>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-header">
                 <div class="metric-icon red">
                     <i class="ti ti-alert-triangle"></i>
                 </div>
@@ -290,6 +426,9 @@ function departmentHeadDashboard(
             </button>
             <button class="tab-btn" data-tab="modules">
                 <i class="ti ti-book"></i> Modules
+            </button>
+            <button class="tab-btn" data-tab="deadlines">
+                <i class="ti ti-calendar-time"></i> Échéances
             </button>
             <button class="tab-btn" data-tab="reports">
                 <i class="ti ti-report-analytics"></i> Rapports
@@ -471,11 +610,11 @@ function departmentHeadDashboard(
                                     <span>Voir Modules Vacants</span>
                                 </a>
                                 
-                                <a href="/e-service/internal/members/professor/chef_deparetement/history.php" class="quick-action">
+                                <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="quick-action">
                                     <div class="action-icon orange">
-                                        <i class="ti ti-calendar-stats"></i>
+                                        <i class="ti ti-calendar-time"></i>
                                     </div>
-                                    <span>Historique des années</span>
+                                    <span>Gérer Échéances</span>
                                 </a>
 
                             </div>
@@ -855,6 +994,106 @@ function departmentHeadDashboard(
         </div>
     </div>
 </div>
+
+            <!-- Deadlines Tab (New Addition) -->
+            <div class="tab-pane" id="deadlines">
+                <div class="dashboard-card full-width">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4>Gestion des Échéances</h4>
+                            <p>Configurez et suivez les échéances pour les différentes fonctionnalités</p>
+                        </div>
+                        <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-primary btn-sm">
+                            <i class="ti ti-plus"></i> Nouvelle échéance
+                        </a>
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Active Deadlines Section -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3 text-primary">
+                                <i class="ti ti-calendar-time"></i> Échéances actives
+                            </h5>
+                            
+                            <?php if (!empty($deadlines)): ?>
+                                <div class="row g-3">
+                                    <?php foreach ($deadlines as $feature => $deadline): ?>
+                                        <?php 
+                                            $featureName = $feature === 'choose_modules' ? 'Choix des modules' : 'Dépôt des notes';
+                                            $iconClass = $feature === 'choose_modules' ? 'ti-book' : 'ti-file-upload';
+                                            $urgencyClass = $deadline['total_minutes'] < 1440 ? 'danger' : 
+                                                           ($deadline['total_minutes'] < 2880 ? 'warning' : 'primary');
+                                        ?>
+                                        <div class="col-md-6">
+                                            <div class="card border-<?= $urgencyClass ?> shadow-sm h-100">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <h5 class="card-title mb-0 d-flex align-items-center">
+                                                            <i class="ti <?= $iconClass ?> me-2 text-<?= $urgencyClass ?>"></i>
+                                                            <?= $featureName ?>
+                                                        </h5>
+                                                        <span class="badge bg-<?= $urgencyClass ?>-subtle text-<?= $urgencyClass ?> px-3 py-2 rounded-pill">
+                                                            <?= $deadline['total_minutes'] < 1440 ? 'Urgent' : 
+                                                               ($deadline['total_minutes'] < 2880 ? 'Bientôt' : 'En cours') ?>
+                                                        </span>
+                                                    </div>
+                                                    
+                                                    <div class="countdown-display text-center my-3">
+                                                        <div class="row g-2">
+                                                            <?php if ($deadline['remaining']['days'] > 0): ?>
+                                                            <div class="col">
+                                                                <div class="countdown-box bg-light p-2 rounded">
+                                                                    <div class="countdown-value fw-bold fs-4 text-<?= $urgencyClass ?>"><?= $deadline['remaining']['days'] ?></div>
+                                                                    <div class="countdown-label small text-muted">Jours</div>
+                                                                </div>
+                                                            </div>
+                                                            <?php endif; ?>
+                                                            
+                                                            <div class="col">
+                                                                <div class="countdown-box bg-light p-2 rounded">
+                                                                    <div class="countdown-value fw-bold fs-4 text-<?= $urgencyClass ?>"><?= $deadline['remaining']['hours'] ?></div>
+                                                                    <div class="countdown-label small text-muted">Heures</div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col">
+                                                                <div class="countdown-box bg-light p-2 rounded">
+                                                                    <div class="countdown-value fw-bold fs-4 text-<?= $urgencyClass ?>"><?= $deadline['remaining']['minutes'] ?></div>
+                                                                    <div class="countdown-label small text-muted">Minutes</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                                        <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-sm btn-outline-<?= $urgencyClass ?>">
+                                                            <i class="ti ti-edit"></i> Modifier
+                                                        </a>
+                                                        
+                                                        <form method="POST" action="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="d-inline">
+                                                            <input type="hidden" name="create_announce" value="1">
+                                                            <button type="submit" class="btn btn-sm btn-<?= $urgencyClass ?>">
+                                                                <i class="ti ti-bell"></i> Créer une annonce
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="alert alert-info d-flex align-items-center">
+                                    <i class="ti ti-info-circle me-2 fs-4"></i>
+                                    <div>
+                                        Aucune échéance active actuellement. <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="alert-link">Créer une nouvelle échéance</a>.
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
          
             <!-- Reports Tab (Hidden by Default) -->
             <div class="tab-pane" id="reports">
@@ -919,6 +1158,80 @@ function departmentHeadDashboard(
         </div>
     </div>
 </div>
+
+<style>
+/* Deadline specific styles */
+.deadline-alert-banner {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.deadline-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.deadline-item:last-child {
+    border-bottom: none;
+}
+
+.deadlines-list {
+    margin-bottom: 15px;
+}
+
+.countdown {
+    font-size: 0.9rem;
+}
+
+.countdown-box {
+    border: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+
+.btn-manage-deadlines:hover {
+    background-color: #5b21b6;
+    transform: translateY(-2px);
+}
+
+.btn-manage-deadlines a {
+    color: white;
+    text-decoration: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-view-requestblue {
+    background-color: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    width: 100%;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04); /* subtle depth */
+}
+
+.btn-view-requestblue:hover {
+    background-color: var(--primary);
+    color: var(--white);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* lift on hover */
+}
+
+</style>
 
 <script>
 
@@ -1167,6 +1480,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
 function initializeCharts() {
     try {
         // Workload Distribution Chart

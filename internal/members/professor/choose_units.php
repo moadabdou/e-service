@@ -7,9 +7,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.ph
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/filiere.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/deadline.php";
 
 $userController = new UserController();
 $userController->checkCurrentUserAuthority(["professor","professor/chef_deparetement", "professor/coordonnateur"]);
+
+$deadlineModel = new DeadlineModel();
+
+$deadline = null;
+
+if (!$deadlineModel->isFeatureOpen('choose_modules')) {
+    $deadline = [
+        "msg" => "La période de choix des modules est fermée.",
+        "type" => "danger",
+        "desc" => "Pour toute demande urgente, veuillez contacter l'administration."
+    ];
+}
 
 $moduleModel = new ModuleModel();
 $FiliereModel = new FiliereModel();
@@ -26,13 +39,12 @@ $availableModules = $moduleModel->getAvailableModulesByDepartment($departmentId)
 $selectedModules = $moduleModel->getSelectedModulesByProfessor($professorId);
 
 $professorData = $moduleModel->getProfessorHours($professorId);
-
-$totalHours = $moduleModel->getTotalHoursFromChoix($professorId);
-
 $maxHours = $professorData['max_hours'] ?? PHP_INT_MAX;
 $minHours = $professorData['min_hours'] ?? 0;
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+$totalHours = $moduleModel->getTotalHoursFromChoix($professorId);
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && $deadlineModel->isFeatureOpen('choose_modules')) {
     if (empty($_POST['modules'])) {
         $errors["modules"] = "Vous devez sélectionner au moins un module.";
     }
@@ -45,6 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $selectedModuleIds = $_POST['modules'];
 
+        // Calculate total hours for selected modules only
+        $totalHours = 0;
         foreach ($selectedModuleIds as $moduleId) {
             $module = $moduleModel->getModuleById($moduleId);
             if ($module) {
@@ -55,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $result = $moduleModel->assignModulesToProfessor($professorId, $selectedModuleIds);
 
         if ($result === false) {
-            $info = [
+            $deadline = [
                 "msg" => "Une erreur est survenue lors de l'enregistrement de vos choix.",
                 "type" => "danger"
             ];
@@ -103,6 +117,6 @@ if (isset($_SESSION['info'])) {
     unset($_SESSION['info']);
 }
 
-$content = chooseUnitsFormView($filliere, $availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours);
+$content = chooseUnitsFormView($filliere, $availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours,$deadline);
 $dashboard = new DashBoard();
 $dashboard->view($_SESSION["role"], "chooseUnits", $content);

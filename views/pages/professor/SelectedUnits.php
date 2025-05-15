@@ -1,3 +1,4 @@
+
 <div class="container px-1 px-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
         <h2 class="fw-bold text-primary mb-2 mb-md-0"> <i class="ti ti-checklist"></i> Mes modules déjà sélectionnés</h2>
@@ -8,6 +9,12 @@
 </div>
 
 <div class="container px-4 px-5 mb-5">
+    <?php if ($deadline): ?>
+        <div class="alert alert-<?= htmlspecialchars($deadline['type']) ?> text-center shadow-sm rounded-4 p-4 col-12">
+            <i class="ti ti-alert-circle fs-6 d-block mb-3"></i>
+            <h5 class="text-danger"> <?= htmlspecialchars($deadline['msg']) ?> </h5>
+        </div>
+    <?php endif; ?>
     <?php if (!empty($selectedModules)) : ?>
         <?= createSearchFilterComponent(
             "Rechercher un module...",
@@ -85,7 +92,7 @@
                         <p class="mb-2"><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></p>
                         <div class="d-flex flex-column align-items-center mt-2 gap-2">
                             <?= getStatusBadge($module['status'] ?? 'in progress') ?>
-                            <?php if (($module['status'] ?? '') !== 'validated') : ?>
+                            <?php if (($module['status'] ?? '') !== 'validated' && !$deadline) : ?>
                                 <button 
                                     type="button" 
                                     class="btn btn-outline-danger btn-sm delete-btn" 
@@ -96,6 +103,7 @@
                                     <i class="ti ti-trash"></i> Supprimer
                                 </button>
                             <?php endif; ?>
+
                         </div>
                     </div>
                 </div>

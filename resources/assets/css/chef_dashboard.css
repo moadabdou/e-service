@@ -226,6 +226,8 @@ p {
 .metric-icon.green { background-color: var(--success); }
 .metric-icon.orange { background-color: var(--warning); }
 .metric-icon.red { background-color: var(--danger); }
+.metric-icon.purple { background-color:purple; }
+
 
 .metric-header p {
     color: var(--muted);

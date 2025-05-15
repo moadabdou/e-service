@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
 
-function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours) {
+function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours,$deadline) {
     ob_start();
 
     if ($_SERVER["REQUEST_METHOD"] === "POST" && empty($errors)) {
@@ -101,7 +101,13 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
                     </div>
                 </div>
                 <?php endif; ?>
-
+                <?php if ($deadline): ?>
+                        <div class="alert alert-<?= htmlspecialchars($deadline['type']) ?> text-center shadow-sm rounded-4 p-4">
+                            <i class="ti ti-alert-circle fs-6 d-block mb-3"></i>
+                            <h5><?= htmlspecialchars($deadline['msg']) ?></h5>
+                            <p class="text-muted mb-0"><?= htmlspecialchars($deadline['desc']) ?></p>
+                        </div>
+                <?php else : ?>
                 <!-- Alerts Section -->
                 <?php if ($info) : ?>
                     <div class="alert alert-<?= htmlspecialchars($info['type']) ?> alert-dismissible fade show rounded-4 shadow-sm border-start border-5 border-<?= htmlspecialchars($info['type']) ?>" role="alert">
@@ -302,7 +308,7 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
             </div>
         </div>
     </div>
-
+    <?php endif; ?>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const checkboxes = document.querySelectorAll('.module-checkbox');

@@ -224,7 +224,7 @@ class ModuleModel extends  Model
     
     
 
-    public function getProfessorHours($professorId)
+    public function getProfessorHours($professorId): array|bool
     {
         $query = "SELECT min_hours, max_hours FROM professor WHERE id_professor = ?";
 

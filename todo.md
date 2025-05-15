@@ -27,19 +27,19 @@
 
 - [ ] actions on All users on website seperated by their roles 
 
-    - [ ] see them 
-    - [ ] see their profile and edit their info
-    - [ ] desactivate and activate and delete 
-    - [ ] reset their password (an email must  be sent)
-    - [ ] make a professor a deparetement head or class coordinator  and the inverse 
-        > if another professor is already a coordinator/head and the same departement/class, a message should appear asking to wheter to replace him ( only if the same year )
-    - ... 
+🔥🔥 - [ ] see them 
+🔥🔥 - [ ] see their profile and edit their info
+🔥🔥 - [ ] desactivate and activate and delete 
+🔥🔥 - [ ] reset their password (an email must  be sent)
+🔥🔥 - [ ] make a professor a deparetement head or class coordinator  and the inverse 
+🔥🔥 🔥🔥 > if another professor is already a coordinator/head and the same departement/class, a message should appear asking to wheter to replace him ( only if the same year )
+🔥🔥 - ... 
 
 - [ ] actions on  depatements 
 
-    - [ ] see all  deparetments 
-    - [ ] can see all the classes in a deparetment 
-    
+🔥🔥 - [ ] see all  deparetments 
+🔥🔥 - [ ] can see all the classes in a deparetment 
+🔥🔥 
 
 
 ### coordinateur
@@ -102,5 +102,16 @@ In your web app, the department head should be able to:
 [x] Highlight profs with insufficient load (use a red color or something 🔥).
 
 [x] Allow export of data using Excel.
-
 [x] Show stats like bar charts or tables for reporting.
+
+done : deadlines : show only the error not the content 
+done : remove removebale warnin for choose unit 
+done : remove delete choice if deadline ends selected units 
+done : auto become close if deadline ends
+done : check select date for not on not selecting previous dates
+🔥🔥 add this in dashboard
+🔥🔥 creat notifs
+🔥🔥 creat actuality
+
+
+
