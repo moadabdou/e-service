@@ -23,6 +23,7 @@ function uploadNotesView(array $assignedModules, ?array $info = null, ?array $de
                             <p class="text-muted mb-0"><?= htmlspecialchars($deadline['desc']) ?></p>
                         </div>
                 <?php else : ?>
+                    
         <?php if ($info): ?>
 
             <div class="alert alert-<?= htmlspecialchars($info['type']) ?> alert-dismissible fade show shadow-sm border-start border-<?= htmlspecialchars($info['type']) ?> border-4 mb-4" role="alert">

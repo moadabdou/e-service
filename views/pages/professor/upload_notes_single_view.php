@@ -1,5 +1,5 @@
 <?php
-function uploadSingleNoteView(array $module, ?array $info = null): string {
+function uploadSingleNoteView(array $module, ?array $info = null,  ?array $deadline = null): string {
     ob_start();
 ?>
 
@@ -10,6 +10,14 @@ function uploadSingleNoteView(array $module, ?array $info = null): string {
             <i class="ti ti-upload me-2"></i>Uploader les notes pour : <?= htmlspecialchars($module[0]["title"]) ?>
         </h2>
     </div>
+
+    <?php if ($deadline): ?>
+                        <div class="alert alert-<?= htmlspecialchars($deadline['type']) ?> text-center shadow-sm rounded-4 p-4">
+                            <i class="ti ti-alert-circle fs-6 d-block mb-3"></i>
+                            <h5><?= htmlspecialchars($deadline['msg']) ?></h5>
+                            <p class="text-muted mb-0"><?= htmlspecialchars($deadline['desc']) ?></p>
+                        </div>
+    <?php else : ?>
 
     <?php if ($info): ?>
         <div class="alert alert-<?= htmlspecialchars($info['type']) ?> alert-dismissible fade show shadow-sm border-start border-<?= htmlspecialchars($info['type']) ?> border-4 mb-4" role="alert">
@@ -122,6 +130,8 @@ function uploadSingleNoteView(array $module, ?array $info = null): string {
         </div>
     </div>
 </div>
+
+<?php endif; ?>
 
 <style>
     /* Custom styling */

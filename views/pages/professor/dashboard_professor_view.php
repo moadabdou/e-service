@@ -8,12 +8,10 @@ function professorDashboard(
     array $upcomingDeadlines = [],
     string $professorName = '',
     string $department = '',
-    string $academicYear = ''
+    string $academicYear = '',
+    $deadlineModel
 ): string {
-    
-    // Include the deadline model
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/deadline.php";
-    $deadlineModel = new DeadlineModel();
+
     
     // Data validation
     $chosenModules = is_array($chosenModules) ? $chosenModules : [];
@@ -135,9 +133,9 @@ function professorDashboard(
                 </div>
                 
                 <?php if (!empty($deadlines)): ?>
-                <div class="stat-card-header deadline-stat">
-                    <div class="stat-icon-header deadline-icon">
-                        <i class="ti ti-calendar-time"></i>
+                <div class="stat-card-header ">
+                    <div class="stat-icon-header">
+                        <i class="ti ti-calendar-time "></i>
                     </div>
                     <div>
                         <h2><?= count($deadlines) ?></h2>
@@ -294,7 +292,7 @@ function professorDashboard(
                 </div>
             <?php else: ?>
                 <div class="empty-state text-center py-3">
-                    <i class="ti ti-calendar-off text-muted fs-3 mb-2"></i>
+                    <i class="ti ti-calendar-off text-muted fs-4 mb-2"></i>
                     <p class="text-muted mb-0">Aucune échéance active</p>
                 </div>
             <?php endif; ?>
@@ -492,7 +490,7 @@ function professorDashboard(
                 </a>
             </div>
             <div class="card-body">
-                <?php if (!empty($pendingNotes)): ?>
+                <?php if (!empty($pendingNotes) && !empty($deadlines['upload_notes'])): ?>
                     <div class="pending-notes-list">
                         <?php 
                         // Sort pending notes by urgency if upload_notes deadline exists
@@ -517,7 +515,7 @@ function professorDashboard(
                                     $noteUrgencyIcon = 'ti-alert-triangle';
                                 }
                             }
-                        ?>
+                        ?>   
                             <div class="pending-note-item <?= $noteUrgencyClass ?>">
                                 <div class="note-module-info">
                                     <h4><?= htmlspecialchars($note['title'] ?? 'Module') ?></h4>
@@ -539,6 +537,7 @@ function professorDashboard(
                                     <i class="ti ti-upload"></i>
                                 </a>
                             </div>
+                            
                         <?php endforeach; ?>
                         
                         <?php if (count($pendingNotes) > 3): ?>
@@ -549,11 +548,20 @@ function professorDashboard(
                         </div>
                         <?php endif; ?>
                     </div>
-                <?php else: ?>
+                <?php elseif(empty($pendingNotes) && !empty($deadlines['upload_notes'])): ?>
                     <div class="success-state">
                         <i class="ti ti-file-check"></i>
                         <p>Toutes les notes ont été téléversées. Excellent travail !</p>
                     </div>
+
+                <?php else: ?>
+                    <div class="danger-state">
+                        <i class="ti ti-alert-triangle"></i>
+                        <p>La date limite pour le dépôt des notes est dépassée et certaines notes n'ont pas été téléversées.<br>
+                        Veuillez contacter l'administration pour régulariser la situation.</p>
+                    </div>
+
+
                 <?php endif; ?>
             </div>
         </div>
@@ -905,6 +913,32 @@ function professorDashboard(
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+.danger-state {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    color: var(--danger, #d32f2f); /* fallback red */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.danger-state i {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--danger, #d32f2f); /* fallback red */
+    opacity: 0.8;
+}
+
+.danger-state p {
+    font-weight: 500;
+    margin: 0 0 var(--spacing-md);
+    color: var(--danger, #d32f2f); /* ensure text is also danger-colored */
+}
+
+
 </style>
 
 <script>

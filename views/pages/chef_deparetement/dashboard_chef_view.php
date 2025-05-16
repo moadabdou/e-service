@@ -13,12 +13,10 @@ function departmentHeadDashboard(
     int $vacantModulesCount,
     int $SousModuleCount,
     int $ModuleCount,
-    // New parameter for deadlines
-    array $activeDeadlines = []
+    $deadlineModel
 ): string {
-    // Include the deadline model
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/deadline.php";
-    $deadlineModel = new DeadlineModel();
+
+
 
     // Get active deadlines for key features
     $features = ['choose_modules', 'upload_notes'];
@@ -369,15 +367,6 @@ function departmentHeadDashboard(
                     <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-sm btn-outline-primary w-100">
                         <i class="ti ti-settings"></i> Gérer les échéances
                     </a>
-                </div>
-                
-                <div class="mt-2 text-center">
-                    <form method="POST" action="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php">
-                        <input type="hidden" name="create_announce" value="1">
-                        <button type="submit" class="btn btn-sm btn-outline-success w-100">
-                            <i class="ti ti-bell"></i> Créer une annonce
-                        </button>
-                    </form>
                 </div>
             <?php else: ?>
                 <div class="empty-state text-center py-3">
@@ -1024,8 +1013,8 @@ function departmentHeadDashboard(
                                             $urgencyClass = $deadline['total_minutes'] < 1440 ? 'danger' : 
                                                            ($deadline['total_minutes'] < 2880 ? 'warning' : 'primary');
                                         ?>
-                                        <div class="col-md-6">
-                                            <div class="card border-<?= $urgencyClass ?> shadow-sm h-100">
+                                        <div class="col-md-12">
+                                            <div class="card border-<?= $urgencyClass ?> shadow-sm h-80">
                                                 <div class="card-body">
                                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                                         <h5 class="card-title mb-0 d-flex align-items-center">
@@ -1065,7 +1054,7 @@ function departmentHeadDashboard(
                                                         </div>
                                                     </div>
                                                     
-                                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                                    <div class="d-flex justify-content-between align-items-center mt-4">
                                                         <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-sm btn-outline-<?= $urgencyClass ?>">
                                                             <i class="ti ti-edit"></i> Modifier
                                                         </a>

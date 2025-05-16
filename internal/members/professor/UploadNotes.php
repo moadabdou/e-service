@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['session_type'])) {
 if ($singleModuleId) {
     $moduleInfo = $moduleModel->getModuleById($singleModuleId);
 
-    $content = uploadSingleNoteView([$moduleInfo], $info);
+    $content = uploadSingleNoteView([$moduleInfo], $info,$deadline);
 
 } else {
     $content = uploadNotesView($assignedModules, $info,$deadline);
