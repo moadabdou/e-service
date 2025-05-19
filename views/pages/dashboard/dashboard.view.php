@@ -1,6 +1,5 @@
 <?php 
 require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
-
 ?>
 
 <!doctype html>
@@ -53,29 +52,39 @@ require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
             </li>
           </ul>
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              <li class="nav-item dropdown">
-                <a class="nav-link " href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <img src="<?= $userimg['img'] ?>" alt="" width="35" height="35" class="rounded-circle">
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                  <div class="message-body">
-                    <a href="/e-service/internal/members/common/profile.php" class="d-flex align-items-center gap-2 dropdown-item" style="color: #000ea4">
-                      <i class="ti ti-user fs-6"></i>
-                      <p class="mb-0 fs-3">Mon Profile</p>
-                    </a>
-                    <a href="/e-service/internal/members/common/notifications.php" class="d-flex align-items-center gap-2 dropdown-item"  style="color: #000ea4">
-                    <iconify-icon icon="solar:bell-linear" <?= $active=="notifications"? : "" ?> class="fs-6"></iconify-icon>
-                      <p class="mb-0 fs-3">Notifications</p>
-                    </a>
-
-                    <a href="/e-service/internal/members/common/logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Deconnexion</a>
-                  </div>
-                </div>
-              </li>
-            </ul>
+  <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+    <li class="nav-item dropdown">
+      <a class="nav-link nav-profile d-flex align-items-center" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        <img src="<?= $user['img'] ?>" alt="Profile" width="38" height="38" class="rounded-circle border shadow-sm">
+      </a>
+      <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up shadow-sm" aria-labelledby="drop2">
+        <div class="py-2 px-1">
+          <div class="d-flex align-items-center border-bottom pb-3 mb-2 px-3">
+            <img src="<?= $user['img'] ?>" alt="" width="45" height="45" class="rounded-circle me-3">
+            <div>
+              <h6 class="mb-0 fw-semibold">Dr. <?= ucfirst($user['name']) ?></h6>
+              <small class="text-muted"><?= ucfirst(string: $Role) ?></small>
+            </div>
           </div>
+          <a href="/e-service/internal/members/common/profile.php" class="d-flex align-items-center gap-2 dropdown-item py-2" style="color: #000ea4">
+            <i class="ti ti-user fs-6"></i>
+            <p class="mb-0 fs-3">Mon Profil</p>
+          </a>
+          <a href="/e-service/internal/members/common/notifications.php" class="d-flex align-items-center gap-2 dropdown-item py-2"  style="color: #000ea4">
+            <iconify-icon icon="solar:bell-linear" <?= $active=="notifications"? : "" ?> class="fs-6"></iconify-icon>
+            <p class="mb-0 fs-3">Notifications</p>
+          </a>
+          <div class="pt-2">
+            <a href="/e-service/internal/members/common/logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">
+              <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </a>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
         </nav>
       </header>
       <!--  Header End -->

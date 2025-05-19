@@ -54,15 +54,20 @@ class UserModel  extends Model{
 
     }
 
-    public function getUserImg(int $id){
-
-        if ($this->db->query("SELECT CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) as img FROM user WHERE id_user=?", [$id])){
-            return $this->db->fetch();
-        }else {
+    public function getUser(int $id) {
+        $sql = "SELECT 
+                    CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) AS img, 
+                    CONCAT(firstName, ' ', lastName) AS name 
+                FROM user 
+                WHERE id_user = ?";
+    
+        if ($this->db->query($sql, [$id])) {
+            return $this->db->fetch(); 
+        } else {
             throw new Exception($this->db->getError());
         }
-
     }
+    
 
     protected function deleteUserById(int $id): bool {
         if ($this->db->query("DELETE FROM user WHERE id_user=?", [$id])) {
@@ -177,5 +182,23 @@ class UserModel  extends Model{
     }
 
 }
+
+function getRole($role) {
+    switch (strtolower($role)) {
+        case "professor/chef_deparetement":
+            return "Chef de département";
+        case "professor/coordonnateur":
+            return "Coordonnateur";
+        case "professor":
+            return "Professeur";
+        case "vacataire":
+            return "Vacataire";
+        case "admin":
+            return "Administrateur";
+        default:
+            return "Rôle";
+    }
+}
+
 
 ?>
