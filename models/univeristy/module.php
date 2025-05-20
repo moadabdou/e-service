@@ -32,6 +32,49 @@ class ModuleModel extends  Model
         return true;
     }
 
+    /**
+     * Récupère toutes les affectations validées (chef) pour une filière et une année,
+     * et les regroupe par semestre.
+     *
+     * @param int   $filiereId  L'ID de la filière du coordonnateur
+     * @param int   $year       L'année (ex. 2025)
+     * @return array            Tableau ['s1'=>[module1, module2], 's2'=>[...], …]
+     */
+    public function getAssignmentsByFiliereAndYearGrouped($filiereId, $year)
+    {
+        $sql = "
+      SELECT 
+        m.id_module,
+        m.code_module,
+        m.title,
+        m.semester,
+        m.volume_cours, m.volume_td, m.volume_tp, m.volume_autre,
+        m.credits,
+        cm.to_professor AS id_professor
+      FROM affectation_professor cm
+      JOIN module m
+        ON cm.id_module = m.id_module
+      WHERE cm.annee = ?
+        AND m.id_filiere = ?
+      ORDER BY m.semester ASC, m.code_module ASC
+    ";
+
+        if (! $this->db->query($sql, [$year, $filiereId])) {
+            return [];
+        }
+
+        $rows = $this->db->fetchAll(PDO::FETCH_ASSOC);
+        $grouped = [];
+        foreach ($rows as $r) {
+            $sem = $r['semester'] ?? 'inconnu';
+            $grouped[$sem][] = $r;
+        }
+        return $grouped;
+    }
+
+
+
+
 
     public function getModulesByFiliereId($filiereId)
     {

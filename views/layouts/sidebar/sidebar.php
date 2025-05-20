@@ -37,7 +37,7 @@ class SideBar
                     "url" => "/e-service/internal/members/common/profile.php"
                 ],
                 "logout" => [
-                    "title" => "Déconnexion", 
+                    "title" => "Déconnexion",
                     "icon" => "ti ti-power",
                     "url" => "/e-service/internal/members/common/logout.php"
                 ]
@@ -49,12 +49,12 @@ class SideBar
             "title" => "Administration",
             "menu" => [
                 "main" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/admin"
                 ],
                 "newProfessor" => [
-                    "title" => "Nouveau Professeur", 
+                    "title" => "Nouveau Professeur",
                     "icon" => "ti ti-user-plus",
                     "url" => "/e-service/internal/members/admin/newProfessor.php"
                 ],
@@ -85,7 +85,7 @@ class SideBar
             "title" => "Gérer Département",
             "menu" => [
                 "main_chef" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/professor/chef_deparetement"
                 ],
@@ -105,9 +105,9 @@ class SideBar
                     "url" => "/e-service/internal/members/professor/chef_deparetement/assign_modules.php"
                 ],
                 "workload" => [
-                "title" => "Charge des professeurs",
-                "icon" => "ti ti-calendar-stats",
-                "url" => "/e-service/internal/members/professor/chef_deparetement/workload.php"
+                    "title" => "Charge des professeurs",
+                    "icon" => "ti ti-calendar-stats",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/workload.php"
                 ],
                 "professorChoices" => [
                     "title" => "Choix des professeurs",
@@ -133,7 +133,7 @@ class SideBar
             "title" => "Gérer Filière",
             "menu" => [
                 "main_coor" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/professor/coordonnateur"
                 ],
@@ -151,7 +151,12 @@ class SideBar
                     "title" => "Ajouter Vacataire",
                     "icon" => "ti ti-user-plus",
                     "url" => "/e-service/internal/members/professor/coordonnateur/addVacataire.php"
-                ]
+                ],
+                "affectations" => [
+                    "title" => "Consulter affectations",
+                    "icon" => "ti ti-link",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/affectations.php"
+                ],
             ]
         ],
 
@@ -160,7 +165,7 @@ class SideBar
             "title" => "Panneau Professeur",
             "menu" => [
                 "main" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/professor"
                 ],
@@ -170,12 +175,12 @@ class SideBar
                     "url" => "/e-service/internal/members/professor/choose_units.php"
                 ],
                 "assignedModules" => [
-                    "title" => "Mes modules affectéss", 
+                    "title" => "Mes modules affectéss",
                     "icon" => "ti ti-list-check",
                     "url" => "/e-service/internal/members/professor/AssignedModules.php"
                 ],
                 "UploadNotes" => [
-                    "title" => "Uploader les notes", 
+                    "title" => "Uploader les notes",
                     "icon" => "ti ti-upload",
                     "url" => "/e-service/internal/members/professor/uploadNotes.php"
                 ],
@@ -198,7 +203,7 @@ class SideBar
             "title" => "Panneau Vacataire",
             "menu" => [
                 "main" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/vacataire"
                 ]
