@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
 
-function notesHistoryView(array $filliers, array $notes, ?string $success = null, ?string $error = null): string {
+function notesHistoryView(array $filliers, array $notes, ?string $success = null, ?string $error = null,$isDeadlineOpen): string {
     ob_start();
     $modules = array_unique(array_map(fn($n) => $n['module_title'], $notes));
     $sessions = array_unique(array_map(fn($n) => $n['session'], $notes));
@@ -195,13 +195,15 @@ function notesHistoryView(array $filliers, array $notes, ?string $success = null
                                             data-bs-toggle="modal" data-bs-target="#editModal"
                                             data-note-id="<?= htmlspecialchars($note['file_id']) ?>"
                                             data-note-title="<?= htmlspecialchars($note['module_title']) ?>"
-                                            data-note-session="<?= htmlspecialchars($note['session']) ?>">
+                                            data-note-session="<?= htmlspecialchars($note['session']) ?>"
+                                            <?= !$isDeadlineOpen ? 'disabled' : '' ?>>
                                             <i class="ti ti-edit"></i> Modifier
                                         </button>
                                         <button type="button" class="btn btn-sm btn-outline-danger delete-btn"
                                             data-bs-toggle="modal" data-bs-target="#deleteModal"
                                             data-note-id="<?= htmlspecialchars($note['file_id']) ?>"
-                                            data-note-title="<?= htmlspecialchars($note['module_title']) ?>">
+                                            data-note-title="<?= htmlspecialchars($note['module_title']) ?>"
+                                            <?= !$isDeadlineOpen ? 'disabled' : '' ?>>
                                             <i class="ti ti-trash"></i> Supprimer
                                         </button>
                                     </td>
