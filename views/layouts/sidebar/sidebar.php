@@ -157,6 +157,11 @@ class SideBar
                     "icon" => "ti ti-link",
                     "url" => "/e-service/internal/members/professor/coordonnateur/affectations.php"
                 ],
+                "emploiTemps" => [
+                    "title" => "Emploi du temps",
+                    "icon" => "ti ti-calendar",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/emploi_temps.php"
+                ],
             ]
         ],
 
