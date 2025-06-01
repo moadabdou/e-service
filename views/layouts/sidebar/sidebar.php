@@ -40,7 +40,7 @@ class SideBar
                     "title" => "Déconnexion",
                     "icon" => "ti ti-power",
                     "url" => "/e-service/internal/members/common/logout.php"
-                ]
+                ],
             ]
         ],
 
@@ -160,7 +160,12 @@ class SideBar
                 "emploiTemps" => [
                     "title" => "Emploi du temps",
                     "icon" => "ti ti-calendar",
-                    "url" => "/e-service/internal/members/professor/coordonnateur/emploi_temps.php"
+                    "url" => "/e-service/internal/members/professor/coordonnateur/upload_timetable.php"
+                ],
+                "exportAffectations" => [
+                    "title" => "Exporter les Affectations",
+                    "icon" => "ti ti-file-export",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/export_affectations.php"
                 ],
             ]
         ],

@@ -262,6 +262,37 @@ INSERT INTO `deparetement` VALUES (1,'Computer Science','Department focused on c
 UNLOCK TABLES;
 
 --
+-- Table structure for table `emploi_temps_upload`
+--
+
+DROP TABLE IF EXISTS `emploi_temps_upload`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `emploi_temps_upload` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_filiere` int(11) NOT NULL,
+  `semestre` enum('s1','s2','s3','s4','s5','s6') NOT NULL,
+  `annee` year(4) NOT NULL,
+  `nom_fichier` varchar(255) NOT NULL,
+  `chemin_fichier` text NOT NULL,
+  `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `id_filiere` (`id_filiere`),
+  CONSTRAINT `emploi_temps_upload_ibfk_1` FOREIGN KEY (`id_filiere`) REFERENCES `filiere` (`id_filiere`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emploi_temps_upload`
+--
+
+LOCK TABLES `emploi_temps_upload` WRITE;
+/*!40000 ALTER TABLE `emploi_temps_upload` DISABLE KEYS */;
+INSERT INTO `emploi_temps_upload` VALUES (7,1,'s1',2025,'Emploi du temps GI-1 S2.pdf','/e-service/storage/Pdfs-Excels/Emplois/emploi_683cb9dc8fede.pdf','2025-06-01 20:36:44');
+/*!40000 ALTER TABLE `emploi_temps_upload` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `filiere`
 --
 
@@ -321,7 +352,7 @@ CREATE TABLE `module` (
   CONSTRAINT `module_ibfk_1` FOREIGN KEY (`id_filiere`) REFERENCES `filiere` (`id_filiere`),
   CONSTRAINT `module_ibfk_2` FOREIGN KEY (`responsable`) REFERENCES `professor` (`id_professor`),
   CONSTRAINT `module_ibfk_3` FOREIGN KEY (`id_speciality`) REFERENCES `speciality` (`id_speciality`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -330,7 +361,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES (1,'Français','Module de français avancé','s1',3,1,'M1.1',10,5,0,0,1,2,4),(2,'Anglais','Module d\'anglais avancé','s1',3,1,'M1.2',8,6,0,0,1,1,4),(3,'Mathématiques','Analyse mathématique','s2',4,1,'M3.1',20,10,0,0,2,23,4),(4,'Algèbre Linéaire','Linear and Bilinear Algebra','s2',3,1,'M4',25,20,1,1,0,23,4);
+INSERT INTO `module` VALUES (1,'Français','Module de français avancé','s1',3,1,'M1.1',10,5,0,0,1,2,4),(2,'Anglais','Module d\'anglais avancé','s1',3,1,'M1.2',8,6,0,0,1,1,4),(3,'Analyse Numérique','Numerical Analysis','s4',2,1,'M3.1',20,10,5,0,2,23,4),(4,'Algèbre Linéaire','Linear and Bilinear Algebra','s2',3,1,'M4',25,20,1,1,0,23,4),(5,'Algèbre Quadratique','Algèbre des Matrices et endomorphismes','s3',3,1,'M5',30,20,0,0,0,23,4),(6,'Chimie 1','Atomistique & liaisons chimiques','s2',3,1,'M6',20,20,10,0,0,3,3),(7,'Language C','C programming language','s3',3,1,'M7',40,10,30,5,0,4,4),(8,'Probabilité & Statiqtique Descriptive','Calcule Probabilité et statistique descriptive','s4',2,1,'M3.8',20,10,0,0,2,23,4);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -534,4 +565,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-10 22:07:45
+-- Dump completed on 2025-06-01 23:02:39

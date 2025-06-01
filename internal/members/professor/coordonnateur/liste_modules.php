@@ -29,6 +29,12 @@ if ($coordinatorId) {
 ob_start();
 ?>
 
+<a href="/e-service/internal/members/professor/coordonnateur/export_modules.php"
+    class="btn btn-success mb-3">
+    <i class="ti ti-download"></i> Exporter en CSV
+</a>
+
+
 <div class="container mt-4">
     <h3 class="fw-bold text-primary mb-4">
         <i class="ti ti-list-details"></i> Liste des Modules de la Filière
