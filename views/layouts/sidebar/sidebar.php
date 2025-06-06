@@ -22,8 +22,7 @@ class SideBar
         $nav = $this->nav;
         ob_start();
         require __DIR__ . "/sidebar.view.php";
-        $content = ob_get_clean();
-        return $content;
+        return ob_get_clean();
     }
 
     private static array $NAVIGATION = [
@@ -31,6 +30,12 @@ class SideBar
             "title" => "Generale",
             "menu" =>
             [
+                "emploisList" => [
+                    "title" => "Emplois du temps",
+                    "icon" => "ti ti-calendar-time",
+                    "url" => "/e-service/internal/members/common/emploi_temps_list.php"
+                ],
+
                 "profile" => [
                     "title" => "Profile",
                     "icon" => "ti ti-user",
@@ -167,6 +172,11 @@ class SideBar
                     "icon" => "ti ti-file-export",
                     "url" => "/e-service/internal/members/professor/coordonnateur/export_affectations.php"
                 ],
+                "affectationVacataire" => [
+                    "title" => "Affecter un Vacataire",
+                    "icon" => "ti ti-user-plus",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/affectation_vacataire.php"
+                ],
             ]
         ],
 
@@ -216,7 +226,17 @@ class SideBar
                     "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/vacataire"
-                ]
+                ],
+                "assignedModules" => [
+                    "title" => "Mes modules affectés",
+                    "icon" => "ti ti-list-check",
+                    "url" => "/e-service/internal/members/vacataire/liste_modules_vacataire.php"
+                ],
+                "UploadNotes" => [
+                    "title" => "Uploader les notes",
+                    "icon" => "ti ti-upload",
+                    "url" => "/e-service/internal/members/vacataire/uploadNotes.php"
+                ],
             ]
         ]
 
