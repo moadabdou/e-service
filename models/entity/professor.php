@@ -229,7 +229,7 @@ class ProfessorModel  extends UserModel{
                     u.email,
                     p.min_hours,
                     p.max_hours,
-                    COALESCE(SUM(m.volume_cours), 0) AS assigned_hours
+                    COALESCE(SUM(m.volume_cours + m.volume_td + m.volume_tp + m.volume_autre), 0) AS assigned_hours
                 FROM professor p
                 JOIN user u ON u.id_user = p.id_professor
                 JOIN filiere f ON f.id_deparetement = ?
@@ -255,7 +255,7 @@ class ProfessorModel  extends UserModel{
                         u.img,
                         p.min_hours,
                         p.max_hours,
-                        SUM(m.volume_cours) AS assigned_hours,
+                        SUM(m.volume_cours + m.volume_td + m.volume_tp + m.volume_autre) AS assigned_hours,
                         GROUP_CONCAT(CONCAT(m.title, '::', f.title) SEPARATOR '||') AS modules_data
                       FROM affectation_professor ap
                       JOIN user u ON ap.to_professor = u.id_user

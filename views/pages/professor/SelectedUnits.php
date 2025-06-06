@@ -1,3 +1,4 @@
+
 <div class="container px-1 px-md-5">
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
         <h2 class="fw-bold text-primary mb-2 mb-md-0"> <i class="ti ti-checklist"></i> Mes modules déjà sélectionnés</h2>
@@ -8,6 +9,12 @@
 </div>
 
 <div class="container px-4 px-5 mb-5">
+    <?php if ($deadline): ?>
+        <div class="alert alert-<?= htmlspecialchars($deadline['type']) ?> text-center shadow-sm rounded-4 p-4 col-12">
+            <i class="ti ti-alert-circle fs-6 d-block mb-3"></i>
+            <h5 class="text-danger"> <?= htmlspecialchars($deadline['msg']) ?> </h5>
+        </div>
+    <?php endif; ?>
     <?php if (!empty($selectedModules)) : ?>
         <?= createSearchFilterComponent(
             "Rechercher un module...",
@@ -73,14 +80,19 @@
                     data-filiere="<?= htmlspecialchars(strtolower(str_replace(' ', '_', $module['filiere_name'] ?? ''))) ?>"
                     data-status="<?= str_replace(' ', '_', strtolower($module['status'] ?? 'in_progress')) ?>">
                     <div class="card p-4 shadow-sm rounded-4 h-100 overflow-hidden hover-shadow transition-300 mb-3">
-                        <h5 class="card-title mb-2 text-primary fw-bold"><?= htmlspecialchars($module['title']) ?></h5>
-                        <p class="mb-2"><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_cours']) ?> heures</p>
+                    <h5 class="card-title text-primary fw-bold d-flex justify-content-between align-items-center">
+                                    <?= htmlspecialchars($module['title']) ?>
+                                    <span class="badge bg-primary-subtle text-primary fw-normal">
+                                        <?= htmlspecialchars($module['code_module']) ?>
+                                    </span>
+                                </h5>
+                        <p class="mb-2"><strong>Volume horaire :</strong> <?= htmlspecialchars($module['volume_total']) ?> heures</p>
                         <p class="mb-2"><strong>Description :</strong><br><?= htmlspecialchars($module['description'] ?? 'Aucune description disponible.') ?></p>
                         <p><strong>Filière :</strong> <?= htmlspecialchars($module['filiere_name'] ?? 'Aucune') ?></p>
                         <p class="mb-2"><strong>Semestre :</strong> <?= formatSemester($module['semester'] ?? '') ?></p>
                         <div class="d-flex flex-column align-items-center mt-2 gap-2">
                             <?= getStatusBadge($module['status'] ?? 'in progress') ?>
-                            <?php if (($module['status'] ?? '') !== 'validated') : ?>
+                            <?php if (($module['status'] ?? '') !== 'validated' && !$deadline) : ?>
                                 <button 
                                     type="button" 
                                     class="btn btn-outline-danger btn-sm delete-btn" 
@@ -91,6 +103,7 @@
                                     <i class="ti ti-trash"></i> Supprimer
                                 </button>
                             <?php endif; ?>
+
                         </div>
                     </div>
                 </div>

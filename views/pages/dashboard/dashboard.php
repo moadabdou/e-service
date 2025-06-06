@@ -1,10 +1,14 @@
 <?php 
 require_once __DIR__."../../../layouts/sidebar/sidebar.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/entity/user.php";
+
 
 class DashBoard{
 
     public function view(string $role, string $active, string $content){
+        $user=(new UserModel())->getUser($_SESSION['id_user']);
+        $Role = getRole($role);
         $sidebar = new SideBar($role);
         $sidebar_view = $sidebar->view($active);
         $notificatioModel = new NotificationModel();
@@ -13,6 +17,7 @@ class DashBoard{
     }
 
 }
+
 
 
 ?>

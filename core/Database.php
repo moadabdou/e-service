@@ -351,4 +351,20 @@ class Database
     {
         // $this->closeConnection(); // Uncomment if explicit closing is desired
     }
+
+    // to debug the output of the query sent
+    public function interpolateQuery(string $query, array $params): string
+{
+    foreach ($params as $param) {
+        if (is_string($param)) {
+            $param = "'" . addslashes($param) . "'";
+        } elseif (is_null($param)) {
+            $param = 'NULL';
+        }
+        // Replace only the first occurrence of ? each time
+        $query = preg_replace('/\?/', $param, $query, 1);
+    }
+    return $query;
+}
+
 }

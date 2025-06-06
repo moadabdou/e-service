@@ -2,10 +2,19 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
 
 function notesHistoryView(array $filliers, array $notes, ?string $success = null, ?string $error = null): string {
-
     ob_start();
     $modules = array_unique(array_map(fn($n) => $n['module_title'], $notes));
     $sessions = array_unique(array_map(fn($n) => $n['session'], $notes));
+    
+    // Statistiques pour le tableau de bord
+    $totalNotes = count($notes);
+    $notesParModule = array_count_values(array_map(fn($n) => $n['module_title'], $notes));
+    $notesParFiliere = array_count_values(array_map(fn($n) => $n['filiere_name'], $notes));
+    $notesParSession = array_count_values(array_map(fn($n) => $n['session'], $notes));
+    
+    // Date la plus récente
+    $datesDenvoi = array_map(fn($n) => strtotime($n['date_upload']), $notes);
+    $dateDerniereNote = !empty($datesDenvoi) ? max($datesDenvoi) : null;
 ?>
             <div class="container mt-2 px-3 px-md-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -25,6 +34,85 @@ function notesHistoryView(array $filliers, array $notes, ?string $success = null
                 </div>
             <?php endif; ?>
     <?php if (!empty($notes)) : ?>
+        <!-- Dashboard Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-primary-subtle h-40">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-primary fw-semibold">Total des notes</h6>
+                            <h3 class="fw-bold mb-0"><?= $totalNotes ?></h3>
+                        </div>
+                        <div class="bg-primary text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px">
+                            <i class="ti ti-file-text fs-4"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-success-subtle h-40">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-success fw-semibold">Modules couverts</h6>
+                            <h3 class="fw-bold mb-0"><?= count($modules) ?></h3>
+                        </div>
+                        <div class="bg-success text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px">
+                            <i class="ti ti-book fs-4"></i>
+                        </div>
+                    </div>
+                    <?php if (!empty($notesParModule)): 
+                        arsort($notesParModule);
+                        $topModule = array_key_first($notesParModule);
+                    ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-warning-subtle h-40">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-warning fw-semibold">Filières</h6>
+                            <h3 class="fw-bold mb-0"><?= count($notesParFiliere) ?></h3>
+                        </div>
+                        <div class="bg-warning text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px">
+                            <i class="ti ti-bookmark fs-4"></i>
+                        </div>
+                    </div>
+                    <?php if (!empty($notesParFiliere)): 
+                        arsort($notesParFiliere);
+                        $topFiliere = array_key_first($notesParFiliere);
+                    ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-info-subtle h-40">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-info fw-semibold">Sessions</h6>
+                            <h3 class="fw-bold mb-0"><?= count($sessions) ?></h3>
+                        </div>
+                        <div class="bg-info text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px">
+                            <i class="ti ti-calendar-time fs-4"></i>
+                        </div>
+                    </div>
+                    <?php if (!empty($notesParSession)): 
+                        arsort($notesParSession);
+                        $topSession = array_key_first($notesParSession);
+                    ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <?= createSearchFilterComponent(
         "Rechercher un module...",
         [

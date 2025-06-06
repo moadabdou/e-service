@@ -7,12 +7,50 @@ function departmentHeadDashboard(
     array $modulesData = [],
     array $recentActivities = [],
     int $totalProfsCount = 0,
-    int $totalHoursAssigned = 0,
+    array $totalHoursAssigned,
     int $pendingValidations = 0,
     array $modules,
-    int $vacantModulesCount
+    int $vacantModulesCount,
+    int $SousModuleCount,
+    int $ModuleCount,
+    $deadlineModel
 ): string {
-    
+
+
+
+    // Get active deadlines for key features
+    $features = ['choose_modules', 'upload_notes'];
+    $deadlines = [];
+    $hasUrgentDeadlines = false;
+
+    foreach ($features as $feature) {
+        $totalMinutes = $deadlineModel->getRemainingMinutesForFeature($feature);
+        if ($totalMinutes !== null) {
+            $days = floor($totalMinutes / (24 * 60));
+            $hours = floor(($totalMinutes % (24 * 60)) / 60);
+            $minutes = $totalMinutes % 60;
+            
+            $deadlines[$feature] = [
+                'remaining' => [
+                    'days' => $days,
+                    'hours' => $hours,
+                    'minutes' => $minutes
+                ],
+                'total_minutes' => $totalMinutes,
+                'formatted' => formatRemainingTime([
+                    'days' => $days,
+                    'hours' => $hours,
+                    'minutes' => $minutes
+                ])
+            ];
+
+            // Check if any deadline is urgent (less than 48 hours)
+            if ($totalMinutes < 2880) {
+                $hasUrgentDeadlines = true;
+            }
+        }
+    }
+
     $workloadDistribution = is_array($workloadDistribution) ? $workloadDistribution : [];
     $moduleChoicesStats = is_array($moduleChoicesStats) ? $moduleChoicesStats : [];
     $validationStats = is_array($validationStats) ? $validationStats : [];
@@ -32,10 +70,13 @@ function departmentHeadDashboard(
             }
         }
     }
-    $vacantModules = $vacantModulesCount ?? 0;
-    $totalModules = $totalModulesCount ?? 1; 
 
-    $vacantRate = round(($vacantModules / $totalModules) * 100);
+
+    $vacantModules = $vacantModulesCount ?? 0;
+
+    $totalModules = ($totalModulesCount > 0) ? $totalModulesCount : 1; 
+
+    $vacantRate = round(($vacantModules / $ModuleCount) * 100);
     $assignmentRate = ($totalModulesCount > 0) ? round(($validatedModules/ $totalModulesCount) * 100) : 0;
     
     $validatedChoices = 0;
@@ -47,9 +88,12 @@ function departmentHeadDashboard(
     $totalChoices = $totalModulesCount; 
     $validationRate = ($totalChoices > 0) ? round(($validatedChoices / $totalChoices) * 100) : 0;
     
-    // Calculate CM/TD/TP hours 
-    $tdTpHours = 0; 
-    $cmHours = $totalHoursAssigned - $tdTpHours; 
+    
+    $totalAssignedCour=$totalHoursAssigned['total_cours'] ?? 0;
+    $totalAssignedTD=$totalHoursAssigned['total_td'] ?? 0;
+    $totalAssignedTP=$totalHoursAssigned['total_tp'] ?? 0;
+    $totalAssignedAutre=$totalHoursAssigned['total_autre'] ?? 0;
+    $totalAssigned=$totalAssignedCour+$totalAssignedTD+$totalAssignedTP+$totalAssignedAutre;
     
     $workloadJson = json_encode($workloadDistribution, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     $moduleChoicesJson = json_encode($moduleChoicesStats, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
@@ -68,6 +112,29 @@ function departmentHeadDashboard(
 <link rel="stylesheet" href="/e-service/resources/assets/css/chef_dashboard.css">
 
 <div class="dashboard-container">
+    
+    <!-- Deadline Alert Banner - Only shown if there are urgent deadlines -->
+    <?php if ($hasUrgentDeadlines): ?>
+    <div class="deadline-alert-banner">
+        <div class="alert alert-warning border-0 shadow-sm mb-4 rounded-4">
+            <div class="d-flex align-items-center">
+                <div class="alert-icon bg-warning-subtle rounded-circle p-3 me-3">
+                    <i class="ti ti-clock-hour-4 fs-4 text-warning"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-1">Échéances importantes à venir</h5>
+                    <p class="mb-0">Des délais importants approchent de leur fin. Veuillez vérifier et prendre les mesures nécessaires.</p>
+                </div>
+                <div class="ms-3">
+                    <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-sm btn-warning">
+                        <i class="ti ti-eye me-1"></i> Voir les échéances
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <div class="welcome-header">
         <div class="welcome-content">
             <h1>Bienvenue, Chef de département</h1>
@@ -86,18 +153,61 @@ function departmentHeadDashboard(
                 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="ti ti-clock"></i>
+                        <i class="ti ti-presentation"></i>
                     </div>
                     <div class="stat-info">
-                        <h2><?= $totalHoursAssigned ?> h</h2>
-                        <p>Volume total assigné</p>
+                        <h2><?= $totalAssignedCour ?> h</h2>
+                        <p>Volume total cours assigné</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ti ti-clipboard"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h2><?= $totalAssignedTD ?> h</h2>
+                        <p>Volume total TD assigné</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ti ti-tool"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h2><?= $totalAssignedTP ?> h</h2>
+                        <p>Volume total TP assigné</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ti ti-tool"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h2><?= $totalAssignedAutre ?> h</h2>
+                        <p>Volume total autre assigné</p>
                     </div>
                 </div>
             </div>
             
-            <button class="btn-new-assignment">
-                <a href="/e-service/internal/members/professor/chef_deparetement/assign_modules.php"><i class="ti ti-plus"></i> Nouvelle affectation </a>
-            </button>
+            <div class="d-flex gap-2 mt-3">
+                <button class="btn-new-assignment">
+                    <a href="/e-service/internal/members/professor/chef_deparetement/assign_modules.php"><i class="ti ti-plus"></i> Nouvelle affectation </a>
+                </button>
+                
+                <button class="btn-new-assignment">
+                    <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php"><i class="ti ti-calendar-time"></i> Gérer les échéances </a>
+                </button>
+
+                <form method="POST" action="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php">
+                    <input type="hidden" name="create_announce" value="1">
+                    <button type="submit" class="btn-new-assignment">
+                        <i class="ti ti-speakerphone"></i> Auto Créer une annonce d'échéance
+                    </button>
+                </form>
+            </div>
         </div>
         
         <div class="welcome-decoration">
@@ -109,44 +219,49 @@ function departmentHeadDashboard(
     
     <!-- Key Metrics Section -->
     <div class="metrics-grid">
-        <div class="metric-card">
-            <div class="metric-header">
-                <div class="metric-icon blue">
-                    <i class="ti ti-book-off"></i>
+
+            <div class="metric-card">
+            <div class="metric-section">
+                <div class="metric-header">
+                    <div class="metric-icon blue">
+                        <i class="ti ti-book-off"></i>
+                    </div>
+                    <div>
+                        <p>Taux des modules vacants</p>
+                        <h3><?= $vacantRate ?>%</h3>
+                    </div>
                 </div>
-                <div>
-                    <p>Taux des modules vacants</p>
-                    <h3><?= $vacantRate ?>%</h3>
-                </div>
-            </div>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: <?= $vacantRate ?>%;"></div>
-                </div>
-                <div class="progress-info">
-                    <span><?= $vacantModules ?> modules</span>
-                    <span>sur <?= $totalModulesCount ?> modules</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="metric-card">
-            <div class="metric-header">
-                <div class="metric-icon green">
-                    <i class="ti ti-circle-check"></i>
-                </div>
-                <div>
-                    <p>Taux de validation</p>
-                    <h3><?= $validationRate ?>%</h3>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: <?= $vacantRate ?>%;"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span><?= $vacantModules ?> modules</span>
+                        <span>sur <?= $ModuleCount ?> modules</span>
+                    </div>
                 </div>
             </div>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill success" style="width: <?= $validationRate ?>%;"></div>
+
+            <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #ddd;">
+
+            <div class="metric-section">
+                <div class="metric-header">
+                    <div class="metric-icon green">
+                        <i class="ti ti-circle-check"></i>
+                    </div>
+                    <div>
+                        <p>Taux de validation</p>
+                        <h3><?= $validationRate ?>%</h3>
+                    </div>
                 </div>
-                <div class="progress-info">
-                    <span><?= $validatedChoices ?> validés</span>
-                    <span>sur <?= $totalChoices ?> choix</span>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill success" style="width: <?= $validationRate ?>%;"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span><?= $validatedChoices ?> validés</span>
+                        <span>sur <?= $totalChoices ?> choix</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -158,25 +273,112 @@ function departmentHeadDashboard(
                 </div>
                 <div>
                     <p>Volume horaire total</p>
-                    <h3><?= $totalHoursAssigned ?> h</h3>
+                    <h3><?= $totalAssigned ?> h</h3>
                 </div>
             </div>
+
             <div class="hours-distribution">
                 <div class="hours-type">
-                    <span class="hours-label">CM:</span>
-                    <span class="hours-value"><?= $cmHours ?>h</span>
-                </div>
-                <div class="hours-type">
-                    <span class="hours-label">TD/TP:</span>
-                    <span class="hours-value"><?= $tdTpHours ?>h</span>
+                    <span class="hours-label text-primary">CM:</span>
+                    <span class="hours-value text-primary "><?= $totalAssignedCour ?>h</span>
                 </div>
             </div>
+
+            <div class="progress-container stacked">
+                    <div class="progress-bar">
+                        <div class="progress-fill primary" style="width: <?= ($totalAssigned > 0) ? ($totalAssignedCour / $totalAssigned) * 100 : 0 ?>%;"></div>
+                    </div>
+            </div>
+
+            <div class="hours-distribution">
+                <div class="hours-type">
+                        <span class="hours-label text-success">TD:</span>
+                        <span class="hours-value text-success"><?= $totalAssignedTD ?>h</span>
+                </div>
+            </div>
+
             <div class="progress-container stacked">
                 <div class="progress-bar">
-                    <div class="progress-fill primary" style="width: <?= ($totalHoursAssigned > 0) ? ($cmHours / $totalHoursAssigned) * 100 : 0 ?>%;"></div>
-                    <div class="progress-fill success" style="width: <?= ($totalHoursAssigned > 0) ? ($tdTpHours / $totalHoursAssigned) * 100 : 0 ?>%;"></div>
+                    <div class="progress-fill success" style="width: <?= ($totalAssigned > 0) ? ($totalAssignedTD / $totalAssigned) * 100 : 0 ?>%;"></div>
                 </div>
             </div>
+
+            <div class="hours-distribution">
+                <div class="hours-type">
+                        <span class="hours-label text-warning">TP:</span>
+                        <span class="hours-value text-warning"><?= $totalAssignedTP ?>h</span>
+                </div>
+            </div>
+
+            <div class="progress-container stacked">
+                <div class="progress-bar">
+                    <div class="progress-fill warning" style="width: <?= ($totalAssigned > 0) ? ($totalAssignedTP / $totalAssigned) * 100 : 0 ?>%;"></div>
+                </div>
+            </div>
+
+            <div class="hours-distribution">
+                <div class="hours-type">
+                    <span class="hours-label text-danger">Autre:</span>
+                    <span class="hours-value text-danger"><?= $totalAssignedAutre ?>h</span>
+                </div>
+            </div>
+
+            <div class="progress-container stacked">
+                <div class="progress-bar">
+                    <div class="progress-fill danger" style="width: <?= ($totalAssigned > 0) ? ($totalAssignedAutre / $totalAssigned) * 100 : 0 ?>%;"></div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-header">
+                <div class="metric-icon blue">
+                    <i class="ti ti-calendar-time"></i>
+                </div>
+                <div>
+                    <p>Échéances actives</p>
+                    <h3><?= count($deadlines) ?></h3>
+                </div>
+            </div>
+            
+            <?php if (!empty($deadlines)): ?>
+                <div class="deadlines-list">
+                    <?php foreach ($deadlines as $feature => $deadline): ?>
+                        <?php 
+                            $featureName = $feature === 'choose_modules' ? 'Choix des modules' : 'Dépôt des notes';
+                            $iconClass = $feature === 'choose_modules' ? 'ti-book' : 'ti-file-upload';
+                            $urgencyClass = $deadline['total_minutes'] < 1440 ? 'text-danger' : 
+                                           ($deadline['total_minutes'] < 2880 ? 'text-warning' : 'text-primary');
+                        ?>
+                        <div class="deadline-item">
+                            <div class="d-flex align-items-center">
+                                <i class="ti <?= $iconClass ?> me-2 <?= $urgencyClass ?>"></i>
+                                <span class="fw-medium"><?= $featureName ?></span>
+                            </div>
+                            <div class="countdown <?= $urgencyClass ?> fw-bold">
+                                <?= $deadline['formatted'] ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                
+                <div class="mt-3 text-center">
+                    <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-sm btn-outline-primary w-100">
+                        <i class="ti ti-settings"></i> Gérer les échéances
+                    </a>
+                </div>
+            <?php else: ?>
+                <div class="empty-state text-center py-3">
+                    <i class="ti ti-calendar-off text-muted fs-4 mb-2"></i>
+                    <p class="text-muted mb-0">Aucune échéance active</p>
+                </div>
+                <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php">
+            <button class="btn-view-requestblue">
+                <i class="ti ti-plus"></i> Ajouter une échéance
+            </button>
+            </a>
+            <?php endif; ?>
         </div>
         
         <div class="metric-card">
@@ -189,9 +391,11 @@ function departmentHeadDashboard(
                     <h3><?= $pendingValidations ?></h3>
                 </div>
             </div>
+            <?php if((!empty($pendingValidations ))) : ?>
             <div class="alert-message">
                 <p>Validations en attente à traiter</p>
             </div>
+            <?php endif; ?>
             <a href="/e-service/internal/members/professor/chef_deparetement/assign_modules.php">
             <button class="btn-view-requests">
                 <i class="ti ti-eye"></i> Voir les demandes
@@ -211,6 +415,9 @@ function departmentHeadDashboard(
             </button>
             <button class="tab-btn" data-tab="modules">
                 <i class="ti ti-book"></i> Modules
+            </button>
+            <button class="tab-btn" data-tab="deadlines">
+                <i class="ti ti-calendar-time"></i> Échéances
             </button>
             <button class="tab-btn" data-tab="reports">
                 <i class="ti ti-report-analytics"></i> Rapports
@@ -392,11 +599,11 @@ function departmentHeadDashboard(
                                     <span>Voir Modules Vacants</span>
                                 </a>
                                 
-                                <a href="/e-service/internal/members/professor/chef_deparetement/history.php" class="quick-action">
+                                <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="quick-action">
                                     <div class="action-icon orange">
-                                        <i class="ti ti-calendar-stats"></i>
+                                        <i class="ti ti-calendar-time"></i>
                                     </div>
-                                    <span>Historique des années</span>
+                                    <span>Gérer Échéances</span>
                                 </a>
 
                             </div>
@@ -516,6 +723,7 @@ function departmentHeadDashboard(
 
             
 <div class="tab-pane" id="modules">
+
     <!-- Module Statistics Cards -->
     <div class="module-stats-grid">
         <div class="stat-card module-stat">
@@ -530,13 +738,14 @@ function departmentHeadDashboard(
         
         <div class="stat-card module-stat">
             <div class="stat-icon bg-success">
-                <i class="ti ti-clock text-white"></i>
+                <i class="ti ti-layers-subtract text-white"></i>
             </div>
             <div class="stat-info text-success">
-                <h2  class="text-success"><?= array_sum(array_column($modules, 'volume_cours')) ?> h</h2>
-                <p>Volume Horaire Total</p>
+                <h2 class="text-success"><?= $SousModuleCount ?></h2>
+                <p>Sous-modules enregistrés</p>
             </div>
         </div>
+
         
         <?php
         // Count modules by semester
@@ -585,6 +794,52 @@ function departmentHeadDashboard(
             </div>
         </div>
     </div>
+    <div class="module-stats-grid">
+    <!-- Cours -->
+    <div class="stat-card module-stat">
+        <div class="stat-icon p-3" style="background-color: #6D28D9;"> 
+            <i class="ti ti-presentation text-white "></i>
+        </div>
+        <div class="stat-info">
+            <h2 style="color: #6D28D9;"><?= array_sum(array_column($modules, 'volume_cours')) ?> h</h2>
+            <p style="color: #6D28D9;">Volume Horaire Cours Total</p>
+        </div>
+    </div>
+
+    <!-- TD -->
+    <div class="stat-card module-stat">
+        <div class="stat-icon" style="background-color: #F87171;">
+            <i class="ti ti-pencil text-white"></i>
+        </div>
+        <div class="stat-info">
+            <h2 style="color: #F87171;"><?= array_sum(array_column($modules, 'volume_td')) ?> h</h2>
+            <p style="color: #F87171;">Volume Horaire TD Total</p>
+        </div>
+    </div>
+
+    <!-- TP -->
+    <div class="stat-card module-stat">
+        <div class="stat-icon" style="background-color: #9333EA;"> 
+            <i class="ti ti-tool text-white"></i>
+        </div>
+        <div class="stat-info">
+            <h2 style="color: #9333EA;"><?= array_sum(array_column($modules, 'volume_tp')) ?> h</h2>
+            <p style="color: #9333EA;">Volume Horaire TP Total</p>
+        </div>
+    </div>
+
+    <!-- Autre -->
+    <div class="stat-card module-stat">
+        <div class="stat-icon p-3" style="background-color: #DB2777;"> <!-- Darker Purple -->
+            <i class="ti ti-package text-white"></i>
+        </div>
+        <div class="stat-info">
+            <h2 style="color: #DB2777;"><?= array_sum(array_column($modules, 'volume_autre')) ?> h</h2>
+            <p style="color: #DB2777;">Volume Horaire Total Pour Autre </p>
+        </div>
+    </div>
+</div>
+
 
     <!-- Module Management Card -->
     <div class="dashboard-card full-width">
@@ -653,39 +908,38 @@ function departmentHeadDashboard(
                 <table class="modules-table">
                     <thead>
                         <tr>
-                            <th class="sortable" data-sort="id">ID <i class="ti ti-arrow-down"></i></th>
+                            <th>Code Module</th>
                             <th class="sortable" data-sort="title">Titre <i class="ti ti-arrows-sort"></i></th>
                             <th>Description</th>
-                            <th class="sortable" data-sort="hours">Heures <i class="ti ti-arrows-sort"></i></th>
+                            <th class="sortable" data-sort="hours">Heures Total <i class="ti ti-arrows-sort"></i></th>
                             <th class="sortable" data-sort="semester">Semestre <i class="ti ti-arrows-sort"></i></th>
                             <th class="sortable" data-sort="credits">Crédits <i class="ti ti-arrows-sort"></i></th>
                             <th class="sortable" data-sort="department">Filière <i class="ti ti-arrows-sort"></i></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($modules)): ?>
+                        <?php if (!empty($modules)):?>
                             <?php foreach ($modules as $module): ?>
                                 <tr class="module-row" 
-                                    data-id="<?= $module['id_module'] ?>"
                                     data-title="<?= htmlspecialchars($module['title']) ?>"
                                     data-hours="<?= $module['volume_cours'] ?>"
                                     data-semester="<?= strtoupper($module['semester']) ?>"
                                     data-credits="<?= $module['credits'] ?>"
                                     data-department="<?= htmlspecialchars($module['filiere_name']) ?>">
-                                    <td><?= $module['id_module'] ?></td>
+                                    <td><?= $module['code_module'] ?></td>
                                     <td class="module-title"><?= htmlspecialchars($module['title']) ?></td>
                                     <td class="module-description">
                                         <div class="description-truncate">
                                             <?= htmlspecialchars($module['description']) ?>
                                         </div>
                                     </td>
-                                    <td><?= $module['volume_cours'] ?> h</td>
+                                    <td class=" text-center"><?= $module['volume_cours']+$module['volume_td']+$module['volume_tp']+$module['volume_autre'] ?> h</td>
                                     <td>
                                         <span class="semester-badge <?= strtolower($module['semester']) ?>">
                                             <?= strtoupper($module['semester']) ?>
                                         </span>
                                     </td>
-                                    <td><?= $module['credits'] ?></td>
+                                    <td class=" text-center"><?= $module['credits'] ?></td>
                                     <td><?= htmlspecialchars($module['filiere_name']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -729,6 +983,106 @@ function departmentHeadDashboard(
         </div>
     </div>
 </div>
+
+            <!-- Deadlines Tab (New Addition) -->
+            <div class="tab-pane" id="deadlines">
+                <div class="dashboard-card full-width">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4>Gestion des Échéances</h4>
+                            <p>Configurez et suivez les échéances pour les différentes fonctionnalités</p>
+                        </div>
+                        <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-primary btn-sm">
+                            <i class="ti ti-plus"></i> Nouvelle échéance
+                        </a>
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Active Deadlines Section -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3 text-primary">
+                                <i class="ti ti-calendar-time"></i> Échéances actives
+                            </h5>
+                            
+                            <?php if (!empty($deadlines)): ?>
+                                <div class="row g-3">
+                                    <?php foreach ($deadlines as $feature => $deadline): ?>
+                                        <?php 
+                                            $featureName = $feature === 'choose_modules' ? 'Choix des modules' : 'Dépôt des notes';
+                                            $iconClass = $feature === 'choose_modules' ? 'ti-book' : 'ti-file-upload';
+                                            $urgencyClass = $deadline['total_minutes'] < 1440 ? 'danger' : 
+                                                           ($deadline['total_minutes'] < 2880 ? 'warning' : 'primary');
+                                        ?>
+                                        <div class="col-md-12">
+                                            <div class="card border-<?= $urgencyClass ?> shadow-sm h-80">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <h5 class="card-title mb-0 d-flex align-items-center">
+                                                            <i class="ti <?= $iconClass ?> me-2 text-<?= $urgencyClass ?>"></i>
+                                                            <?= $featureName ?>
+                                                        </h5>
+                                                        <span class="badge bg-<?= $urgencyClass ?>-subtle text-<?= $urgencyClass ?> px-3 py-2 rounded-pill">
+                                                            <?= $deadline['total_minutes'] < 1440 ? 'Urgent' : 
+                                                               ($deadline['total_minutes'] < 2880 ? 'Bientôt' : 'En cours') ?>
+                                                        </span>
+                                                    </div>
+                                                    
+                                                    <div class="countdown-display text-center my-3">
+                                                        <div class="row g-2">
+                                                            <?php if ($deadline['remaining']['days'] > 0): ?>
+                                                            <div class="col">
+                                                                <div class="countdown-box bg-light p-2 rounded">
+                                                                    <div class="countdown-value fw-bold fs-4 text-<?= $urgencyClass ?>"><?= $deadline['remaining']['days'] ?></div>
+                                                                    <div class="countdown-label small text-muted">Jours</div>
+                                                                </div>
+                                                            </div>
+                                                            <?php endif; ?>
+                                                            
+                                                            <div class="col">
+                                                                <div class="countdown-box bg-light p-2 rounded">
+                                                                    <div class="countdown-value fw-bold fs-4 text-<?= $urgencyClass ?>"><?= $deadline['remaining']['hours'] ?></div>
+                                                                    <div class="countdown-label small text-muted">Heures</div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col">
+                                                                <div class="countdown-box bg-light p-2 rounded">
+                                                                    <div class="countdown-value fw-bold fs-4 text-<?= $urgencyClass ?>"><?= $deadline['remaining']['minutes'] ?></div>
+                                                                    <div class="countdown-label small text-muted">Minutes</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="d-flex justify-content-between align-items-center mt-4">
+                                                        <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="btn btn-sm btn-outline-<?= $urgencyClass ?>">
+                                                            <i class="ti ti-edit"></i> Modifier
+                                                        </a>
+                                                        
+                                                        <form method="POST" action="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="d-inline">
+                                                            <input type="hidden" name="create_announce" value="1">
+                                                            <button type="submit" class="btn btn-sm btn-<?= $urgencyClass ?>">
+                                                                <i class="ti ti-bell"></i> Créer une annonce
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="alert alert-info d-flex align-items-center">
+                                    <i class="ti ti-info-circle me-2 fs-4"></i>
+                                    <div>
+                                        Aucune échéance active actuellement. <a href="/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php" class="alert-link">Créer une nouvelle échéance</a>.
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
          
             <!-- Reports Tab (Hidden by Default) -->
             <div class="tab-pane" id="reports">
@@ -793,6 +1147,80 @@ function departmentHeadDashboard(
         </div>
     </div>
 </div>
+
+<style>
+/* Deadline specific styles */
+.deadline-alert-banner {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.deadline-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.deadline-item:last-child {
+    border-bottom: none;
+}
+
+.deadlines-list {
+    margin-bottom: 15px;
+}
+
+.countdown {
+    font-size: 0.9rem;
+}
+
+.countdown-box {
+    border: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+
+.btn-manage-deadlines:hover {
+    background-color: #5b21b6;
+    transform: translateY(-2px);
+}
+
+.btn-manage-deadlines a {
+    color: white;
+    text-decoration: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-view-requestblue {
+    background-color: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    width: 100%;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04); /* subtle depth */
+}
+
+.btn-view-requestblue:hover {
+    background-color: var(--primary);
+    color: var(--white);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* lift on hover */
+}
+
+</style>
 
 <script>
 
@@ -878,7 +1306,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const title = row.getAttribute('data-title').toLowerCase();
             const semester = row.getAttribute('data-semester');
             const department = row.getAttribute('data-department');
-            
             const matchesSearch = title.includes(searchTerm);
             const matchesSemester = !semesterValue || semester === semesterValue;
             const matchesDepartment = !departmentValue || department === departmentValue;
@@ -962,7 +1389,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let valueB = b.getAttribute(`data-${sortBy}`);
                 
                 // Handle numeric values
-                if (sortBy === 'id' || sortBy === 'hours' || sortBy === 'credits') {
+                if ( sortBy === 'hours' || sortBy === 'credits') {
                     valueA = parseInt(valueA);
                     valueB = parseInt(valueB);
                 }
@@ -1042,6 +1469,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
 function initializeCharts() {
     try {
         // Workload Distribution Chart
@@ -1063,9 +1491,10 @@ function initializeCharts() {
             const labels = workloadData.map(item => item.status || 'Inconnu');
             const data = workloadData.map(item => item.total || 0);
             const colors = [
+                '#00c853', //success
                 '#4361ee', // Primary
-                '#fa896b',  // Danger
-                '#00c853' //success
+                '#fa896b'  // Danger
+                
             ];
             
             new Chart(workloadCtx, {
@@ -1145,7 +1574,8 @@ function initializeCharts() {
                 ];
             }
             
-            const years = validationStatsData.map(item => item.year || '');
+            const years = validationStatsData.reverse().map(item => item.year || '');
+            
             const validatedCounts = validationStatsData.map(item => item.validated || 0);
             
             new Chart(validationCtx, {

@@ -106,13 +106,26 @@ class ModuleModel extends  Model
 
     public function getAvailableModulesByDepartment($departmentId)
     {
-        $query = "SELECT m.*,f.title AS filiere_name
-                FROM module m
-                JOIN filiere f ON m.id_filiere = f.id_filiere
-                WHERE f.id_deparetement = ?  AND m.id_module
-                NOT IN (( SELECT af.id_module FROM 
-                affectation_professor af) UNION ( SELECT cm.id_module FROM 
-                choix_module cm WHERE cm.by_professor= ? AND cm.status = 'in progress'))";
+        $query = "SELECT 
+            m.*, 
+            f.title AS filiere_name,
+            SUM(
+                COALESCE(m.volume_cours, 0)
+              + COALESCE(m.volume_td, 0)
+              + COALESCE(m.volume_tp, 0)
+              + COALESCE(m.volume_autre, 0)
+            ) AS total_hours 
+          FROM module m
+          JOIN filiere f ON m.id_filiere = f.id_filiere
+          WHERE f.id_deparetement = ?  
+            AND m.id_module NOT IN (
+                (SELECT af.id_module FROM affectation_professor af) 
+                UNION 
+                (SELECT cm.id_module FROM choix_module cm 
+                 WHERE cm.by_professor = ? AND cm.status = 'in progress')
+            )
+          GROUP BY m.id_module";
+
         if ($this->db->query($query, [$departmentId, $_SESSION['id_user']])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
@@ -136,6 +149,35 @@ class ModuleModel extends  Model
             return $this->db->getError();
         }
     }
+
+    public function getSousModulesCountByDepartment(int $departmentId): int {
+        $query = "SELECT COUNT(*) AS total
+                  FROM module m
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE f.id_deparetement = ? AND m.evaluation != 0";
+    
+        if ($this->db->query($query, [$departmentId])) {
+            $result = $this->db->fetch();
+            return $result ? (int)$result['total'] : 0;
+        }
+    
+        return 0;
+    }
+
+    public function getModulesCountByDepartment(int $departmentId): int {
+        $query = "SELECT COUNT(*) AS total
+                  FROM module m
+                  JOIN filiere f ON m.id_filiere = f.id_filiere
+                  WHERE f.id_deparetement = ?";
+    
+        if ($this->db->query($query, [$departmentId])) {
+            $result = $this->db->fetch();
+            return $result ? (int)$result['total'] : 0;
+        }
+    
+        return 0;
+    }
+    
 
     public function getSelectedModulesByProfessor($professorId)
     {
@@ -162,7 +204,12 @@ class ModuleModel extends  Model
 
     public function getTotalHoursFromChoix($professorId)
     {
-        $query = "SELECT SUM(m.volume_cours) AS total 
+        $query = "SELECT SUM(
+                        COALESCE(m.volume_cours, 0)
+                        + COALESCE(m.volume_td,     0)
+                        + COALESCE(m.volume_tp,     0)
+                        + COALESCE(m.volume_autre,  0)
+                        ) AS total 
                   FROM module m
                   JOIN choix_module cm ON m.id_module = cm.id_module
                   WHERE cm.by_professor = ?";
@@ -263,7 +310,7 @@ class ModuleModel extends  Model
 
 
 
-    public function getProfessorHours($professorId)
+    public function getProfessorHours($professorId): array|bool
     {
         $query = "SELECT min_hours, max_hours FROM professor WHERE id_professor = ?";
 
@@ -277,28 +324,36 @@ class ModuleModel extends  Model
 
 
     public function getSelectedModulesWithStatus($professorId)
-    {
-        $query = "SELECT 
-                    m.id_module,
-                    cm.status, 
-                    m.title, 
-                    m.description, 
-                    m.semester, 
-                    m.volume_cours,
-                    f.title AS filiere_name
-                  FROM module m
-                  JOIN filiere f ON f.id_filiere = m.id_filiere
-                  JOIN choix_module cm ON m.id_module = cm.id_module
-                  JOIN user u ON cm.by_professor = u.id_user
-                  WHERE cm.by_professor = ?";
+        {
+            $query = "SELECT 
+                        m.id_module,
+                        cm.status, 
+                        m.title, 
+                        m.description, 
+                        m.semester,
+                        m.code_module
+                        ,
+                        SUM(
+                            COALESCE(m.volume_cours, 0)
+                            + COALESCE(m.volume_td, 0)
+                            + COALESCE(m.volume_tp, 0)
+                            + COALESCE(m.volume_autre, 0)
+                        ) AS volume_total,
+                        f.title AS filiere_name
+                    FROM module m
+                    JOIN filiere f ON f.id_filiere = m.id_filiere
+                    JOIN choix_module cm ON m.id_module = cm.id_module
+                    WHERE cm.by_professor = ?
+                    GROUP BY m.id_module, cm.status, m.title, m.description, m.semester, f.title";
 
-        if ($this->db->query($query, [$professorId])) {
-            return $this->db->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            var_dump($this->db->getError());
-            return [];
+            if ($this->db->query($query, [$professorId])) {
+                return $this->db->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                var_dump($this->db->getError());
+                return [];
+            }
         }
-    }
+
 
     public function deleteModuleChoice($idUser, $idModule)
     {
@@ -489,10 +544,10 @@ class ModuleModel extends  Model
                   WHERE f.id_deparetement = ?";
 
         if ($this->db->query($query, [$departmentId])) {
-            $result = $this->db->fetch(PDO::FETCH_ASSOC);
-            return (int) ($result['total_hours'] ?? 0);
+            return $result = $this->db->fetch(PDO::FETCH_ASSOC);
+
         } else {
-            return 0;
+            return null;
         }
     }
 
@@ -541,7 +596,14 @@ class ModuleModel extends  Model
                 $grouped[$year][$userId]['modules'][] = [
                     'title' => $row['module_title'],
                     'filiere' => $row['filiere_name'],
-                    'hours' => $row['volume_cours']
+                    'hours' => $row['volume_total'],
+                    'volume_cours'  => $row['volume_cours'],
+                    'volume_td'=> $row['volume_td'],
+                    'volume_tp'=> $row['volume_tp'],
+                    'volume_autre'=> $row['volume_autre'],
+                    'credits'=> $row['credits'],
+                    'semester'=> $row['semester'],
+                    'code_module'=> $row['code_module']
                 ];
             }
 

@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
 
-function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours) {
+function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $errors, $info, $totalHours, $minHours, $maxHours,$deadline) {
     ob_start();
 
     if ($_SERVER["REQUEST_METHOD"] === "POST" && empty($errors)) {
@@ -101,7 +101,13 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
                     </div>
                 </div>
                 <?php endif; ?>
-
+                <?php if ($deadline): ?>
+                        <div class="alert alert-<?= htmlspecialchars($deadline['type']) ?> text-center shadow-sm rounded-4 p-4">
+                            <i class="ti ti-alert-circle fs-6 d-block mb-3"></i>
+                            <h5><?= htmlspecialchars($deadline['msg']) ?></h5>
+                            <p class="text-muted mb-0"><?= htmlspecialchars($deadline['desc']) ?></p>
+                        </div>
+                <?php else : ?>
                 <!-- Alerts Section -->
                 <?php if ($info) : ?>
                     <div class="alert alert-<?= htmlspecialchars($info['type']) ?> alert-dismissible fade show rounded-4 shadow-sm border-start border-5 border-<?= htmlspecialchars($info['type']) ?>" role="alert">
@@ -168,6 +174,12 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
                                 <div id="modulesList" class="mt-2">
                                     <?php foreach ($availableModules as $module) : 
                                         $isSelected = in_array($module['id_module'], array_column($selectedModules, 'id_module'));
+                                        $moduleType = isset($module['evaluation']) && $module['evaluation'] == 0 ? 'Module complet' : 'Sous-module';
+                                        $totalHours = isset($module['total_hours']) ? $module['total_hours'] : 
+                                            ((isset($module['volume_cours']) ? $module['volume_cours'] : 0) + 
+                                            (isset($module['volume_td']) ? $module['volume_td'] : 0) + 
+                                            (isset($module['volume_tp']) ? $module['volume_tp'] : 0) + 
+                                            (isset($module['volume_autre']) ? $module['volume_autre'] : 0));
                                     ?>
                                         <div class="module-card mb-3 filterable-item transition-hover"
                                             data-semester="<?= htmlspecialchars(strtolower($module['semester'] ?? '')) ?>"
@@ -189,26 +201,35 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
                                                         </div>
                                                     </div>
                                                     
-                                                    <!-- Module Header -->
+                                                    <!-- Module Header with Code -->
                                                     <div class="d-flex align-items-center mb-3">
                                                         <div class="me-3">
                                                             <div class="rounded-circle p-2 <?= $isSelected ? 'bg-primary-subtle text-primary' : 'bg-light text-muted' ?>">
                                                                 <i class="ti ti-book fs-4"></i>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <h5 class="card-title fw-bold mb-2 <?= $isSelected ? 'text-primary' : '' ?>">
-                                                                <?= htmlspecialchars($module['title']) ?>
-                                                            </h5>
-                                                            <div class="d-flex align-items-center gap-2">
-                                                                <span class="badge bg-secondary-subtle text-secondary rounded-pill">
-                                                                    <?= htmlspecialchars($module['volume_cours']) ?> heures
+                                                        <div class="flex-grow-1 small">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="badge bg-primary text-white rounded-pill me-3">
+                                                                    <?= htmlspecialchars($module['code_module'] ?? 'N/A') ?>
                                                                 </span>
+                                                                <h5 class="card-title fw-bold mb-0 <?= $isSelected ? 'text-primary' : '' ?>">
+                                                                    <?= htmlspecialchars($module['title']) ?>
+                                                                </h5>
+                                                            </div>
+                                                            
+                                                            <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
                                                                 <span class="badge bg-info-subtle text-info rounded-pill">
                                                                     <?= formatSemester($module['semester'] ?? '') ?>
                                                                 </span>
                                                                 <span class="badge bg-light text-dark rounded-pill">
                                                                     <?= htmlspecialchars($module['filiere_name'] ?? 'Aucune') ?>
+                                                                </span>
+                                                                <span class="badge <?= $moduleType == 'Module complet' ? 'bg-success-subtle text-success' : 'bg-warning-subtle text-warning' ?> rounded-pill">
+                                                                    <?= $moduleType ?>
+                                                                </span>
+                                                                <span class="badge bg-primary-subtle text-primary rounded-pill">
+                                                                    <?= htmlspecialchars($module['credits'] ?? '0') ?> crédits
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -222,17 +243,43 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
                                                         </div>
                                                     </div>
                                                     
-                                                    <!-- Module Selection Label -->
+                                                    <!-- Module Hours Details -->
+                                                    <div class="row g-2 mb-3">
+                                                        <div class="col-6 col-md-3">
+                                                            <div class="p-2 rounded bg-light-subtle border">
+                                                                <div class="small text-muted">Cours</div>
+                                                                <div class="fw-bold"><?= htmlspecialchars($module['volume_cours'] ?? '0') ?> h</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6 col-md-3">
+                                                            <div class="p-2 rounded bg-light-subtle border">
+                                                                <div class="small text-muted">TD</div>
+                                                                <div class="fw-bold"><?= htmlspecialchars($module['volume_td'] ?? '0') ?> h</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6 col-md-3">
+                                                            <div class="p-2 rounded bg-light-subtle border">
+                                                                <div class="small text-muted">TP</div>
+                                                                <div class="fw-bold"><?= htmlspecialchars($module['volume_tp'] ?? '0') ?> h</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6 col-md-3">
+                                                            <div class="p-2 rounded bg-light-subtle border">
+                                                                <div class="small text-muted">Autre</div>
+                                                                <div class="fw-bold"><?= htmlspecialchars($module['volume_autre'] ?? '0') ?> h</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Module Selection & Total Hours -->
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <label for="module-<?= htmlspecialchars($module['id_module']) ?>" class="btn btn-sm <?= $isSelected ? 'btn-primary' : 'btn-outline-primary' ?> rounded-pill">
                                                             <i class="ti <?= $isSelected ? 'ti-check' : 'ti-plus' ?> me-1"></i>
                                                             <?= $isSelected ? 'Module sélectionné' : 'Sélectionner ce module' ?>
                                                         </label>
-                                                        <?php if (empty($module['description'])): ?>
-                                                            <div class="text-muted small fst-italic">
-                                                                <i class="ti ti-file-text"></i> Pas de description
-                                                            </div>
-                                                        <?php endif; ?>
+                                                        <div class="badge bg-secondary rounded-pill fs-4">
+                                                            <i class="ti ti-clock me-1"></i> Total: <?= htmlspecialchars($totalHours) ?> heures
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -261,7 +308,7 @@ function chooseUnitsFormView($filliers, $availableModules, $selectedModules, $er
             </div>
         </div>
     </div>
-
+    <?php endif; ?>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const checkboxes = document.querySelectorAll('.module-checkbox');

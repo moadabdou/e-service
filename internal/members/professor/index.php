@@ -7,7 +7,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/notes.php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/entity/professor.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/dashboard_professor_view.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/deadline.php";
 
+$deadlineModel = new DeadlineModel();
 $userController = new UserController();
 $userController->checkCurrentUserAuthority(["professor", "professor/chef_deparetement", "professor/coordonnateur"]);
 
@@ -40,7 +42,8 @@ $content = professorDashboard(
     $upcomingDeadlines,
     $professorName,
     $department,
-    $academicYear
+    $academicYear,
+    $deadlineModel
 );
 
 $dashboard = new DashBoard();

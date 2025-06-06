@@ -76,7 +76,7 @@
                 <?php endif; ?>
             </div>
             <div class="announcement-title"><?= htmlspecialchars($announce["title"]) ?></div>
-            <div class="announcement-text"><?= htmlspecialchars($announce["content"]) ?></div>
+            <div class="announcement-text"><?= nl2br(htmlspecialchars($announce["content"])) ?></div>  <!-- ela wed /n bach irje3 lster -->
             <div class="announcement-details">Created on: <?= htmlspecialchars($announce["create_time"]) ?></div>
         </div>
     <?php endforeach; ?>

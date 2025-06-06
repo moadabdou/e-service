@@ -7,6 +7,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/chef_depareteme
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/entity/professor.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/deadline.php";
+$deadlineModel = new DeadlineModel();
 
 $userController = new UserController();
 $userController->checkCurrentUserAuthority(["professor/chef_deparetement"]);
@@ -28,6 +30,8 @@ $modulesData = $StatisticsModel->getModuleChoicesStats($departmentId);
 $recentActivities = $StatisticsModel->getRecentModuleActivities($departmentId);
 $pendingValidations = $StatisticsModel->getPendingValidationsCount($departmentId);
 $modules = $moduleModel->getAllModulesByDepartment($departmentId);
+$SousModuleCount = $moduleModel->getSousModulesCountByDepartment($departmentId);
+$ModuleCount = $moduleModel->getModulesCountByDepartment($departmentId);
 $vacantModulesCount = $StatisticsModel->getVacantModulesCount($departmentId);
 
 
@@ -42,7 +46,10 @@ $content = departmentHeadDashboard(
     $totalHoursAssigned,
     $pendingValidations,
     $modules,
-    $vacantModulesCount
+    $vacantModulesCount,
+    $SousModuleCount,
+    $ModuleCount,
+    $deadlineModel
 );
 
 $dashboard = new DashBoard();

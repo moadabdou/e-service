@@ -7,9 +7,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/professor/uploa
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/notes.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/deadline.php";
+
 
 $userController = new UserController();
+$deadlineModel = new DeadlineModel();
+
 $userController->checkCurrentUserAuthority(["professor", "professor/chef_deparetement", "professor/coordonnateur"]);
+
+
 
 $professorId = $_SESSION['id_user'];
 $moduleModel = new ModuleModel();
@@ -17,6 +23,17 @@ $noteModel = new NoteModel();
 
 $assignedModules = $moduleModel->getApprovedModulesByProfessor($professorId);
 $info = null;
+$deadline = null;
+
+
+if (!$deadlineModel->isFeatureOpen('upload_notes')) {
+    $deadline = [
+        "type" => "danger",
+        "msg" => "La période d'envoi des notes est fermée. Vous ne pouvez pas envoyer de notes pour le moment.",
+        "desc" => "Pour toute demande urgente, veuillez contacter l'administration."
+    ];
+}
+
 
 // Check if uploading for a specific module
 $singleModuleId = isset($_GET['module']) ? intval($_GET['module']) : null;
@@ -63,15 +80,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['session_type'])) {
     }
 }
 
+
 // If single module => pass only that module
 if ($singleModuleId) {
     $moduleInfo = $moduleModel->getModuleById($singleModuleId);
 
-    $content = uploadSingleNoteView([$moduleInfo], $info);
+    $content = uploadSingleNoteView([$moduleInfo], $info,$deadline);
 
 } else {
-    $content = uploadNotesView($assignedModules, $info);
+    $content = uploadNotesView($assignedModules, $info,$deadline);
 }
+
+
 
 $dashboard = new DashBoard();
 $dashboard->view($_SESSION["role"], "UploadNotes", $content);

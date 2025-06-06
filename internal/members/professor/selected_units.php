@@ -4,6 +4,7 @@ session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/dashboard/dashboard.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/module.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/filiere.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/univeristy/deadline.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/controllers/entity/user.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/components/search_filter_component.php";
 
@@ -12,6 +13,16 @@ $userController->checkCurrentUserAuthority(["professor","professor/chef_deparete
 
 $moduleModel = new ModuleModel();
 $filiereModel = new FiliereModel();
+$deadlineModel = new DeadlineModel();
+
+$deadline = null;
+
+if (!$deadlineModel->isFeatureOpen('choose_modules')) {
+    $deadline = [
+        "msg" => "Vous ne pouvez plus modifier ou supprimer vos modules sélectionnés, car la période de modification est terminée.",
+        "type" => "danger",
+    ];
+}
 
 $professorId = $_SESSION['id_user'] ?? null;
 $departmentId = $_SESSION['id_deparetement'] ?? null;

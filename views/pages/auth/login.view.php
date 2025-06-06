@@ -1,7 +1,3 @@
-<?php 
-require_once $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,61 +5,29 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>E-Services Login</title>
   <link rel="shortcut icon" type="image/png" href="/e-service/storage/image/logo/logo.png" />
-  <link rel="stylesheet" href="<?=$RESOURCES_PATH?>/assets/css/styles.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/e-service/resources/assets/css/login_view.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Particles Animation -->
   <div class="particles" id="particles"></div>
   
-  <!-- Wave Animation -->
-  <div class="wave-container">
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-  </div>
+  <!-- 3D Shapes -->
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+  <div class="shape shape-3"></div>
+  <div class="shape shape-4"></div>
   
   <div class="login-container">
-    <!-- Floating Elements -->
-    <div class="floating-element floating-1"></div>
-    <div class="floating-element floating-2"></div>
-    
     <!-- Left Side - Brand -->
     <div class="login-brand">
-      <div class="brand-logo-container">
-        <img src="/e-service/storage/image/logo/logo.png" alt="E-Services Logo" class="brand-logo">
-      </div>
-      <h1 class="brand-title">E-Services</h1>
-      <p class="brand-description">Votre plateforme de gestion des services académiques. Accédez à tous vos outils en un seul endroit.</p>
-      
-      <div class="brand-features">
-        <div class="feature-item">
-          <div class="feature-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-            </svg>
-          </div>
-          <div class="feature-text">Gestion des affectations d'enseignements</div>
+      <div class="brand-content">
+        <div class="brand-logo-container">
+          <img src="/e-service/storage/image/logo/logo.png" alt="E-Services Logo" class="brand-logo">
         </div>
-        
-        <div class="feature-item">
-          <div class="feature-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
-            </svg>
-          </div>
-          <div class="feature-text">Suivi des modules et des charges</div>
-        </div>
-        
-        <div class="feature-item">
-          <div class="feature-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-            </svg>
-          </div>
-          <div class="feature-text">Gestion des rapports et statistiques</div>
-        </div>
+        <h1 class="brand-title">E-Services</h1>
+        <p class="brand-description">Votre plateforme de gestion des services académiques</p>
       </div>
     </div>
     
@@ -121,9 +85,9 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
               </svg>
             </span>
           </div>
-          <?php if (isset($errors["invalid"])) { ?>
+          <?php if (isset($errors["invalid"]) && !isset($errors["email"])) { ?>
             <div class="invalid-feedback">
-              <?= $errors["invalid"] ?>
+              Identifiants incorrects. Veuillez réessayer.
             </div>
           <?php } ?>
         </div>
@@ -148,36 +112,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
           </span>
           <span class="btn-loader"></span>
         </button>
-        
-        <div class="divider">ou connectez-vous avec</div>
-        
-        <div class="social-login">
-          <button type="button" class="social-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4285F4">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-            </svg>
-          </button>
-          <button type="button" class="social-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1877F2">
-              <path d="M24 12.073c0-5.8-4.702-10.5-10.5-10.5s-10.5 4.7-10.5 10.5c0 5.24 3.84 9.584 8.86 10.373v-7.337h-2.666v-3.037h2.666V9.98c0-2.63 1.568-4.085 3.97-4.085 1.15 0 2.35.205 2.35.205v2.584h-1.322c-1.304 0-1.71.81-1.71 1.64v1.97h2.912l-.465 3.036H15.16v7.337c5.02-.788 8.84-5.131 8.84-10.373z"/>
-            </svg>
-          </button>
-          <button type="button" class="social-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000">
-              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544A8.127 8.127 0 0 1 5.5 16.898a5.778 5.778 0 0 0 4.252-1.189 2.879 2.879 0 0 1-2.684-1.995 2.88 2.88 0 0 0 1.298-.049c-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359a2.877 2.877 0 0 1-.889-3.835 8.153 8.153 0 0 0 5.92 3.001 2.876 2.876 0 0 1 4.895-2.62 5.73 5.73 0 0 0 1.824-.697 2.884 2.884 0 0 1-1.263 1.589 5.73 5.73 0 0 0 1.649-.453 5.765 5.765 0 0 1-1.433 1.489z"/>
-            </svg>
-          </button>
-        </div>
-        
-        <div class="help-links">
-          <a href="#">Questions ?</a>
-          <a href="#">Support</a>
-          <a href="#">Contact</a>
-        </div>
-        
+    
         <div class="copyright">
           Copyright © 2025 - Tous droits réservés
         </div>
@@ -213,23 +148,19 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       const button = document.getElementById('loginButton');
       button.classList.add('loading');
-      
-      setTimeout(() => {
-        button.classList.remove('loading');
-      }, 2000);
     });
     
     // Create particles
     function createParticles() {
       const particlesContainer = document.getElementById('particles');
-      const particleCount = 50;
+      const particleCount = 30;
       
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
-        // Random size between 5px and 15px
-        const size = Math.random() * 10 + 5;
+        // Random size between 5px and 20px
+        const size = Math.random() * 15 + 5;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         
@@ -237,13 +168,11 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
         particle.style.left = `${Math.random() * 100}%`;
         particle.style.top = `${Math.random() * 100}%`;
         
-        // Random color
-        const colors = ['#4361ee', '#4895ef', '#4cc9f0', '#3a0ca3'];
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.backgroundColor = color;
+        // Random opacity
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
         
-        // Random animation duration between 15s and 30s
-        const duration = Math.random() * 15 + 15;
+        // Random animation duration between 15s and 40s
+        const duration = Math.random() * 25 + 15;
         particle.style.animationDuration = `${duration}s`;
         
         // Random delay
@@ -261,15 +190,738 @@ require_once $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
     const inputs = document.querySelectorAll('.form-control');
     inputs.forEach(input => {
       input.addEventListener('focus', function() {
-        this.parentElement.querySelector('.input-icon').style.color = '#4361ee';
+        this.parentElement.querySelector('.input-icon').style.color = 'var(--primary)';
+        this.parentElement.classList.add('focused');
       });
       
       input.addEventListener('blur', function() {
         if (!this.value) {
-          this.parentElement.querySelector('.input-icon').style.color = '#6c757d';
+          this.parentElement.querySelector('.input-icon').style.color = 'var(--text-muted)';
+          this.parentElement.classList.remove('focused');
         }
       });
     });
   </script>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #a5b4fc;
+      --primary-lighter: #e0e7ff;
+      --secondary: #0ea5e9;
+      --secondary-dark: #0284c7;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --background: #ffffff;
+      --surface: #f9fafb;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+      --shadow-outline: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      --radius-sm: 0.25rem;
+      --radius: 0.5rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+      --radius-xl: 1.5rem;
+      --radius-2xl: 2rem;
+      --radius-full: 9999px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+    
+    /* Particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .particle {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: var(--radius-full);
+      animation: float-particle 20s infinite linear;
+    }
+    
+    @keyframes float-particle {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-20vh) rotate(360deg);
+      }
+    }
+    
+    /* 3D Shapes */
+    .shape {
+      position: fixed;
+      border-radius: var(--radius-2xl);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+      z-index: 0;
+    }
+    
+    .shape-1 {
+      width: 200px;
+      height: 200px;
+      top: -100px;
+      right: -100px;
+      animation: rotate-shape 25s infinite linear;
+    }
+    
+    .shape-2 {
+      width: 150px;
+      height: 150px;
+      bottom: -75px;
+      left: -75px;
+      animation: rotate-shape 20s infinite linear reverse;
+    }
+    
+    .shape-3 {
+      width: 100px;
+      height: 100px;
+      top: 20%;
+      left: 10%;
+      animation: float-shape 15s infinite ease-in-out;
+    }
+    
+    .shape-4 {
+      width: 120px;
+      height: 120px;
+      bottom: 15%;
+      right: 10%;
+      animation: float-shape 18s infinite ease-in-out reverse;
+    }
+    
+    @keyframes rotate-shape {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    @keyframes float-shape {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-30px) rotate(10deg);
+      }
+    }
+    
+    /* Main container */
+    .login-container {
+      width: 100%;
+      max-width: 900px;
+      min-height: 500px;
+      display: flex;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      z-index: 1;
+      background-color: var(--background);
+      animation: container-appear 0.8s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+    }
+    
+    @keyframes container-appear {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    /* Left side - Brand */
+    .login-brand {
+      flex: 0.8;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+    
+    .login-brand::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+    
+    .brand-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      z-index: 1;
+    }
+    
+    .brand-logo-container {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      background-color: white;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      animation: logo-pulse 3s infinite;
+    }
+    
+    @keyframes logo-pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+      }
+    }
+    
+    .brand-logo {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+    
+    .brand-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(to right, #ffffff, #e0e7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: slide-up 0.8s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+    }
+    
+    .brand-description {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      max-width: 90%;
+      opacity: 0.9;
+      animation: slide-up 0.8s cubic-bezier(0.26, 0.53, 0.74, 1.48) 0.2s backwards;
+    }
+    
+    /* Right side - Form */
+    .login-form-container {
+      flex: 1.2;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background-color: var(--background);
+    }
+    
+    .login-header {
+      margin-bottom: 1.5rem;
+      animation: slide-down 0.8s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+    }
+    
+    @keyframes slide-down {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .login-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    
+    .login-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+      position: relative;
+      animation: slide-right 0.8s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+      animation-fill-mode: both;
+    }
+    
+    @keyframes slide-right {
+      0% {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .form-group:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    
+    .form-group:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+    
+    .form-control-wrapper {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control-wrapper.focused {
+      transform: translateY(-2px);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      padding-right: 2.5rem;
+      font-size: 0.9375rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background-color: var(--background);
+      transition: all 0.3s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-outline);
+    }
+    
+    .form-control.is-invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    }
+    
+    .invalid-feedback {
+      color: var(--danger);
+      font-size: 0.8125rem;
+      margin-top: 0.5rem;
+      animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    
+    @keyframes shake {
+      10%, 90% {
+        transform: translateX(-1px);
+      }
+      20%, 80% {
+        transform: translateX(2px);
+      }
+      30%, 50%, 70% {
+        transform: translateX(-4px);
+      }
+      40%, 60% {
+        transform: translateX(4px);
+      }
+    }
+    
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .input-icon:hover {
+      color: var(--primary);
+    }
+    
+    .login-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      animation: slide-right 0.8s cubic-bezier(0.26, 0.53, 0.74, 1.48) 0.3s backwards;
+    }
+    
+    .form-check {
+      display: flex;
+      align-items: center;
+    }
+    
+    .form-check-input {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-right: 0.5rem;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .form-check-input:checked {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .form-check-input:checked::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 6px;
+      width: 4px;
+      height: 8px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    
+    .form-check-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    
+    .forgot-link {
+      font-size: 0.875rem;
+      color: var(--primary);
+      text-decoration: none;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    .forgot-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .forgot-link:hover::after {
+      width: 100%;
+    }
+    
+    .btn-login {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-lg);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: slide-up 0.8s cubic-bezier(0.26, 0.53, 0.74, 1.48) 0.4s backwards;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    @keyframes slide-up {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .btn-login:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .btn-login:active {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+    
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: all 0.6s;
+    }
+    
+    .btn-login:hover::before {
+      left: 100%;
+    }
+    
+    .btn-login .btn-text {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn-login .btn-icon {
+      margin-left: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .btn-login:hover .btn-icon {
+      transform: translateX(5px);
+    }
+    
+    .btn-login .btn-loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      opacity: 0;
+      z-index: 0;
+      transition: opacity 0.2s;
+    }
+    
+    @keyframes spin {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+    
+    .btn-login.loading .btn-text {
+      opacity: 0;
+    }
+    
+    .btn-login.loading .btn-loader {
+      opacity: 1;
+    }
+    
+    .alert {
+      padding: 0.875rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 1.25rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      animation: slide-down 0.5s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+    }
+    
+    .alert svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    
+    .alert-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border-left: 4px solid var(--success);
+    }
+    
+    .alert-danger {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border-left: 4px solid var(--danger);
+    }
+    
+    .copyright {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      animation: fade-in 0.8s ease 0.8s backwards;
+    }
+    
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .login-container {
+        flex-direction: column;
+        max-height: none;
+        max-width: 400px;
+      }
+      
+      .login-brand {
+        padding: 1.5rem;
+        min-height: 200px;
+      }
+      
+      .brand-logo-container {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 1rem;
+      }
+      
+      .brand-logo {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .brand-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .brand-description {
+        font-size: 0.875rem;
+      }
+      
+      .login-form-container {
+        padding: 1.5rem;
+      }
+      
+      .login-title {
+        font-size: 1.5rem;
+      }
+      
+      .login-subtitle {
+        font-size: 0.875rem;
+      }
+      
+      .shape {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .login-container {
+        max-width: 100%;
+      }
+      
+      .login-brand {
+        min-height: 180px;
+        padding: 1.25rem;
+      }
+      
+      .brand-logo-container {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .brand-title {
+        font-size: 1.25rem;
+      }
+      
+      .brand-description {
+        font-size: 0.8125rem;
+      }
+      
+      .login-form-container {
+        padding: 1.25rem;
+      }
+      
+      .login-title {
+        font-size: 1.25rem;
+      }
+      
+      .login-subtitle {
+        font-size: 0.8125rem;
+      }
+      
+      .form-label {
+        font-size: 0.8125rem;
+      }
+      
+      .form-control {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
+      }
+    }
+  </style>
 </body>
 </html>

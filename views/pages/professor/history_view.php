@@ -135,119 +135,10 @@ function professorHistoryView(array $notesHistory, array $moduleChoicesHistory, 
             <?php endif; ?>
         </div>
     </div>
-
-    <!-- Export/Print Options -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card shadow-sm border-0 rounded-3">
-                <div class="card-body d-flex justify-content-end">
-                    <button class="btn btn-outline-primary me-2" id="btnExportPDF">
-                        <i class="ti ti-file-export me-1"></i>Exporter (PDF)
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
-<!-- Add JS for functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle export PDF functionality
-    document.getElementById('btnExportPDF').addEventListener('click', function() {
-        // Get professor name for the filename
-        const professorName = document.querySelector('h2.fw-bold.text-primary').textContent
-            .replace('Historique de ', '')
-            .trim()
-            .replace(/\s+/g, '_');
-        
-        // Create a filename with professor name and date
-        const now = new Date();
-        const dateStr = now.toISOString().slice(0,10);
-        const filename = `historique_${professorName}_${dateStr}.pdf`;
-        
-        // Show loading overlay
-        const loadingOverlay = document.createElement('div');
-        loadingOverlay.className = 'position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75';
-        loadingOverlay.style.zIndex = '9999';
-        loadingOverlay.innerHTML = `
-            <div class="text-center">
-                <div class="spinner-border text-primary mb-3" role="status">
-                    <span class="visually-hidden">Génération du PDF...</span>
-                </div>
-                <h5>Génération du PDF en cours...</h5>
-            </div>
-        `;
-        document.body.appendChild(loadingOverlay);
-        
-        const contentToExport = document.querySelector('.container-fluid');
-        
-        const contentClone = contentToExport.cloneNode(true);
-        
-        contentClone.querySelectorAll('#btnExportPDF').forEach(el => {
-            if (el && el.parentNode) {
-                el.parentNode.removeChild(el);
-            }
-        });
-        
-        contentClone.querySelectorAll('.accordion-collapse').forEach(section => {
-            section.classList.add('show');
-        });
-        
-        html2pdf().from(contentClone).set({
-            margin: 10,
-            filename: filename,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).save()
-        .then(() => {
-            document.body.removeChild(loadingOverlay);
-            
-            const successNotification = document.createElement('div');
-                successNotification.className = 'position-fixed bottom-0 start-50 translate-middle-x mb-4 p-3 alert alert-success alert-dismissible fade show';
-                successNotification.style.zIndex = '1050';
-                successNotification.innerHTML = `
-                    <i class="ti ti-check me-2"></i>  PDF généré avec succès.
-                    <button type="button"></button>
-                `;
-                document.body.appendChild(successNotification);
-
-            
-            setTimeout(() => {
-                successNotification.classList.remove('show');
-                setTimeout(() => {
-                    if (successNotification.parentNode) {
-                        successNotification.parentNode.removeChild(successNotification);
-                    }
-                }, 300);
-            }, 5000);
-        })
-        .catch(error => {
-            document.body.removeChild(loadingOverlay);
-            console.error('Error generating PDF:', error);
-            
-            const errorNotification = document.createElement('div');
-                errorNotification.className = 'position-fixed bottom-0 start-50 translate-middle-x mb-4 p-3 alert alert-danger alert-dismissible fade show';
-                errorNotification.style.zIndex = '1050';
-                errorNotification.innerHTML = `
-                    <i class="ti ti-circle-alert me-2"></i>Erreur lors de la génération du PDF. Veuillez réessayer.
-                    <button type="button" ></button>
-                `;
-                document.body.appendChild(errorNotification);
-
-            
-            setTimeout(() => {
-                errorNotification.classList.remove('show');
-                setTimeout(() => {
-                    if (errorNotification.parentNode) {
-                        errorNotification.parentNode.removeChild(errorNotification);
-                    }
-                }, 300);
-            }, 5000);
-        });
-    });
-    
     
     const filterButtons = document.querySelectorAll('.filter-option');
     filterButtons.forEach(button => {
@@ -268,8 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-<!-- Include html2pdf.js library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <?php return ob_get_clean(); 
 } 

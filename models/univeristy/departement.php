@@ -12,7 +12,7 @@ class DepartementModel extends Model{
         if ($this->db->query("SELECT * FROM deparetement")){
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         }else {
-            throw $this->db->getError(); //for now we gonna throw all  select queries
+            throw new Exception($this->db->getError()); //for now we gonna throw all  select queries
         }
     }
 
@@ -21,7 +21,7 @@ class DepartementModel extends Model{
         if ($this->db->query("SELECT * FROM deparetement WHERE id_deparetement=?", [$id])){
             return $this->db->fetch(PDO::FETCH_ASSOC);
         }else {
-            throw $this->db->getError();
+            throw new Exception($this->db->getError());
         }
 
     }

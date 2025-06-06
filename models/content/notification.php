@@ -16,7 +16,7 @@ class NotificationModel extends Model{
         if ($this->db->query("SELECT * FROM notifications WHERE id_user=? ORDER BY date_time DESC LIMIT ?,?", [$userId, self::$item_per_page*($page-1), self::$item_per_page])){
             return $this->resolveNotificationData( $this->db->fetchAll(PDO::FETCH_ASSOC));
         }else {
-            throw $this->db->getError(); //for now we gonna throw all  select queries
+            throw new Exception($this->db->getError()); //for now we gonna throw all  select queries
         }
 
     }
@@ -26,7 +26,7 @@ class NotificationModel extends Model{
         if ($this->db->query("SELECT * FROM notifications WHERE id_user=? AND status='unread' ORDER BY date_time DESC LIMIT ?,?", [$userId, self::$item_per_page*($page-1), self::$item_per_page])){
             return $this->resolveNotificationData( $this->db->fetchAll(PDO::FETCH_ASSOC));
         }else {
-            throw $this->db->getError(); //for now we gonna throw all  select queries
+            throw new Exception($this->db->getError()); //for now we gonna throw all  select queries
         }
 
     }
@@ -35,7 +35,7 @@ class NotificationModel extends Model{
         if ($this->db->query("SELECT * FROM notifications WHERE id_user=?", [$userId])){
             return (int) ((int)$this->db->rowCount() / self::$item_per_page) + 1;
         }else {
-            throw $this->db->getError(); //for now we gonna throw all  select queries
+            throw new Exception($this->db->getError()); //for now we gonna throw all  select queries
         }
     }
 
@@ -43,7 +43,7 @@ class NotificationModel extends Model{
         if ($this->db->query("SELECT * FROM notifications WHERE id_user=? AND status='unread'", [$userId])){
             return (int) ((int)$this->db->rowCount() / self::$item_per_page) + 1;
         }else {
-            throw $this->db->getError(); //for now we gonna throw all  select queries
+            throw new Exception($this->db->getError()); //for now we gonna throw all  select queries
         }
     }
 
@@ -52,7 +52,7 @@ class NotificationModel extends Model{
         if ($this->db->query("SELECT * FROM notifications WHERE id_user=? AND status='unread' ORDER BY date_time DESC", [$userId])){
             return $this->db->rowCount();
         }else {
-            throw $this->db->getError(); //for now we gonna throw all  select queries
+            throw new Exception($this->db->getError()); //for now we gonna throw all  select queries
         }
 
     }
@@ -122,7 +122,7 @@ class NotificationModel extends Model{
         if ($this->db->query("SELECT * FROM notifications WHERE id_user=? AND id_notification=?", [$id_user, $id])){
             return $this->db->rowCount() > 0 ? $this->db->fetch() : false;
         }else {
-            throw $this->db->getError(); //for now we gonna throw all  select queries
+            throw new Exception($this->db->getError()); //for now we gonna throw all  select queries
         }
     }
 

@@ -52,10 +52,25 @@ class UserModel  extends Model
         if ($this->db->query("SELECT * FROM user WHERE id_user=?", [$id])){
             return $this->db->fetch();
         }else {
-            throw $this->db->getError();
+            throw new Exception($this->db->getError());
         }
 
     }
+
+    public function getUser(int $id) {
+        $sql = "SELECT 
+                    CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) AS img, 
+                    CONCAT(firstName, ' ', lastName) AS name 
+                FROM user 
+                WHERE id_user = ?";
+    
+        if ($this->db->query($sql, [$id])) {
+            return $this->db->fetch(); 
+        } else {
+            throw new Exception($this->db->getError());
+        }
+    }
+    
 
     protected function deleteUserById(int $id): bool {
         if ($this->db->query("DELETE FROM user WHERE id_user=?", [$id])) {

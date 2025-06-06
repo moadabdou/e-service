@@ -17,7 +17,6 @@ $moduleModel = new ModuleModel();
 $FiliereModel = new FiliereModel();
 $modules = $moduleModel->getAllModulesByDepartment($departmentId);
 $filliere=$FiliereModel->getFilieresByDepartment($departmentId);
-$alert = null;
 
 $content = chefDepModulesListView($modules,$filliere);
 $dashboard = new DashBoard();

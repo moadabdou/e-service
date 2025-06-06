@@ -109,6 +109,11 @@ class SideBar
                     "icon" => "ti ti-link",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/assign_modules.php"
                 ],
+                "Deadlines" => [
+                    "title" => "Gestion des Deadlines",
+                    "icon" => "ti ti-calendar-time",
+                    "url" => "/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php"
+                ],
                 "workload" => [
                     "title" => "Charge des professeurs",
                     "icon" => "ti ti-calendar-stats",
@@ -126,7 +131,7 @@ class SideBar
                 ],
                 "yearHistory" => [
                     "title" => "Historique des années",
-                    "icon" => "ti ti-calendar-stats",
+                    "icon" => "ti ti-history",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/history.php"
                 ]
 
