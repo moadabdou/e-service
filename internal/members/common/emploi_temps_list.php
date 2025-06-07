@@ -27,4 +27,4 @@ include $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/common/emploi_temps_
 $content = ob_get_clean();
 
 $dashboard = new DashBoard();
-$dashboard->view("general", "emploisList", $content);
+$dashboard->view("emploisList", $content);

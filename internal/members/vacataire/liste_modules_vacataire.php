@@ -21,4 +21,4 @@ include $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/vacataire/liste_modu
 $content = ob_get_clean();
 
 $dashboard = new DashBoard();
-$dashboard->view("vacataire", "assignedModules", $content);
+$dashboard->view("assignedModules", $content);
