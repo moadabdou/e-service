@@ -1,7 +1,8 @@
-<?php 
-require_once __DIR__."/../model.php"; 
+<?php
+require_once __DIR__ . "/../model.php";
 
-class UserModel  extends Model{
+class UserModel  extends Model
+{
 
     private array $allowedColumns = ['firstName', 'lastName', 'CIN', 'email', 'role', 'password', 'phone', 'address', 'birth_date', 'img', 'status'];
 
@@ -10,8 +11,8 @@ class UserModel  extends Model{
         parent::__construct();
     }
 
-    protected function newUser ( 
-        string $firstName, 
+    protected function newUser(
+        string $firstName,
         string $lastName,
         string $cin,
         string $email,
@@ -20,13 +21,15 @@ class UserModel  extends Model{
         int $phone,
         string $address,
         string $birth_date
-        ): string | false{
-        
+    ): string | false {
 
-        if ($this->db->query("INSERT INTO user(
-                                                firstName, lastName, CIN, email, role, password, phone, address, birth_date, creation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())", 
-                                                [$firstName, $lastName, $cin, $email, $role, $password, $phone, $address, $birth_date])) {
-            
+
+        if ($this->db->query(
+            "INSERT INTO user(
+                                                firstName, lastName, CIN, email, role, password, phone, address, birth_date, creation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())",
+            [$firstName, $lastName, $cin, $email, $role, $password, $phone, $address, $birth_date]
+        )) {
+
             return $this->db->lastInsertId();
 
         }else {
@@ -77,8 +80,18 @@ class UserModel  extends Model{
             return false;
         }
     }
-    
-    public function getUserByEmail(string $email) : array | false{
+
+    public function getAllProfessors()
+    {
+        $query = "SELECT id_user, CONCAT(firstName, ' ', lastName) AS full_name FROM user WHERE role = 'professor'";
+        $this->db->query($query);
+        return $this->db->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
+    public function getUserByEmail(string $email): array | false
+    {
         if ($this->db->query("SELECT * FROM user WHERE email=?", [$email])) {
             return $this->db->fetch();
         } else {
@@ -87,7 +100,8 @@ class UserModel  extends Model{
         }
     }
 
-    public function getNonCriticalDataById(int $id_user) : array | false{
+    public function getNonCriticalDataById(int $id_user): array | false
+    {
         if ($this->db->query("SELECT firstName, lastName, CIN, email, role, phone, address, birth_date, creation_date, img, status FROM user WHERE id_user=?", [$id_user])) {
             return $this->db->fetch();
         } else {
@@ -96,7 +110,8 @@ class UserModel  extends Model{
         }
     }
 
-    public function updateUserColumn(string $columnName, string $value, string $userId): bool{ /*just  realized that this userId should be given in the constructor*/
+    public function updateUserColumn(string $columnName, string $value, string $userId): bool
+    { /*just  realized that this userId should be given in the constructor*/
         if (!in_array($columnName, $this->allowedColumns)) {
             $this->error = "Invalid data key";
             return false;
@@ -111,18 +126,18 @@ class UserModel  extends Model{
     }
 
 
-    protected function resolveUserOperationError(): ?string{
-        if (!$this->getError()){
+    protected function resolveUserOperationError(): ?string
+    {
+        if (!$this->getError()) {
             return null;
         }
-        if (strpos($this->getError(), "key 'email'") !== false){
+        if (strpos($this->getError(), "key 'email'") !== false) {
             return "email is already exists ";
-        }else if (strpos($this->getError(), "key 'CIN'") !== false){
+        } else if (strpos($this->getError(), "key 'CIN'") !== false) {
             return "CIN is already exists";
         }else{
             return "unknown ".$this->getError();
         }
-
     }
 
     /*
@@ -133,7 +148,7 @@ class UserModel  extends Model{
      *  2 => coordinators
      *  3 => vacataires 
      *  4 => admins 
-    */    
+    */
 
     public function getUsersByRole(int $role, int $status): array|false{
 
@@ -160,7 +175,17 @@ class UserModel  extends Model{
             return false;
         }
     }
+    public function getFullNameById($userId)
+    {
+        $query = "SELECT CONCAT(firstName, ' ', lastName) AS full_name FROM user WHERE id_user = ?";
 
+        if ($this->db->query($query, [$userId])) {
+            $result = $this->db->fetch(PDO::FETCH_ASSOC);
+            return $result['full_name'] ?? null;
+        }
+
+        return null;
+    }
     public function countAllActive(): int|false {
         if ($this->db->query("SELECT COUNT(*) as count FROM user WHERE status = 'active'")) {
             $result = $this->db->fetch();

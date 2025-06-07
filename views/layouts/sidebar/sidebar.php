@@ -8,13 +8,13 @@ class SideBar
 
     public function __construct(string $role)
     {
-        
+
         $this->nav[$role] = self::$NAVIGATION[$role];
-        if ($role === "professor/chef_deparetement" || $role === "professor/coordonnateur" ){
-            $this->nav["professor"] = self::$NAVIGATION["professor"]; 
+        if ($role === "professor/chef_deparetement" || $role === "professor/coordonnateur") {
+            $this->nav["professor"] = self::$NAVIGATION["professor"];
         }
-        
-        $this->nav["General"] = self::$NAVIGATION["General"];  
+
+        $this->nav["General"] = self::$NAVIGATION["General"];
     }
 
     public function view(string $active)
@@ -22,8 +22,7 @@ class SideBar
         $nav = $this->nav;
         ob_start();
         require __DIR__ . "/sidebar.view.php";
-        $content = ob_get_clean();
-        return $content;
+        return ob_get_clean();
     }
 
     private static array $NAVIGATION = [
@@ -31,16 +30,22 @@ class SideBar
             "title" => "Generale",
             "menu" =>
             [
+                "emploisList" => [
+                    "title" => "Emplois du temps",
+                    "icon" => "ti ti-calendar-time",
+                    "url" => "/e-service/internal/members/common/emploi_temps_list.php"
+                ],
+
                 "profile" => [
                     "title" => "Profile",
                     "icon" => "ti ti-user",
                     "url" => "/e-service/internal/members/common/profile.php"
                 ],
                 "logout" => [
-                    "title" => "Déconnexion", 
+                    "title" => "Déconnexion",
                     "icon" => "ti ti-power",
                     "url" => "/e-service/internal/members/common/logout.php"
-                ]
+                ],
             ]
         ],
 
@@ -49,12 +54,12 @@ class SideBar
             "title" => "Administration",
             "menu" => [
                 "main" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/admin"
                 ],
                 "newProfessor" => [
-                    "title" => "Nouveau Professeur", 
+                    "title" => "Nouveau Professeur",
                     "icon" => "ti ti-user-plus",
                     "url" => "/e-service/internal/members/admin/newProfessor.php"
                 ],
@@ -63,7 +68,7 @@ class SideBar
                     "icon" => "ti ti-users",
                     "url" => "/e-service/internal/members/admin/AllUsers.php"
                 ],
-                "deperatements"=>[
+                "deperatements" => [
                     "title" => "Départements",
                     "icon" => "ti ti-building",
                     "url" => "/e-service/internal/members/admin/Departements.php"
@@ -82,10 +87,10 @@ class SideBar
         ],
         "professor/chef_deparetement" =>
         [
-            "title"=> "Gérer Département",
-            "menu" =>[
+            "title" => "Gérer Département",
+            "menu" => [
                 "main_chef" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/professor/chef_deparetement"
                 ],
@@ -118,11 +123,13 @@ class SideBar
                     "title" => "Choix des professeurs",
                     "icon" => "ti ti-list-check",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/professor_module_choices.php"
-                ],"vacantModules" => [
+                ],
+                "vacantModules" => [
                     "title" => "Modules vacants",
                     "icon" => "ti ti-notebook",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/vacant_modules.php"
-                ],"yearHistory" => [
+                ],
+                "yearHistory" => [
                     "title" => "Historique des années",
                     "icon" => "ti ti-history",
                     "url" => "/e-service/internal/members/professor/chef_deparetement/history.php"
@@ -133,10 +140,10 @@ class SideBar
 
         "professor/coordonnateur" =>
         [
-            "title"=> "Gérer Filière",
-            "menu" =>[
+            "title" => "Gérer Filière",
+            "menu" => [
                 "main_coor" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/professor/coordonnateur"
                 ],
@@ -144,7 +151,8 @@ class SideBar
                     "title" => "Liste Des Modules",
                     "icon" => "ti ti-book",
                     "url" => "/e-service/internal/members/professor/coordonnateur/liste_modules.php"
-                ],"AjouterModule" => [
+                ],
+                "AjouterModule" => [
                     "title" => "Ajouter Des Modules",
                     "icon" => "ti ti-list",
                     "url" => "/e-service/internal/members/professor/coordonnateur/ajouterModule.php"
@@ -153,16 +161,36 @@ class SideBar
                     "title" => "Ajouter Vacataire",
                     "icon" => "ti ti-user-plus",
                     "url" => "/e-service/internal/members/professor/coordonnateur/addVacataire.php"
-                ]
+                ],
+                "affectations" => [
+                    "title" => "Consulter affectations",
+                    "icon" => "ti ti-link",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/affectations.php"
+                ],
+                "emploiTemps" => [
+                    "title" => "Emploi du temps",
+                    "icon" => "ti ti-calendar",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/upload_timetable.php"
+                ],
+                "exportAffectations" => [
+                    "title" => "Exporter les Affectations",
+                    "icon" => "ti ti-file-export",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/export_affectations.php"
+                ],
+                "affectationVacataire" => [
+                    "title" => "Affecter un Vacataire",
+                    "icon" => "ti ti-user-plus",
+                    "url" => "/e-service/internal/members/professor/coordonnateur/affectation_vacataire.php"
+                ],
             ]
         ],
 
         "professor" =>
         [
-            "title"=> "Panneau Professeur",
-            "menu" =>[
+            "title" => "Panneau Professeur",
+            "menu" => [
                 "main" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/professor"
                 ],
@@ -172,12 +200,12 @@ class SideBar
                     "url" => "/e-service/internal/members/professor/choose_units.php"
                 ],
                 "assignedModules" => [
-                    "title" => "Mes modules affectéss", 
+                    "title" => "Mes modules affectéss",
                     "icon" => "ti ti-list-check",
                     "url" => "/e-service/internal/members/professor/AssignedModules.php"
                 ],
                 "UploadNotes" => [
-                    "title" => "Uploader les notes", 
+                    "title" => "Uploader les notes",
                     "icon" => "ti ti-upload",
                     "url" => "/e-service/internal/members/professor/uploadNotes.php"
                 ],
@@ -185,7 +213,8 @@ class SideBar
                     "title" => "Mes notes envoyées",
                     "icon" => "ti ti-files",
                     "url" => "/e-service/internal/members/professor/notes_history.php"
-                ],"ProfHistory" => [
+                ],
+                "ProfHistory" => [
                     "title" => "Historique des années",
                     "icon" => "ti ti-calendar-stats",
                     "url" => "/e-service/internal/members/professor/historique.php"
@@ -196,13 +225,23 @@ class SideBar
 
         "vacataire" =>
         [
-            "title"=> "Panneau Vacataire",
-            "menu" =>[
+            "title" => "Panneau Vacataire",
+            "menu" => [
                 "main" => [
-                    "title" => "Accueil", 
+                    "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/vacataire"
-                ]
+                ],
+                "assignedModules" => [
+                    "title" => "Mes modules affectés",
+                    "icon" => "ti ti-list-check",
+                    "url" => "/e-service/internal/members/vacataire/liste_modules_vacataire.php"
+                ],
+                "UploadNotes" => [
+                    "title" => "Uploader les notes",
+                    "icon" => "ti ti-upload",
+                    "url" => "/e-service/internal/members/vacataire/uploadNotes.php"
+                ],
             ]
         ]
 

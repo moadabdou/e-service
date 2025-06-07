@@ -1,23 +1,107 @@
 <?php
 require_once __DIR__ . "/../model.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/core/Database.php";
 
 class ModuleModel extends  Model
 {
-
     public function __construct()
     {
         parent::__construct();
     }
 
+    public function createModule($data)
+    {
+        $title = addslashes($data['title']);
+        $description = addslashes($data['description']);
+        $volume_horaire = (int)$data['volume_horaire'];
+        $semester = addslashes($data['semester']);
+        $credits = (int)$data['credits'];
+        $id_filiere = (int)$data['id_filiere'];
+        $responsable = (int)$data['responsable'];
+        $speciality = (int) $data['speciality'];
+
+        $query = "INSERT INTO module (title, description, volume_horaire, semester, credits, id_filiere, responsable, speciality)
+                  VALUES ('$title', '$description', $volume_horaire, '$semester', $credits, $id_filiere, $responsable, $speciality)";
+
+        $result = $this->db->query($query);
+
+        if (!$result) {
+            echo $this->db->getError();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Récupère toutes les affectations validées (chef) pour une filière et une année,
+     * et les regroupe par semestre.
+     *
+     * @param int   $filiereId  L'ID de la filière du coordonnateur
+     * @param int   $year       L'année (ex. 2025)
+     * @return array            Tableau ['s1'=>[module1, module2], 's2'=>[...], …]
+     */
+    public function getAssignmentsByFiliereAndYearGrouped($filiereId, $year)
+    {
+        $sql = "
+      SELECT 
+        m.id_module,
+        m.code_module,
+        m.title,
+        m.semester,
+        m.volume_cours, m.volume_td, m.volume_tp, m.volume_autre,
+        m.credits,
+        cm.to_professor AS id_professor
+      FROM affectation_professor cm
+      JOIN module m
+        ON cm.id_module = m.id_module
+      WHERE cm.annee = ?
+        AND m.id_filiere = ?
+      ORDER BY m.semester ASC, m.code_module ASC
+    ";
+
+        if (! $this->db->query($sql, [$year, $filiereId])) {
+            return [];
+        }
+
+        $rows = $this->db->fetchAll(PDO::FETCH_ASSOC);
+        $grouped = [];
+        foreach ($rows as $r) {
+            $sem = $r['semester'] ?? 'inconnu';
+            $grouped[$sem][] = $r;
+        }
+        return $grouped;
+    }
+
+
+
+
+
     public function getModulesByFiliereId($filiereId)
     {
-        $query = "SELECT id_module, title, volume_cours FROM module WHERE id_filiere = ?";
+        $query = "SELECT 
+                id_module,
+                code_module,
+                title,
+                volume_cours,
+                volume_td,
+                volume_tp,
+                volume_autre,
+                credits,
+                semester,
+                description,
+                evaluation,
+                responsable,
+                id_speciality
+              FROM module 
+              WHERE id_filiere = ?";
+
         if ($this->db->query($query, [$filiereId])) {
-            return $this->db->fetchAll(PDO::FETCH_ASSOC); // Liste des modules de la filière
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
-            return []; // Retourne un tableau vide si erreur
+            return [];
         }
     }
+
 
 
     public function getAvailableModulesByDepartment($departmentId)
@@ -51,8 +135,9 @@ class ModuleModel extends  Model
     }
 
 
-    public function getAllModulesByDepartment($departmentId) {
-                            $query = "SELECT m.*, 
+    public function getAllModulesByDepartment($departmentId)
+    {
+        $query = "SELECT m.*, 
                         f.title AS filiere_name
                     FROM module m
                     JOIN filiere f ON m.id_filiere = f.id_filiere
@@ -184,45 +269,46 @@ class ModuleModel extends  Model
         }
     }
 
-    public function affectModuleToProf($moduleId, $professorId) {
-        $year = date("Y"); 
+    public function affectModuleToProf($moduleId, $professorId)
+    {
+        $year = date("Y");
 
         require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
         $notificationModel = new NotificationModel();
         $professorId = intval($professorId);
         $moduleId = intval($moduleId);
         $chefId = intval($_SESSION['id_user']);
-        
+
         $moduleQuery = "SELECT title FROM module WHERE id_module = ?";
         if ($this->db->query($moduleQuery, [$moduleId])) {
             $module = $this->db->fetch(PDO::FETCH_ASSOC);
             $moduleName = $module['title'];
         } else {
-            return false; 
+            return false;
         }
 
 
         $query = "INSERT INTO affectation_professor (to_professor, by_chef_deparetement, id_module, annee) 
                   VALUES (?, ?, ?, ?)";
-        
+
         if ($this->db->query($query, [$professorId, $chefId, $moduleId, $year])) {
 
-    
+
             $notificationModel->createNotification(
                 $professorId,
                 "🎓 Module Affecté",
                 "Le module '$moduleName' a été affecté à vous pour l'année $year par le chef de département.",
                 null
             );
-    
-            return true;  
+
+            return true;
         } else {
-            return false;  
+            return false;
         }
     }
-    
-    
-    
+
+
+
 
     public function getProfessorHours($professorId): array|bool
     {
@@ -280,7 +366,8 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getApprovedModulesByProfessor(int $professorId): array|false {
+    public function getApprovedModulesByProfessor(int $professorId): array|false
+    {
         $query = "SELECT 
                 m.id_module, 
                 m.title, 
@@ -312,10 +399,11 @@ class ModuleModel extends  Model
             return false;
         }
     }
-    
-        
 
-    public function getUnassignedValidatedModules(int $departmentId): array {
+
+
+    public function getUnassignedValidatedModules(int $departmentId): array
+    {
         $query = "SELECT m.*, f.title AS filiere_name
                   FROM module m
                   JOIN filiere f ON m.id_filiere = f.id_filiere
@@ -331,13 +419,14 @@ class ModuleModel extends  Model
         }
     }
 
-    function assignModuleToProfessor(int $moduleId, int $professorId, string $status): bool {
+    function assignModuleToProfessor(int $moduleId, int $professorId, string $status): bool
+    {
         $db = new Database();
         $db = new Database();
         require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/models/content/notification.php";
         $notificationModel = new NotificationModel();
         $db->beginTransaction();
-    
+
         try {
             // Fetch the module title before using it in the notification
             $moduleQuery = "SELECT title FROM module WHERE id_module = ?";
@@ -347,19 +436,19 @@ class ModuleModel extends  Model
             } else {
                 throw new Exception("Module not found.");
             }
-    
+
             // Update the status of the module choice
             $updateQuery = "UPDATE choix_module SET status = ?, date_reponce = NOW()
                             WHERE id_module = ? AND by_professor = ?";
             $db->query($updateQuery, [$status, $moduleId, $professorId]);
-    
+
             $chefId = $_SESSION['id_user'] ?? null;
             $year = date("Y");
-    
+
             if (!$chefId) {
                 throw new Exception("Chef ID manquant.");
             }
-    
+
             if ($status === 'validated') {
                 // Insert into affectation_professor table if the status is 'validated'
                 $db->query(
@@ -367,7 +456,7 @@ class ModuleModel extends  Model
                      VALUES (?, ?, ?, ?)",
                     [$professorId, $chefId, $moduleId, $year]
                 );
-    
+
                 // Send notification to the professor about the module validation
                 $notificationModel->createNotification(
                     $professorId,
@@ -375,7 +464,7 @@ class ModuleModel extends  Model
                     "Votre demande pour le module '$moduleName' a été validée pour l'année $year.",
                     null
                 );
-    
+
                 // Decline the module choices of other professors if any
                 $db->query(
                     "SELECT by_professor FROM choix_module 
@@ -383,10 +472,10 @@ class ModuleModel extends  Model
                     [$moduleId, $professorId, $year]
                 );
                 $others = $db->fetchAll(PDO::FETCH_ASSOC);
-    
+
                 foreach ($others as $other) {
                     $otherProf = $other['by_professor'];
-    
+
                     $db->query(
                         "UPDATE choix_module SET status = 'declined', date_reponce = NOW()
                          WHERE id_module = ? AND by_professor = ?",
@@ -401,20 +490,20 @@ class ModuleModel extends  Model
                     );
                 }
             }
-    
+
             $db->commit();
             return true;
-    
         } catch (Exception $e) {
             $db->rollBack();
             error_log("Erreur assignModuleToProfessor: " . $e->getMessage());
             return false;
         }
     }
-    
-    
-    
-    public function getVacantModules(int $departmentId): array {
+
+
+
+    public function getVacantModules(int $departmentId): array
+    {
         $query = "SELECT m.*, f.title AS filiere_name 
                   FROM module m
                   JOIN filiere f ON m.id_filiere = f.id_filiere
@@ -425,12 +514,13 @@ class ModuleModel extends  Model
                   AND m.id_module NOT IN (
                       SELECT id_module FROM affectation_professor
                   )";
-        
+
         return $this->db->query($query, [$departmentId]) ? $this->db->fetchAll(PDO::FETCH_ASSOC) : [];
     }
-    
-    
-    public function getPendingModuleChoices(int $departmentId): array {
+
+
+    public function getPendingModuleChoices(int $departmentId): array
+    {
         $currentYear = date("Y");
 
         $query = "SELECT cm.id_module,
@@ -490,7 +580,7 @@ class ModuleModel extends  Model
                   JOIN module m ON ap.id_module = m.id_module
                   JOIN filiere f ON m.id_filiere = f.id_filiere
                   WHERE f.id_deparetement = ?";
-    
+
         if ($this->db->query($query, [$departmentId])) {
             return $result = $this->db->fetch(PDO::FETCH_ASSOC);
 
@@ -498,7 +588,6 @@ class ModuleModel extends  Model
             return null;
         }
     }
-    
 
     public function getHistoricalAffectations(int $departmentId): array {
         $query = "SELECT ap.annee,
@@ -537,15 +626,15 @@ class ModuleModel extends  Model
         if ($this->db->query($query, [$departmentId])) {
             $results = $this->db->fetchAll(PDO::FETCH_ASSOC);
             $grouped = [];
-    
+
             foreach ($results as $row) {
                 $year = $row['annee'];
                 $userId = $row['id_user'];
-    
+
                 if (!isset($grouped[$year])) {
                     $grouped[$year] = [];
                 }
-    
+
                 if (!isset($grouped[$year][$userId])) {
                     $grouped[$year][$userId] = [
                         'firstName' => $row['firstName'],
@@ -555,7 +644,7 @@ class ModuleModel extends  Model
                         'modules' => []
                     ];
                 }
-    
+
                 $grouped[$year][$userId]['modules'][] = [
                     'title' => $row['module_title'],
                     'filiere' => $row['filiere_name'],
@@ -569,16 +658,17 @@ class ModuleModel extends  Model
                     'code_module'=> $row['code_module']
                 ];
             }
-    
+
             return $grouped;
         }
-    
+
         return [];
     }
 
 
     // Get all modules in a department
-    public function getModulesByDepartment(int $departmentId): array {
+    public function getModulesByDepartment(int $departmentId): array
+    {
         $query = "SELECT id_module, title, volume_cours
                   FROM module
                   WHERE id_deparetement = ?";
@@ -591,7 +681,8 @@ class ModuleModel extends  Model
     }
 
     // Get a professor's assigned modules
-    public function getProfessorModules(int $professorId): array {
+    public function getProfessorModules(int $professorId): array
+    {
         $query = "SELECT m.id_module, m.title, m.volume_cours
                   FROM module m
                   JOIN affectation_professor ap ON ap.id_module = m.id_module
@@ -604,70 +695,78 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getModulesWithoutNotes(int $professorId): array {
+    public function getModulesWithoutNotes(int $professorId): array
+    {
         $query = "SELECT m.* FROM module m
                   JOIN affectation_professor ap ON ap.id_module = m.id_module
                   WHERE ap.to_professor = ?
                   AND m.id_module NOT IN (SELECT id_module FROM notes WHERE id_professor = ?)";
-        
-        return $this->db->query($query, [$professorId, $professorId]) 
-            ? $this->db->fetchAll(PDO::FETCH_ASSOC) 
+
+        return $this->db->query($query, [$professorId, $professorId])
+            ? $this->db->fetchAll(PDO::FETCH_ASSOC)
             : [];
     }
-    
-    public function getModuleChoicesGroupedByYear(int $professorId): array {
+
+    public function getModuleChoicesGroupedByYear(int $professorId): array
+    {
         $query = "SELECT YEAR(date_creation) AS year, m.title, cm.status, cm.date_creation
                   FROM choix_module cm
                   JOIN module m ON cm.id_module = m.id_module
                   WHERE cm.by_professor = ?
                   ORDER BY year DESC, cm.date_creation DESC";
-    
+
         if ($this->db->query($query, [$professorId])) {
             $choices = $this->db->fetchAll(PDO::FETCH_ASSOC);
             $grouped = [];
-    
+
             foreach ($choices as $choice) {
                 $grouped[$choice['year']][] = $choice;
             }
-    
+
             return $grouped;
         } else {
             return [];
         }
     }
-    
+
     // from here :
-    public function getNextModuleId(): int {
+    public function getNextModuleId(): int
+    {
         $this->db->query("SHOW TABLE STATUS LIKE 'module'");
         $row = $this->db->fetch();
         return $row ? (int)$row['Auto_increment'] : 1;
     }
-    
-    public function generateUniqueEvaluationId(): int {
+
+    public function generateUniqueEvaluationId(): int
+    {
         $this->db->query("SELECT MAX(evaluation) AS max_val FROM module");
         $res = $this->db->fetch();
         return ($res && $res['max_val']) ? $res['max_val'] + 1 : 1;
     }
-    
-    public function getEvaluationIdByModuleId(int $id): int {
+
+    public function getEvaluationIdByModuleId(int $id): int
+    {
         $this->db->query("SELECT evaluation FROM module WHERE id_module = ?", [$id]);
         $res = $this->db->fetch();
         return $res ? (int)$res['evaluation'] : 0;
     }
-    
-    public function getParentModuleIdByEvaluation(int $eval): int {
+
+    public function getParentModuleIdByEvaluation(int $eval): int
+    {
         $this->db->query("SELECT MIN(id_module) AS id FROM module WHERE evaluation = ?", [$eval]);
         $res = $this->db->fetch();
         return $res ? (int)$res['id'] : 0;
     }
-    
-    public function countElementsByEvaluation(int $eval): int {
+
+    public function countElementsByEvaluation(int $eval): int
+    {
         $this->db->query("SELECT COUNT(*) AS total FROM module WHERE evaluation = ?", [$eval]);
         $res = $this->db->fetch();
         return $res ? (int)$res['total'] : 0;
     }
-    
-    public function getModulesWithUniqueEvaluationOnly(): array {
+
+    public function getModulesWithUniqueEvaluationOnly(): array
+    {
         $this->db->query(" SELECT m.* FROM module m
             WHERE evaluation != 0 AND evaluation IN (
                 SELECT evaluation FROM module
@@ -675,20 +774,19 @@ class ModuleModel extends  Model
                 HAVING COUNT(*) = 1
             )
         ");
-        
+
         $results = $this->db->fetchAll();
-    
+
         return $results ?: [];
     }
-    
-    
-    public function insertModule(array $data): bool {
+
+
+    public function insertModule(array $data): bool
+    {
         $query = "INSERT INTO module (title, description, volume_cours, volume_td, volume_tp, volume_autre, evaluation, semester, credits, id_filiere, code_module)
                   VALUES (:title, :description, :volume_cours, :volume_td, :volume_tp, :volume_autre, :evaluation, :semester, :credits, :id_filiere, :code_module)";
         return $this->db->query($query, $data);
     }
-    
-    
 }
 //functions for selected units
 function formatSemester($code)
