@@ -53,6 +53,6 @@ if ( $_SERVER["REQUEST_METHOD"] === 'POST'){
 
 $content = (new CreateAnnounceView())->view($info);
 
-$dashboard->view("admin", "createAnnounce", $content);
+$dashboard->view("createAnnounce", $content);
 
 ?>

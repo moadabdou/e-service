@@ -22,5 +22,5 @@ $moduleChoicesHistory = $moduleModel->getModuleChoicesGroupedByYear($professorId
 $content = professorHistoryView($notesHistory, $moduleChoicesHistory, $professorName);
 
 $dashboard = new DashBoard();
-$dashboard->view($_SESSION['role'], "ProfHistory", $content);
+$dashboard->view("ProfHistory", $content);
 ?>

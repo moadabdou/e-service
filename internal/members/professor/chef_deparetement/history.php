@@ -24,4 +24,4 @@ $history = $moduleModel->getHistoricalAffectations($departmentId);
 $content = yearHistoryView($history);
 
 $dashboard = new DashBoard();
-$dashboard->view($_SESSION['role'], "yearHistory", $content);
+$dashboard->view("yearHistory", $content);

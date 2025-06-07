@@ -75,6 +75,6 @@ if ($type ===  1){
 
 $content = (new DepartementsView())->view($inner_content, $type);
 
-$dashboard->view("admin", "deperatements", $content);
+$dashboard->view("deperatements", $content);
 
 ?>

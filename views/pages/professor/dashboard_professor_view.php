@@ -58,7 +58,6 @@ function professorDashboard(
     $totalChosenModules = count($chosenModules);
     $totalAssignedModules = count($assignedModules);
     $totalUploadedNotes = count($uploadedNotes);
-    $totalActivities = count($activityHistory);
     $pendingNotesCount = count($pendingNotes);
     
     // Calculate completion rates
@@ -73,7 +72,7 @@ function professorDashboard(
     
     $currentMonth = (int)date('m');
     $currentSemester = ($currentMonth >= 2 && $currentMonth <= 7) ? 'S2' : 'S1';
-    
+
     ob_start();
 ?>
 <link rel="stylesheet" href="/e-service/resources/assets/css/prof_dashboard.css">
@@ -548,7 +547,7 @@ function professorDashboard(
                         </div>
                         <?php endif; ?>
                     </div>
-                <?php elseif(empty($pendingNotes) && !empty($deadlines['upload_notes'])): ?>
+                <?php elseif(empty($pendingNotes) && !isset($deadlines['upload_notes'])): ?>
                     <div class="success-state">
                         <i class="ti ti-file-check"></i>
                         <p>Toutes les notes ont été téléversées. Excellent travail !</p>

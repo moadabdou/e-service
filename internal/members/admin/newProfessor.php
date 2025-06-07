@@ -134,6 +134,6 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 $content = $form->professorFormView($errors, $info);
 
 $dashboard = new DashBoard();
-$dashboard->view("admin", "newProfessor", $content);
+$dashboard->view("newProfessor", $content);
 
 ?>

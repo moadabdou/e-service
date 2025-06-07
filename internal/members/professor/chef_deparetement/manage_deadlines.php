@@ -204,4 +204,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_announce'])) {
 $content = manageDeadlinesView($deadlineModel->getAllDeadlines(), $success, $error, $editing ?? null);
 
 $dashboard = new DashBoard();
-$dashboard->view($_SESSION["role"], "Deadlines", $content);
+$dashboard->view("Deadlines", $content);

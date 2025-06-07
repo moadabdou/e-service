@@ -17,4 +17,4 @@ $professors = $ProfessorModel->getProfessorChoicesWithWorkload($departmentId);
 
 $content = professorModuleChoicesView($professors);
 $dashboard = new DashBoard();
-$dashboard->view($_SESSION['role'], "professorChoices", $content);
+$dashboard->view("professorChoices", $content);

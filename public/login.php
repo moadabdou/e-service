@@ -11,11 +11,8 @@ if (isset($_SESSION["role"])){
     $userController->redirectCurrentUserBasedOnRole();
 }
 
-
 $ProfessorModel = new ProfessorModel();
 $auth = new Auth();
-
-
 
 
 $info = null;
