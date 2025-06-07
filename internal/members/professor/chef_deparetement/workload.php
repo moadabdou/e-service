@@ -16,6 +16,6 @@ $workloads = $ProfessorModel->getProfessorsWithWorkload($departmentId);
 
 $content = professorWorkloadView($workloads);
 $dashboard = new DashBoard();
-$dashboard->view($_SESSION['role'], "workload", $content);
+$dashboard->view("workload", $content);
 
 ?>

@@ -17,4 +17,4 @@ $professors = $ProfessorModel->getProfessorsByDepartmentex($departmentId,$profes
 
 $content = chefDepProfessorsListView($professors);
 $dashboard = new DashBoard();
-$dashboard->view("professor/chef_deparetement", "professors", $content);
+$dashboard->view("professors", $content);

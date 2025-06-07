@@ -23,6 +23,6 @@ ob_start();
 <?php
 $content = ob_get_clean();
 
-$dashboard->view("vacataire", "main", $content);
+$dashboard->view("main", $content);
 
 ?>

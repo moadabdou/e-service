@@ -183,22 +183,5 @@ class UserModel  extends Model{
 
 }
 
-function getRole($role) {
-    switch (strtolower($role)) {
-        case "professor/chef_deparetement":
-            return "Chef de département";
-        case "professor/coordonnateur":
-            return "Coordonnateur";
-        case "professor":
-            return "Professeur";
-        case "vacataire":
-            return "Vacataire";
-        case "admin":
-            return "Administrateur";
-        default:
-            return "Rôle";
-    }
-}
-
 
 ?>

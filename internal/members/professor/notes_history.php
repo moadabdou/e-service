@@ -32,4 +32,4 @@ if (!$IsDeadlineOpen && !$errorMessage) {
 $content = notesHistoryView($filliere, $notes, $successMessage, $errorMessage, $IsDeadlineOpen);
 
 $dashboard = new DashBoard();
-$dashboard->view($_SESSION["role"], "NotesHistory", $content);
+$dashboard->view("NotesHistory", $content);

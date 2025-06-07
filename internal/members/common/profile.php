@@ -136,6 +136,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
 unset($user_info["img"]); //we dont want this 
 $content = Profile::view($user_info,$userController->absoluteProfilePictureUrl($user_pp), $info);
-$dashboard->view($_SESSION["role"], "profile", $content);
+$dashboard->view("profile", $content);
 
 ?>

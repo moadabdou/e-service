@@ -173,5 +173,5 @@ unset($user_data["img"]);
 
 $content = Profile::viewAsOther($user_data,$id, $pp , $info);
 
-$dashboard->view($_SESSION["role"], "", $content);
+$dashboard->view("", $content);
 ?>

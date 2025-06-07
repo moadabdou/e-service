@@ -94,7 +94,7 @@ if ($singleModuleId) {
 
 
 $dashboard = new DashBoard();
-$dashboard->view($_SESSION["role"], "UploadNotes", $content);
+$dashboard->view( "UploadNotes", $content);
 
 
 ?>

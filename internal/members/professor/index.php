@@ -47,4 +47,4 @@ $content = professorDashboard(
 );
 
 $dashboard = new DashBoard();
-$dashboard->view($_SESSION['role'], "main", $content);
+$dashboard->view("main", $content);

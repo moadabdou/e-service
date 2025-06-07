@@ -22,6 +22,6 @@ $activitiesPage = new activitiesPage();
 
 $content =  $activitiesPage->view($activities);
 
-$dashboard->view("admin" , "", $content);
+$dashboard->view("", $content);
 
 ?>

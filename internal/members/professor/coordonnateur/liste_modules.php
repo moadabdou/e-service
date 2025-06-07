@@ -60,5 +60,5 @@ ob_start();
 <?php
 $content = ob_get_clean();
 $dashboard = new DashBoard();
-$dashboard->view("professor/coordonnateur", "ModuleListing", $content);
+$dashboard->view("ModuleListing", $content);
 ?>

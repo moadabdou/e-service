@@ -113,6 +113,6 @@ $dashboard = new DashBoard();
 
 $content = (new FiliereView())->view($filiere_data,$data_coor);
 
-$dashboard->view("admin", "", $content);
+$dashboard->view("", $content);
 
 ?>

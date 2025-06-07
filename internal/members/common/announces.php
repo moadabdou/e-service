@@ -43,6 +43,6 @@ $announcesPage = new AnnouncesPage();
 
 $content =  $announcesPage->view($announces);
 
-$dashboard->view($_SESSION["role"], "announces", $content);
+$dashboard->view("announces", $content);
 
 ?>
