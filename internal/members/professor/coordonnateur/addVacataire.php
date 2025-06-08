@@ -125,6 +125,6 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
 $content = $form->vacataireFormView($errors, $info);
 
 $dashboard = new DashBoard();
-$dashboard->view("professor/coordonnateur", "addVacataire", $content);
+$dashboard->view("addVacataire", $content);
 
 ?>

@@ -34,6 +34,6 @@ $data["recent_activity"] = $activityModel->getRecentActivities(10);
 
 $content = (new MainView())->view($data);
 
-$dashboard->view("admin", "main", $content);
+$dashboard->view( "main", $content);
 
 ?>

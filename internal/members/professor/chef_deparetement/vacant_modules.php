@@ -52,4 +52,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $content = vacantModulesView($vacantModules, $filieres, $availableProfessors);
 $dashboard = new DashBoard();
-$dashboard->view("professor/chef_deparetement", "vacantModules", $content);
+$dashboard->view("vacantModules", $content);

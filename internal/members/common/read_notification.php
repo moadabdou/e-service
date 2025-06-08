@@ -28,6 +28,6 @@ $notificationPage = new NotificationPage();
 
 $content =  $notificationPage->readView($notification);
 
-$dashboard->view($_SESSION["role"], "notifications", $content);
+$dashboard->view("notifications", $content);
 
 ?>

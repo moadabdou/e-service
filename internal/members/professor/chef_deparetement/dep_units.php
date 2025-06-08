@@ -20,4 +20,4 @@ $filliere=$FiliereModel->getFilieresByDepartment($departmentId);
 
 $content = chefDepModulesListView($modules,$filliere);
 $dashboard = new DashBoard();
-$dashboard->view("professor/chef_deparetement", "modules", $content);
+$dashboard->view( "modules", $content);

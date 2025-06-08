@@ -117,6 +117,6 @@ $dashboard = new DashBoard();
 
 $content = (new DepartementView())->view($data_dep,$data_head);
 
-$dashboard->view("admin", "", $content);
+$dashboard->view("", $content);
 
 ?>

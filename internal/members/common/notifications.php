@@ -82,6 +82,6 @@ $notificationPage = new NotificationPage();
 
 $content =  $notificationPage->view($notifications, $type, $page, $maxPages);
 
-$dashboard->view($_SESSION["role"], "notifications", $content);
+$dashboard->view("notifications", $content);
 
 ?>

@@ -100,8 +100,6 @@ class UserController{
         return "/e-service/internal/members/common/getResource.php?type=image&path=users_pp/".htmlspecialchars($user_img);
     }
 
-
-
     public function isValidUserData(string $key, string|array $value) : bool{
         switch ($key){
             case 'firstName':
@@ -142,6 +140,23 @@ class UserController{
 
             default:
                 return false;
+        }
+    }
+
+    function resolveRole($role) {
+        switch (strtolower($role)) {
+            case "professor/chef_deparetement":
+                return "Chef de département";
+            case "professor/coordonnateur":
+                return "Coordonnateur";
+            case "professor":
+                return "Professeur";
+            case "vacataire":
+                return "Vacataire";
+            case "admin":
+                return "Administrateur";
+            default:
+                return "Rôle";
         }
     }
 

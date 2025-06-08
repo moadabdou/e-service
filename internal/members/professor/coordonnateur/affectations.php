@@ -39,4 +39,4 @@ include $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/coordonnateur/affect
 $content = ob_get_clean();
 
 $dashboard = new DashBoard();
-$dashboard->view("professor/coordonnateur", "affectations", $content);
+$dashboard->view("affectations", $content);

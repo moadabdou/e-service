@@ -61,4 +61,4 @@ if (isset($_SESSION['info'])) {
 
 $content = pendingModulesView($pendingModules,$filliere, $info);
 $dashboard = new DashBoard();
-$dashboard->view("professor/chef_deparetement", "pendingModules", $content);
+$dashboard->view("pendingModules", $content);

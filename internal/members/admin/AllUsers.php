@@ -34,6 +34,6 @@ if ($users_data === false){
 
 $content = (new AllUsersView())->view($role, $status, $users_data === false ?  [] : $users_data);
 
-$dashboard->view("admin", "allUsers", $content);
+$dashboard->view("allUsers", $content);
 
 ?>

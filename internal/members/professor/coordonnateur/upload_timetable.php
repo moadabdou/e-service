@@ -59,4 +59,4 @@ include $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/coordonnateur/timeta
 $content = ob_get_clean();
 
 $dashboard = new DashBoard();
-$dashboard->view("professor/coordonnateur", "emploiTemps", $content);
+$dashboard->view("emploiTemps", $content);

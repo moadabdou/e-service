@@ -91,6 +91,6 @@ if ($type ===  1){
 
 $content = (new FilieresView())->view($inner_content, $deps, $type, $dep_id, $dep_data);
 
-$dashboard->view("admin", "filieres", $content);
+$dashboard->view( "filieres", $content);
 
 ?>

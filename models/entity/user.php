@@ -135,8 +135,8 @@ class UserModel  extends Model
             return "email is already exists ";
         } else if (strpos($this->getError(), "key 'CIN'") !== false) {
             return "CIN is already exists";
-        } else {
-            return null;
+        }else{
+            return "unknown ".$this->getError();
         }
     }
 
@@ -207,3 +207,6 @@ class UserModel  extends Model
     }
 
 }
+
+
+?>
