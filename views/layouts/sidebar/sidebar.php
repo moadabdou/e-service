@@ -241,6 +241,11 @@ class SideBar
                     "icon" => "ti ti-upload",
                     "url" => "/e-service/internal/members/vacataire/uploadNotes.php"
                 ],
+                "NotesHistory" => [
+                    "title" => "Mes notes envoyées",
+                    "icon" => "ti ti-files",
+                    "url" => "/e-service/internal/members/vacataire/notes_history.php"
+                ],
                 "emploisList" => [
                     "title" => "Emplois du temps",
                     "icon" => "ti ti-calendar-time",
