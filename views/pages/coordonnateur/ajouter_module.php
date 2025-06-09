@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="/e-service/resources/assets/css/addunit.css">
+  <?php
 
+    ?>
   <div class="container mt-2 px-4 px-md-5">
     <div class="row justify-content-center">
       <div class="col">
@@ -49,23 +51,7 @@
         </div>
         <?php endif; ?>
         
-        <!-- No Filière Error -->
-        <?php if (isset($errors['filiere']) && $errors['filiere'] === "Aucune filière trouvée pour ce département. Veuillez d'abord créer une filière."): ?>
-        <div class="alert alert-warning alert-dismissible fade show rounded-4 shadow-sm border-start border-4 border-warning mb-4 fade-in" role="alert">
-          <div class="d-flex align-items-center">
-            <i class="ti ti-alert-triangle me-2 fs-4"></i>
-            <div>
-              <strong>Attention :</strong> <?= htmlspecialchars($errors['filiere']) ?>
-              <div class="mt-2">
-                <a href="#" class="btn btn-sm btn-warning rounded-pill">
-                  <i class="ti ti-plus me-1"></i> Créer une filière
-                </a>
-              </div>
-            </div>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php endif; ?>
+      
         
         <!-- Form Card -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
@@ -235,21 +221,7 @@
                   </div>
                 </div>
               </div>
-              
-              <!-- Filière -->
-              <div class="form-group">
-                <label for="id_filiere" class="form-label">Filière</label>
-                <div class="input-group">
-                  <span class="input-group-text bg-light border-0">
-                    <i class="ti ti-school text-primary"></i>
-                  </span>
-                  <select class="form-select rounded-end" id="id_filiere" name="id_filiere" required>
-                    <?php foreach ($filieres as $filiere): ?>
-                      <option value="<?= $filiere['id_filiere'] ?>"><?= htmlspecialchars($filiere['filiere_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
-              </div>
+
               
               <!-- Module Type Selection -->
               <div class="card rounded-4 border-0 shadow-sm mt-4 mb-3">

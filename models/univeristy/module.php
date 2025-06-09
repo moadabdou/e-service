@@ -9,28 +9,6 @@ class ModuleModel extends  Model
         parent::__construct();
     }
 
-    public function createModule($data)
-    {
-        $title = addslashes($data['title']);
-        $description = addslashes($data['description']);
-        $volume_horaire = (int)$data['volume_horaire'];
-        $semester = addslashes($data['semester']);
-        $credits = (int)$data['credits'];
-        $id_filiere = (int)$data['id_filiere'];
-        $responsable = (int)$data['responsable'];
-        $speciality = (int) $data['speciality'];
-
-        $query = "INSERT INTO module (title, description, volume_horaire, semester, credits, id_filiere, responsable, speciality)
-                  VALUES ('$title', '$description', $volume_horaire, '$semester', $credits, $id_filiere, $responsable, $speciality)";
-
-        $result = $this->db->query($query);
-
-        if (!$result) {
-            echo $this->db->getError();
-            return false;
-        }
-        return true;
-    }
 
     /**
      * Récupère toutes les affectations validées (chef) pour une filière et une année,
