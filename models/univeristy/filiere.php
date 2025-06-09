@@ -20,6 +20,16 @@ class FiliereModel extends Model
             return "Query failed: " . $this->db->getError();
         }
     }
+
+    public function getFiliereById($id)
+    {
+        $sql = "SELECT * FROM filiere WHERE id_filiere = ?";
+        if ($this->db->query($sql, [$id])) {
+            return $this->db->fetch();
+        }
+        return null;
+    }
+
     public function getAllFilieres(): array
     {
         $query = "SELECT id_filiere, title FROM filiere ORDER BY title ASC";
@@ -62,7 +72,7 @@ class FiliereModel extends Model
     {
         if ($this->db->query("SELECT * FROM filiere WHERE id_filiere=?", [$filiere_id])) {
             return $this->db->fetch(PDO::FETCH_ASSOC);
-        }else {
+        } else {
             throw new Exception($this->db->getError());
         }
     }
@@ -153,7 +163,4 @@ class FiliereModel extends Model
             return false;
         }
     }
-
-
-
 }

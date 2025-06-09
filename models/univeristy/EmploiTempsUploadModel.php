@@ -19,6 +19,13 @@ class EmploiTempsUploadModel extends Model
         return $this->db->query($sql, [$filiereId, $semestre, $annee, $nom, $chemin]);
     }
 
+    public function countUploadsByFiliere($filiereId)
+    {
+        $sql = "SELECT COUNT(*) as total FROM emploi_temps_upload WHERE id_filiere = ?";
+        $this->db->query($sql, [$filiereId]);
+        return (int)$this->db->fetch()['total'] ?? 0;
+    }
+
     /**
      * Récupère la liste des uploads pour une filière + semestre + année.
      * Si tu passes null pour semestre ou année, ça n’applique pas le filtre.

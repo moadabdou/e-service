@@ -36,6 +36,20 @@ class VacataireAffectationModel extends Model
         return $this->db->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function countDistinctVacatairesByCoord($coordId)
+    {
+        $sql = "SELECT COUNT(DISTINCT to_vacataire) as total FROM affectation_vacataire WHERE by_coordonnateur = ?";
+        $this->db->query($sql, [$coordId]);
+        return (int)$this->db->fetch()['total'] ?? 0;
+    }
+
+    public function countAffectationsByCoord($coordId)
+    {
+        $sql = "SELECT COUNT(*) as total FROM affectation_vacataire WHERE by_coordonnateur = ?";
+        $this->db->query($sql, [$coordId]);
+        return (int)$this->db->fetch()['total'] ?? 0;
+    }
+
 
 
     public function getModulesByVacataireId($vacataireId)

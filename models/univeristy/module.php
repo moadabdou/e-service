@@ -50,7 +50,12 @@ class ModuleModel extends  Model
         return $grouped;
     }
 
-
+    public function countModulesByFiliere($filiereId)
+    {
+        $sql = "SELECT COUNT(*) as total FROM module WHERE id_filiere = ?";
+        $this->db->query($sql, [$filiereId]);
+        return (int)$this->db->fetch()['total'] ?? 0;
+    }
 
 
 
@@ -119,41 +124,43 @@ class ModuleModel extends  Model
                     JOIN filiere f ON m.id_filiere = f.id_filiere
                     WHERE f.id_deparetement = ? ";
 
-                            if ($this->db->query($query, [$departmentId])) {
-                                return $this->db->fetchAll(PDO::FETCH_ASSOC);
-                            } else {
-                                return $this->db->getError();
-                            }
+        if ($this->db->query($query, [$departmentId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return $this->db->getError();
+        }
     }
 
-    public function getSousModulesCountByDepartment(int $departmentId): int {
+    public function getSousModulesCountByDepartment(int $departmentId): int
+    {
         $query = "SELECT COUNT(*) AS total
                   FROM module m
                   JOIN filiere f ON m.id_filiere = f.id_filiere
                   WHERE f.id_deparetement = ? AND m.evaluation != 0";
-    
+
         if ($this->db->query($query, [$departmentId])) {
             $result = $this->db->fetch();
             return $result ? (int)$result['total'] : 0;
         }
-    
+
         return 0;
     }
 
-    public function getModulesCountByDepartment(int $departmentId): int {
+    public function getModulesCountByDepartment(int $departmentId): int
+    {
         $query = "SELECT COUNT(*) AS total
                   FROM module m
                   JOIN filiere f ON m.id_filiere = f.id_filiere
                   WHERE f.id_deparetement = ?";
-    
+
         if ($this->db->query($query, [$departmentId])) {
             $result = $this->db->fetch();
             return $result ? (int)$result['total'] : 0;
         }
-    
+
         return 0;
     }
-    
+
 
     public function getSelectedModulesByProfessor($professorId)
     {
@@ -300,8 +307,8 @@ class ModuleModel extends  Model
 
 
     public function getSelectedModulesWithStatus($professorId)
-        {
-            $query = "SELECT 
+    {
+        $query = "SELECT 
                         m.id_module,
                         cm.status, 
                         m.title, 
@@ -322,13 +329,13 @@ class ModuleModel extends  Model
                     WHERE cm.by_professor = ?
                     GROUP BY m.id_module, cm.status, m.title, m.description, m.semester, f.title";
 
-            if ($this->db->query($query, [$professorId])) {
-                return $this->db->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                var_dump($this->db->getError());
-                return [];
-            }
+        if ($this->db->query($query, [$professorId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            var_dump($this->db->getError());
+            return [];
         }
+    }
 
 
     public function deleteModuleChoice($idUser, $idModule)
@@ -367,7 +374,7 @@ class ModuleModel extends  Model
               JOIN module m ON ap.id_module = m.id_module
               JOIN filiere f ON m.id_filiere = f.id_filiere
               WHERE ap.to_professor = ?";
-    
+
         // Execute the query with professorId twice (once for subquery and once for main query)
         if ($this->db->query($query, [$professorId, $professorId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
@@ -401,7 +408,7 @@ class ModuleModel extends  Model
               JOIN module m ON ap.id_module = m.id_module
               JOIN filiere f ON m.id_filiere = f.id_filiere
               WHERE ap.to_vacataire = ?";
-    
+
         // Execute the query with professorId twice (once for subquery and once for main query)
         if ($this->db->query($query, [$vacId, $vacId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
@@ -572,7 +579,7 @@ class ModuleModel extends  Model
                         u.email,
                         u.phone;
                         ";
-    
+
         if ($this->db->query($query, [$departmentId, $currentYear])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
@@ -581,7 +588,8 @@ class ModuleModel extends  Model
         }
     }
 
-    public function getTotalAssignedHoursByDepartment(int $departmentId): array | null {
+    public function getTotalAssignedHoursByDepartment(int $departmentId): array | null
+    {
         $query = "SELECT SUM(m.volume_cours) AS total_cours,
                          SUM(m.volume_td) AS total_td,
                          SUM(m.volume_tp) AS total_tp,
@@ -593,13 +601,13 @@ class ModuleModel extends  Model
 
         if ($this->db->query($query, [$departmentId])) {
             return $result = $this->db->fetch(PDO::FETCH_ASSOC);
-
         } else {
             return null;
         }
     }
 
-    public function getHistoricalAffectations(int $departmentId): array {
+    public function getHistoricalAffectations(int $departmentId): array
+    {
         $query = "SELECT ap.annee,
                         u.id_user,
                         u.firstName,
@@ -632,7 +640,7 @@ class ModuleModel extends  Model
                         f.title
                     ORDER BY ap.annee DESC, u.lastName;
                     ";
-    
+
         if ($this->db->query($query, [$departmentId])) {
             $results = $this->db->fetchAll(PDO::FETCH_ASSOC);
             $grouped = [];
@@ -660,12 +668,12 @@ class ModuleModel extends  Model
                     'filiere' => $row['filiere_name'],
                     'hours' => $row['volume_total'],
                     'volume_cours'  => $row['volume_cours'],
-                    'volume_td'=> $row['volume_td'],
-                    'volume_tp'=> $row['volume_tp'],
-                    'volume_autre'=> $row['volume_autre'],
-                    'credits'=> $row['credits'],
-                    'semester'=> $row['semester'],
-                    'code_module'=> $row['code_module']
+                    'volume_td' => $row['volume_td'],
+                    'volume_tp' => $row['volume_tp'],
+                    'volume_autre' => $row['volume_autre'],
+                    'credits' => $row['credits'],
+                    'semester' => $row['semester'],
+                    'code_module' => $row['code_module']
                 ];
             }
 
