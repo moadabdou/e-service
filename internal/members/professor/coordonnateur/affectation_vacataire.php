@@ -49,4 +49,4 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/e-service/views/pages/coordonnateur/a
 $content = ob_get_clean();
 
 $dashboard = new DashBoard();
-$dashboard->view("professor/coordonnateur", "affectationVacataire", $content);
+$dashboard->view("affectationVacataire", $content);

@@ -30,12 +30,6 @@ class SideBar
             "title" => "Generale",
             "menu" =>
             [
-                "emploisList" => [
-                    "title" => "Emplois du temps",
-                    "icon" => "ti ti-calendar-time",
-                    "url" => "/e-service/internal/members/common/emploi_temps_list.php"
-                ],
-
                 "profile" => [
                     "title" => "Profile",
                     "icon" => "ti ti-user",
@@ -115,9 +109,9 @@ class SideBar
                     "url" => "/e-service/internal/members/professor/chef_deparetement/manage_deadlines.php"
                 ],
                 "workload" => [
-                    "title" => "Charge des professeurs",
-                    "icon" => "ti ti-calendar-stats",
-                    "url" => "/e-service/internal/members/professor/chef_deparetement/workload.php"
+                "title" => "Charge des professeurs",
+                "icon" => "ti ti-briefcase",
+                "url" => "/e-service/internal/members/professor/chef_deparetement/workload.php"
                 ],
                 "professorChoices" => [
                     "title" => "Choix des professeurs",
@@ -168,7 +162,7 @@ class SideBar
                     "url" => "/e-service/internal/members/professor/coordonnateur/affectations.php"
                 ],
                 "emploiTemps" => [
-                    "title" => "Emploi du temps",
+                    "title" => "gestion des emploi",
                     "icon" => "ti ti-calendar",
                     "url" => "/e-service/internal/members/professor/coordonnateur/upload_timetable.php"
                 ],
@@ -193,6 +187,11 @@ class SideBar
                     "title" => "Accueil",
                     "icon" => "ti ti-atom",
                     "url" => "/e-service/internal/members/professor"
+                ],
+                "emploisList" => [
+                    "title" => "Emplois du temps",
+                    "icon" => "ti ti-calendar-time",
+                    "url" => "/e-service/internal/members/common/emploi_temps_list.php"
                 ],
                 "chooseUnits" => [
                     "title" => "Choisir Des Modules",
@@ -242,6 +241,16 @@ class SideBar
                     "icon" => "ti ti-upload",
                     "url" => "/e-service/internal/members/vacataire/uploadNotes.php"
                 ],
+                "NotesHistory" => [
+                    "title" => "Mes notes envoyées",
+                    "icon" => "ti ti-files",
+                    "url" => "/e-service/internal/members/vacataire/notes_history.php"
+                ],
+                "emploisList" => [
+                    "title" => "Emplois du temps",
+                    "icon" => "ti ti-calendar-time",
+                    "url" => "/e-service/internal/members/common/emploi_temps_list.php"
+                ]
             ]
         ]
 
