@@ -23,6 +23,7 @@ if ($coordinatorId) {
     $filiereId = $filiereModel->getFiliereIdByCoordinator($coordinatorId);
     if ($filiereId) {
         $modules = $moduleModel->getModulesByFiliereId($filiereId);
+    
     }
 }
 

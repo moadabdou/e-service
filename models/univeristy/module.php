@@ -89,11 +89,9 @@ class ModuleModel extends  Model
                 credits,
                 semester,
                 description,
-                evaluation,
-                responsable,
-                id_speciality
+                evaluation
               FROM module 
-              WHERE id_filiere = ?";
+              WHERE id_filiere =?";
 
         if ($this->db->query($query, [$filiereId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
@@ -394,6 +392,40 @@ class ModuleModel extends  Model
     
         // Execute the query with professorId twice (once for subquery and once for main query)
         if ($this->db->query($query, [$professorId, $professorId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return false;
+        }
+    }
+
+    public function getApprovedModulesByVac(int $vacId): array|false
+    {
+        $query = "SELECT 
+                m.id_module, 
+                m.title, 
+                m.description, 
+                m.semester,
+                m.code_module,
+                (
+                    COALESCE(m.volume_cours, 0)
+                    + COALESCE(m.volume_td, 0)
+                    + COALESCE(m.volume_tp, 0)
+                    + COALESCE(m.volume_autre, 0)
+                ) AS volume_total,
+                f.title AS filiere_name,
+                (
+                    SELECT COUNT(*) 
+                    FROM notes 
+                    WHERE notes.id_module = m.id_module 
+                      AND notes.id_professor = ?
+                ) AS notes_uploaded
+              FROM affectation_vacataire ap
+              JOIN module m ON ap.id_module = m.id_module
+              JOIN filiere f ON m.id_filiere = f.id_filiere
+              WHERE ap.to_vacataire = ?";
+    
+        // Execute the query with professorId twice (once for subquery and once for main query)
+        if ($this->db->query($query, [$vacId, $vacId])) {
             return $this->db->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return false;

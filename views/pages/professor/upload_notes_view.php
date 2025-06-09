@@ -85,7 +85,7 @@ function uploadNotesView(array $assignedModules, ?array $info = null, ?array $de
                                     <div class="card bg-light cursor-pointer" id="dropzone">
                                         <div class="card-body text-center py-5">
                                             <div class="mb-3">
-                                                <i class="ti ti-file-upload text-primary fs-1"></i>
+                                                <i class="ti ti-file-upload text-primary fs-6"></i>
                                             </div>
                                             <h6 class="mb-1">Glissez-déposez votre fichier ici</h6>
                                             <p class="text-muted small mb-2">ou</p>
