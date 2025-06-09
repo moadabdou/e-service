@@ -24,6 +24,23 @@ class NoteModel extends Model {
         }
     }
 
+    public function saveUploadedNoteVac(int $moduleId, int $professorId, string $sessionType, string $fileId): array|false {
+        $query = "INSERT INTO notes (id_module, id_vacataire, date_upload, session, file_id)
+                  VALUES (?, ?, CURDATE(), ?, ?)";
+
+        $success = $this->db->query($query, [$moduleId, $professorId, $sessionType, $fileId]);
+
+        if ($success) {
+            return [
+                "success" => true,
+                "file_id" => $fileId,
+            ];
+        } else {
+            error_log("Erreur insertion note : " . $this->db->getError());
+            return false;
+        }
+    }
+
         public function deleteNoteByFileId(string $fileId): bool {
 
             $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/e-service/storage/pdfs/notes/';
@@ -40,6 +57,8 @@ class NoteModel extends Model {
     
             return false; 
         }
+
+        
     
         public function updateNoteFile(string $fileId, string $NewId, array $newFile): array|false {
             $allowedExtensions = ['pdf', 'xlsx'];
@@ -84,6 +103,22 @@ class NoteModel extends Model {
                   JOIN module m ON m.id_module = n.id_module
                   JOIN filiere f ON f.id_filiere = m.id_filiere
                   WHERE n.id_professor = ?
+                  ORDER BY n.date_upload DESC";
+    
+        if ($this->db->query($query, [$professorId])) {
+            return $this->db->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            error_log("Erreur getNotesByProfessor: " . $this->db->getError());
+            return [];
+        }
+    }
+
+      public function getNotesByVac(int $professorId): array {
+        $query = "SELECT n.*, m.title AS module_title, f.title AS filiere_name 
+                  FROM notes n
+                  JOIN module m ON m.id_module = n.id_module
+                  JOIN filiere f ON f.id_filiere = m.id_filiere
+                  WHERE n.id_vacataire = ?
                   ORDER BY n.date_upload DESC";
     
         if ($this->db->query($query, [$professorId])) {

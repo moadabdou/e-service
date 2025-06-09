@@ -53,19 +53,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
         $_SESSION["role"] = $user_info["role"];
         $_SESSION["id_user"] = $user_info["id_user"];
         
-        if ($_SESSION["role"]  === "professor"){
-            $profModel = new ProfessorModel();
-            $profRole = $profModel->getProfessorRole($_SESSION["id_user"]);
-            if ($profRole !== "normal"){
-                $_SESSION["role"] .= "/".$profRole;
-            }
-            
-            //get departement id , i need it to show units, and i also do getProfessorByUserId method in professor.php 
-            $professorData = $profModel->getProfessorByUserId($_SESSION["id_user"]);
-            if ($professorData && isset($professorData["id_deparetement"])) {
-                $_SESSION["id_deparetement"] = $professorData["id_deparetement"];
-            }
-        }
+    if ($_SESSION["role"] === "professor") {
+    $profModel = new ProfessorModel();
+    $profRole = $profModel->getProfessorRole($_SESSION["id_user"]);
+    
+    if ($profRole !== "normal") {
+        $_SESSION["role"] .= "/" . $profRole;
+    }
+
+    // Get département
+    $professorData = $profModel->getProfessorByUserId($_SESSION["id_user"]);
+    if ($professorData && isset($professorData["id_deparetement"])) {
+        $_SESSION["id_deparetement"] = $professorData["id_deparetement"];
+    }
+
+    if ($profRole === "vacataire" && isset($professorData["id_filiere"])) {
+        $_SESSION["id_filiere"] = $professorData["id_filiere"];
+    }
+}
+
 
         $userController->redirectCurrentUserBasedOnRole($_SESSION["role"]);
         
