@@ -1,19 +1,8 @@
 {
     "name": "a-bkr/e-service",
-    "autoload": {
-        "psr-4": {
-            "ABkr\\EService\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "a-bkr",
-            "email": "ayoubboukakar123@gmail.com"
-        }
-    ],
     "require": {
-        "vlucas/phpdotenv": "^5.6",
-        "phpmailer/phpmailer": "^6.9",
-        "phpoffice/phpspreadsheet": "^4.2"
+        "phpoffice/phpspreadsheet": "^1.29",
+        "phpmailer/phpmailer": "^6.10",
+        "vlucas/phpdotenv": "^5.6"
     }
 }
