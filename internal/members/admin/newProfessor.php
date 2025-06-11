@@ -100,6 +100,7 @@ if($_SERVER["REQUEST_METHOD"] ==  "POST"){
                 "Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.",
                 null
             );
+            
 
             $activityModel->createActivity(
                 "Un nouveau professeur " . $_POST["firstName"] . " " . $_POST["lastName"] . " a été ajouté",
