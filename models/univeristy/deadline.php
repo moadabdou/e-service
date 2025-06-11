@@ -109,8 +109,8 @@ public function updateDeadlineStatus(int $id, string $status): bool {
     public function create(string $title, string $content, string $createTime, int $chefId): bool {
         $sql = "INSERT INTO announces (title, content, create_time, id_admin) VALUES (?, ?, ?, ?)";
         $params = [$title, $content, $createTime, $chefId];
-
-        return $this->db->query($sql,$params);
+        $res = $this->db->query($sql,$params);
+        return $res;
 
     }
     public function getDeadlinesExpiredWithinLastDay(): array
