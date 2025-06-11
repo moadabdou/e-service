@@ -139,7 +139,7 @@ CREATE TABLE `announces` (
   `content` text NOT NULL,
   `id_admin` int(11) NOT NULL,
   PRIMARY KEY (`id_announce`),
-  CONSTRAINT `announces_ibfk_1` FOREIGN KEY (`id_announce`) REFERENCES `user` (`id_user`)
+  CONSTRAINT `announces_ibfk_1` FOREIGN KEY (`id_admin`) REFERENCES `user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
