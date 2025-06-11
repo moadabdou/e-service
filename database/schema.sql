@@ -359,6 +359,7 @@ CREATE TABLE `module` (
   `semester` enum('s1','s2','s3','s4','s5','s6') DEFAULT NULL,
   `credits` int(11) NOT NULL,
   `id_filiere` int(11) NOT NULL DEFAULT 1,
+  `id_filiere` int(11) NOT NULL DEFAULT 1,
   `code_module` varchar(20) NOT NULL,
   `volume_cours` smallint(6) DEFAULT 0,
   `volume_td` smallint(6) DEFAULT 0,

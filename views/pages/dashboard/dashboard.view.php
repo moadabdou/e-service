@@ -8,7 +8,7 @@ require $_SERVER['DOCUMENT_ROOT']."/e-service/core/resources.php";
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modernize Free Bootstrap Admin Template by Adminmart</title>
+  <title>E-Services Dashboard</title>
   <link rel="shortcut icon" type="image/png" href="/e-service/storage/image/logo/logo.png" />
   <link rel="stylesheet" href="<?=$RESOURCES_PATH?>/assets/css/styles.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />

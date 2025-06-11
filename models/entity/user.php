@@ -31,15 +31,14 @@ class UserModel  extends Model
         )) {
 
             return $this->db->lastInsertId();
-
-        }else {
+        } else {
             $this->error = $this->db->getError();
             return false;
         }
-
     }
 
-    public  function getfullName(int $id): string {
+    public  function getfullName(int $id): string
+    {
         if ($this->db->query("SELECT CONCAT(firstName, ' ', lastName) AS full_name FROM user WHERE id_user = ?", [$id])) {
             return $this->db->fetchColumn(0);
         } else {
@@ -47,34 +46,43 @@ class UserModel  extends Model
         }
     }
 
-    public function getUserByID(int $id){
+    public function getUserByID(int $id)
+    {
 
-        if ($this->db->query("SELECT * FROM user WHERE id_user=?", [$id])){
+        if ($this->db->query("SELECT * FROM user WHERE id_user=?", [$id])) {
             return $this->db->fetch();
-        }else {
+        } else {
             throw new Exception($this->db->getError());
         }
-
     }
 
-    public function getUser(int $id) {
+    public function getUser(int $id)
+    {
         $sql = "SELECT 
                     CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) AS img, 
                     CONCAT(firstName, ' ', lastName) AS name 
                 FROM user 
                 WHERE id_user = ?";
-    
+
         if ($this->db->query($sql, [$id])) {
-            return $this->db->fetch(); 
+            return $this->db->fetch();
         } else {
             throw new Exception($this->db->getError());
         }
     }
-    
 
-    protected function deleteUserById(int $id): bool {
+    public function countProfessorsByFiliere($filiereId)
+    {
+        $sql = "SELECT COUNT(*) as total FROM professor WHERE id_deparetement = ?";
+        $this->db->query($sql, [$filiereId]);
+        return (int)$this->db->fetch()['total'] ?? 0;
+    }
+
+
+    protected function deleteUserById(int $id): bool
+    {
         if ($this->db->query("DELETE FROM user WHERE id_user=?", [$id])) {
-            return $this->db->rowCount()>0;
+            return $this->db->rowCount() > 0;
         } else {
             $this->error = $this->db->getError();
             return false;
@@ -135,8 +143,8 @@ class UserModel  extends Model
             return "email is already exists ";
         } else if (strpos($this->getError(), "key 'CIN'") !== false) {
             return "CIN is already exists";
-        }else{
-            return "unknown ".$this->getError();
+        } else {
+            return "unknown " . $this->getError();
         }
     }
 
@@ -150,16 +158,17 @@ class UserModel  extends Model
      *  4 => admins 
     */
 
-    public function getUsersByRole(int $role, int $status): array|false{
+    public function getUsersByRole(int $role, int $status): array|false
+    {
 
         $prefix =  "SELECT id_user,firstName,lastName,CONCAT('/e-service/internal/members/common/getResource.php?type=image&path=users_pp/', img) as img,email,phone,birth_date,creation_date FROM user ";
         $query = match ($role) {
-            -1 => $prefix."WHERE 1",
-            0 => $prefix."WHERE role = 'professor'",
-            1 => $prefix."JOIN professor ON id_user=id_professor AND professor.role = 'chef_deparetement'",
-            2 => $prefix."JOIN professor ON id_user=id_professor AND professor.role = 'coordonnateur'",
-            3 => $prefix."WHERE role = 'vacataire'",
-            4 => $prefix."WHERE role = 'admin'",
+            -1 => $prefix . "WHERE 1",
+            0 => $prefix . "WHERE role = 'professor'",
+            1 => $prefix . "JOIN professor ON id_user=id_professor AND professor.role = 'chef_deparetement'",
+            2 => $prefix . "JOIN professor ON id_user=id_professor AND professor.role = 'coordonnateur'",
+            3 => $prefix . "WHERE role = 'vacataire'",
+            4 => $prefix . "WHERE role = 'admin'",
         };
 
         $query .= match ($status) {
@@ -186,7 +195,8 @@ class UserModel  extends Model
 
         return null;
     }
-    public function countAllActive(): int|false {
+    public function countAllActive(): int|false
+    {
         if ($this->db->query("SELECT COUNT(*) as count FROM user WHERE status = 'active'")) {
             $result = $this->db->fetch();
             return (int)$result['count'];
@@ -196,7 +206,8 @@ class UserModel  extends Model
         }
     }
 
-    public function countAllDisabled(): int|false {
+    public function countAllDisabled(): int|false
+    {
         if ($this->db->query("SELECT COUNT(*) as count FROM user WHERE status = 'disabled'")) {
             $result = $this->db->fetch();
             return (int)$result['count'];
@@ -205,8 +216,4 @@ class UserModel  extends Model
             return false;
         }
     }
-
 }
-
-
-?>

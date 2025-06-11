@@ -17,6 +17,40 @@ class VacataireAffectationModel extends Model
                   VALUES (?, ?, ?, ?)";
         return $this->db->query($query, [$vacataireId, $coordId, $moduleId, $annee]);
     }
+    public function countModulesByVacataire($id_user): int
+    {
+        $query = "SELECT COUNT(*) as total FROM affectation_vacataire WHERE to_vacataire = ?";
+        $this->db->query($query, [$id_user]);
+        $result = $this->db->fetch(PDO::FETCH_ASSOC);
+        return (int)($result['total'] ?? 0);
+    }
+
+    public function getModulesByVacataire($vacataireId)
+    {
+        $query = "SELECT m.title, m.code_module, a.annee
+              FROM affectation_vacataire a
+              JOIN module m ON a.id_module = m.id_module
+              WHERE a.to_vacataire = ?
+              ORDER BY a.annee DESC";
+        $this->db->query($query, [$vacataireId]);
+        return $this->db->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countDistinctVacatairesByCoord($coordId)
+    {
+        $sql = "SELECT COUNT(DISTINCT to_vacataire) as total FROM affectation_vacataire WHERE by_coordonnateur = ?";
+        $this->db->query($sql, [$coordId]);
+        return (int)$this->db->fetch()['total'] ?? 0;
+    }
+
+    public function countAffectationsByCoord($coordId)
+    {
+        $sql = "SELECT COUNT(*) as total FROM affectation_vacataire WHERE by_coordonnateur = ?";
+        $this->db->query($sql, [$coordId]);
+        return (int)$this->db->fetch()['total'] ?? 0;
+    }
+
+
 
     public function getModulesByVacataireId($vacataireId)
     {
