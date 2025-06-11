@@ -91,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['update_deadline_id']
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_announce'])) {
+
     $chefId = $_SESSION['id_user'];
     $createTime = date('Y-m-d H:i:s');
 
@@ -186,11 +187,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_announce'])) {
             }
         }
         
-
+        
         if ($deadlineModel->create($title, $content, $createTime, $chefId)) {
             $_SESSION['success'] = "Annonce intitulée « <strong>" . htmlspecialchars($title) . "</strong> » créée avec succès.";
         } else {
-            $_SESSION['error'] = "Erreur lors de la création de l'annonce.";
+            $_SESSION['error'] = "Erreur lors de la création de l'annonce. :)" ;
         }
         
         header("Location: " . $_SERVER['REQUEST_URI']);
