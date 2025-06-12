@@ -125,3 +125,20 @@ This project is built using vanilla PHP with some Composer-managed libraries and
    ```
 
    * You should now see the application's login page or home page.
+## Test Login Credentials
+
+To help testers explore the application, you can use the following test accounts:
+
+### Professors and Coordinators
+| Email                | Role(s)                          | Password |
+|----------------------|----------------------------------|----------|
+| moad@gmail.com       | Professor, Coordinator           | pass     |
+| ayoube@gmail.com     | Professor, Department Head       | pass     |
+| hassan@gmail.com     | Professor                        | pass     |
+
+### Administrator
+| Email                     | Role     | Password |
+|---------------------------|----------|----------|
+| adminEnsah@eservice.com   | Admin    | admin    |
+
+These accounts provide access to different sections of the application depending on the role. Be sure to test functionalities specific to each role.
