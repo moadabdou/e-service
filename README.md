@@ -68,15 +68,11 @@ This project is built using vanilla PHP with some Composer-managed libraries and
 
 ### Step-by-Step Installation
 
-1. **Clone the Repository (or Extract Project Files):**
-
-   * If your project is in a Git repository, clone it into the `htdocs` directory of your XAMPP installation. For example, if XAMPP is installed at `C:\xampp`, then clone into `C:\xampp\htdocs`.
+1. **Clone the Repository :**
 
    ```
    git clone https://github.com/moadabdou/e-service.git C:\xampp\htdocs\eservice
    ```
-
-   * If you have the project files as a `.zip` or `.tar.gz` archive, extract them directly into `C:\xampp\htdocs\eservice`.
 
 2. **Start XAMPP Services:**
 
