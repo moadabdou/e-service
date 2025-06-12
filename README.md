@@ -71,7 +71,7 @@ This project is built using vanilla PHP with some Composer-managed libraries and
 1. **Clone the Repository :**
 
    ```
-   git clone https://github.com/moadabdou/e-service.git C:\xampp\htdocs\eservice
+   git clone https://github.com/moadabdou/e-service.git C:\xampp\htdocs\e-service
    ```
 
 2. **Start XAMPP Services:**
@@ -86,13 +86,13 @@ This project is built using vanilla PHP with some Composer-managed libraries and
    * Enter `eservice` as the database name and click "Create".
    * Select the newly created `eservice` database from the left sidebar.
    * Click on the "Import" tab.
-   * Click "Choose File" and select the `schema.sql` file located in your project's `database/` folder (e.g., `C:\xampp\htdocs\eservice\database\schema.sql`).
+   * Click "Choose File" and select the `schema.sql` file located in your project's `database/` folder (e.g., `C:\xampp\htdocs\e-service\database\schema.sql`).
    * Scroll down and click "Go" to import the database schema.
 
 4. **Install Composer Dependencies:**
 
    * Open your terminal or command prompt.
-   * Navigate to your project's root directory (e.g., `cd C:\xampp\htdocs\eservice`).
+   * Navigate to your project's root directory (e.g., `cd C:\xampp\htdocs\e-service`).
    * Run the Composer install command:
 
    ```
@@ -118,10 +118,10 @@ This project is built using vanilla PHP with some Composer-managed libraries and
 
 6. **Access the Application:**
 
-   * Open your web browser and navigate to the URL of your project. If you placed it directly in `htdocs` under `eservice`, the URL will typically be:
+   * Open your web browser and navigate to the URL of your project. If you placed it directly in `htdocs` under `e-service`, the URL will typically be:
 
    ```
-   http://localhost/eservice/
+   http://localhost/e-service/
    ```
 
    * You should now see the application's login page or home page.
