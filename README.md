@@ -121,7 +121,7 @@ This project is built using vanilla PHP with some Composer-managed libraries and
    * Open your web browser and navigate to the URL of your project. If you placed it directly in `htdocs` under `e-service`, the URL will typically be:
 
    ```
-   http://localhost/e-service/
+   http://localhost/e-service/public/login.php
    ```
 
    * You should now see the application's login page or home page.
@@ -133,7 +133,7 @@ To help testers explore the application, you can use the following test accounts
 | Email                | Role(s)                          | Password |
 |----------------------|----------------------------------|----------|
 | moad@gmail.com       | Professor, Coordinator           | pass     |
-| ayoube@gmail.com     | Professor, Department Head       | pass     |
+| ayoub@gmail.com     | Professor, Department Head       | pass     |
 | hassan@gmail.com     | Professor                        | pass     |
 
 ### Administrator
