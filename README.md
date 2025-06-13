@@ -142,3 +142,4 @@ To help testers explore the application, you can use the following test accounts
 | adminEnsah@eservice.com   | Admin    | admin    |
 
 These accounts provide access to different sections of the application depending on the role. Be sure to test functionalities specific to each role.
+
