@@ -19,7 +19,7 @@ $assignedModules = $moduleModel->getApprovedModulesByProfessor($professorId);
 // Calculate total volume_horaire
 $totalHours = 0;
 foreach ($assignedModules as $module) {
-    $totalHours += $module['volume_horaire'] ?? 0;
+    $totalHours += $module['volume_total'] ?? 0;
 }
 
 $content = assignedModulesView($assignedModules, $totalHours);

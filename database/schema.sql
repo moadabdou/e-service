@@ -1,15 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
--- Active: 1744657143506@@127.0.0.1@3306@eservice
 -- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: eservice
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server version 10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -20,25 +18,17 @@
 --
 -- Table structure for table `activities`
 --
-CREATE TABLE IF NOT EXISTS feature_deadlines (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    feature ENUM('choose_modules', 'upload_notes') NOT NULL,
-    start_date DATETIME NOT NULL,
-    end_date DATETIME NOT NULL,
-    status ENUM('open', 'closed') DEFAULT 'open',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 DROP TABLE IF EXISTS `activities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `activities` (
   `id_activite` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
   `create_time` datetime NOT NULL COMMENT 'Create Time',
   `content` text NOT NULL,
   `icon` varchar(64) NOT NULL,
   PRIMARY KEY (`id_activite`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,8 +37,7 @@ CREATE TABLE `activities` (
 
 LOCK TABLES `activities` WRITE;
 /*!40000 ALTER TABLE `activities` DISABLE KEYS */;
-INSERT INTO `activities` VALUES (1,'2025-05-08 17:36:22','User logged in to the system','fa-sign-in-alt'),(2,'2025-05-08 17:36:22','New document created','fa-file-alt'),(3,'2025-05-08 17:36:22','Payment processed successfully','fa-credit-card'),(4,'2025-05-08 17:36:22','Profile updated','fa-user-edit'),(5,'2025-05-08 17:36:22','File uploaded to cloud storage','fa-cloud-upload-alt'),(6,'2025-05-08 17:36:22','Message sent to support team','fa-envelope'),(7,'2025-05-08 17:36:22','Report generated','fa-chart-bar'),(8,'2025-05-08 17:36:22','Settings updated','fa-cog'),(9,'2025-05-08 17:36:22','Backup completed','fa-database'),(10,'2025-05-08 17:36:22','Task completed','fa-check-circle'),(11,'2025-05-08 18:15:45','Le chef de département Computer Science a été supprimé par l\'administrateur .','fa-user-xmark'),(12,'2025-05-08 18:16:09','Le professeur hassan hassan a été nommé chef de département Computer Science par l\'administrateur .','fa-user-check'),(13,'2025-05-08 18:47:08','Un nouveau vacataire Moad Abdou a été ajouté par le coordonnateur  ','fa-user-plus'),(14,'2025-05-08 18:54:06','Un nouveau vacataire Moad Abdou a été ajouté par le coordonnateur AYOUB Coordonnateur','fa-user-plus'),(15,'2025-05-08 18:55:37','Un nouveau vacataire Moad Abdou a été ajouté par le coordonnateur AYOUB Coordonnateur','fa-user-plus'),(16,'2025-06-06 19:21:55','Un nouveau vacataire AYOUB Vacataire a été ajouté par le coordonnateur AYOUB Coordonnateur','fa-user-plus'),(17,'2025-06-06 20:06:22','Un nouveau vacataire AYOUB Vacataire a été ajouté par le coordonnateur AYOUB Coordonnateur','fa-user-plus');
-INSERT INTO `activities` VALUES (1,'2025-05-08 17:36:22','User logged in to the system','fa-sign-in-alt'),(2,'2025-05-08 17:36:22','New document created','fa-file-alt'),(3,'2025-05-08 17:36:22','Payment processed successfully','fa-credit-card'),(4,'2025-05-08 17:36:22','Profile updated','fa-user-edit'),(5,'2025-05-08 17:36:22','File uploaded to cloud storage','fa-cloud-upload-alt'),(6,'2025-05-08 17:36:22','Message sent to support team','fa-envelope'),(7,'2025-05-08 17:36:22','Report generated','fa-chart-bar'),(8,'2025-05-08 17:36:22','Settings updated','fa-cog'),(9,'2025-05-08 17:36:22','Backup completed','fa-database'),(10,'2025-05-08 17:36:22','Task completed','fa-check-circle'),(11,'2025-05-08 18:15:45','Le chef de d├⌐partement Computer Science a ├⌐t├⌐ supprim├⌐ par l\'administrateur .','fa-user-xmark'),(12,'2025-05-08 18:16:09','Le professeur hassan hassan a ├⌐t├⌐ nomm├⌐ chef de d├⌐partement Computer Science par l\'administrateur .','fa-user-check'),(13,'2025-05-08 18:47:08','Un nouveau vacataire Moad Abdou a ├⌐t├⌐ ajout├⌐ par le coordonnateur  ','fa-user-plus'),(14,'2025-05-08 18:54:06','Un nouveau vacataire Moad Abdou a ├⌐t├⌐ ajout├⌐ par le coordonnateur AYOUB Coordonnateur','fa-user-plus'),(15,'2025-05-08 18:55:37','Un nouveau vacataire Moad Abdou a ├⌐t├⌐ ajout├⌐ par le coordonnateur AYOUB Coordonnateur','fa-user-plus');
+INSERT INTO `activities` VALUES (1,'2025-06-11 22:16:45','Un nouveau professeur Moad Abdou a été ajouté','fa-user-plus'),(2,'2025-06-11 22:18:13','Un nouveau professeur Hassan Hassan a été ajouté','fa-user-plus'),(3,'2025-06-11 22:18:57','Un nouveau professeur ayoube ayoube a été ajouté','fa-user-plus'),(4,'2025-06-11 22:22:24','Le professeur Hassan Hassan a été nommé chef de département Département Mathématiques et Informatique par l\'administrateur ADMIN ENSAH.','fa-user-check'),(5,'2025-06-11 22:22:36','Le professeur Moad Abdou a été nommé coordinateur de la filière Génie Informatique par l\'administrateur ADMIN ENSAH.','fa-user-check'),(6,'2025-06-12 00:41:35','Le chef de département Département Mathématiques et Informatique a été supprimé par l\'administrateur ADMIN ENSAH.','fa-user-xmark'),(7,'2025-06-12 00:41:40','Le professeur Hassan El khatoury a été nommé chef de département Département Mathématiques et Informatique par l\'administrateur ADMIN ENSAH.','fa-user-check'),(8,'2025-06-12 00:41:55','Le département Département Mathématiques et Informatique a été modifié par l\'administrateur ADMIN ENSAH.','fa-user-pen');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +47,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin` (
   `id_admin` int(11) NOT NULL,
   UNIQUE KEY `id_admin` (`id_admin`),
@@ -81,7 +70,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `affectation_professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `affectation_professor` (
   `to_professor` int(11) NOT NULL,
   `by_chef_deparetement` int(11) NOT NULL,
@@ -92,8 +81,8 @@ CREATE TABLE `affectation_professor` (
   KEY `by_chef_deparetement` (`by_chef_deparetement`),
   KEY `id_module` (`id_module`),
   CONSTRAINT `affectation_professor_ibfk_1` FOREIGN KEY (`to_professor`) REFERENCES `professor` (`id_professor`),
-  CONSTRAINT `affectation_professor_ibfk_2` FOREIGN KEY (`by_chef_deparetement`) REFERENCES `chef_deparetement` (`id_chef_deparetement`),
-  CONSTRAINT `affectation_professor_ibfk_3` FOREIGN KEY (`id_module`) REFERENCES `module` (`id_module`)
+  CONSTRAINT `affectation_professor_ibfk_3` FOREIGN KEY (`id_module`) REFERENCES `module` (`id_module`),
+  CONSTRAINT `affectation_professor_ibfk_4` FOREIGN KEY (`by_chef_deparetement`) REFERENCES `professor` (`id_professor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,7 +92,7 @@ CREATE TABLE `affectation_professor` (
 
 LOCK TABLES `affectation_professor` WRITE;
 /*!40000 ALTER TABLE `affectation_professor` DISABLE KEYS */;
-INSERT INTO `affectation_professor` VALUES (3,2,1,2025),(2,2,2,2025),(3,2,3,2025);
+INSERT INTO `affectation_professor` VALUES (24,24,1,2025),(24,24,2,2025);
 /*!40000 ALTER TABLE `affectation_professor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +102,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `affectation_vacataire`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `affectation_vacataire` (
   `to_vacataire` int(11) NOT NULL,
   `by_coordonnateur` int(11) NOT NULL,
@@ -134,7 +123,6 @@ CREATE TABLE `affectation_vacataire` (
 
 LOCK TABLES `affectation_vacataire` WRITE;
 /*!40000 ALTER TABLE `affectation_vacataire` DISABLE KEYS */;
-INSERT INTO `affectation_vacataire` VALUES (13,4,1,2025),(14,4,3,2025),(16,4,5,2025),(20,4,5,2025);
 /*!40000 ALTER TABLE `affectation_vacataire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +132,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `announces`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `announces` (
   `id_announce` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
   `create_time` datetime NOT NULL COMMENT 'Create Time',
@@ -152,6 +140,7 @@ CREATE TABLE `announces` (
   `content` text NOT NULL,
   `id_admin` int(11) NOT NULL,
   PRIMARY KEY (`id_announce`),
+  KEY `announces_ibfk_1` (`id_admin`),
   CONSTRAINT `announces_ibfk_1` FOREIGN KEY (`id_admin`) REFERENCES `user` (`id_user`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -162,32 +151,8 @@ CREATE TABLE `announces` (
 
 LOCK TABLES `announces` WRITE;
 /*!40000 ALTER TABLE `announces` DISABLE KEYS */;
-INSERT INTO `announces` VALUES (1,'2025-05-08 14:23:30','test announce','dbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcsczds  shdasjfbhsdbckabshcs',1);
+INSERT INTO `announces` VALUES (1,'2025-06-12 00:29:44','🔔 Rappel : Choix des unités','Il vous reste 1 jour, 21 heures, 57 minutes pour choisir vos unités.\n\nN’oubliez pas que ce choix est crucial pour la validation de votre parcours.\nAssurez-vous de respecter ce délai pour éviter tout désagrément.',24);
 /*!40000 ALTER TABLE `announces` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `chef_deparetement`
---
-
-DROP TABLE IF EXISTS `chef_deparetement`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `chef_deparetement` (
-  `id_chef_deparetement` int(11) NOT NULL,
-  UNIQUE KEY `id_chef_deparetement` (`id_chef_deparetement`),
-  CONSTRAINT `chef_deparetement_ibfk_1` FOREIGN KEY (`id_chef_deparetement`) REFERENCES `professor` (`id_professor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chef_deparetement`
---
-
-LOCK TABLES `chef_deparetement` WRITE;
-/*!40000 ALTER TABLE `chef_deparetement` DISABLE KEYS */;
-INSERT INTO `chef_deparetement` VALUES (2);
-/*!40000 ALTER TABLE `chef_deparetement` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -196,7 +161,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `choix_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `choix_module` (
   `by_professor` int(11) NOT NULL,
   `id_module` int(11) NOT NULL,
@@ -216,7 +181,7 @@ CREATE TABLE `choix_module` (
 
 LOCK TABLES `choix_module` WRITE;
 /*!40000 ALTER TABLE `choix_module` DISABLE KEYS */;
-INSERT INTO `choix_module` VALUES (3,1,'2025-04-29','2025-04-29','validated'),(3,2,'2025-04-29','2025-04-29','declined'),(3,3,'2025-04-29','2025-04-29','validated'),(2,2,'2025-05-14','2025-05-14','validated');
+INSERT INTO `choix_module` VALUES (24,1,'2025-06-12','2025-06-12','validated'),(24,2,'2025-06-12','2025-06-12','validated'),(24,3,'2025-06-12','2025-06-12','declined'),(24,4,'2025-06-12','2025-06-12','declined'),(24,3,'2025-06-12',NULL,'in progress');
 /*!40000 ALTER TABLE `choix_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +191,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `coordonnateur`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `coordonnateur` (
   `id_coordonnateur` int(11) NOT NULL,
   `id_filiere` int(11) NOT NULL,
@@ -243,7 +208,7 @@ CREATE TABLE `coordonnateur` (
 
 LOCK TABLES `coordonnateur` WRITE;
 /*!40000 ALTER TABLE `coordonnateur` DISABLE KEYS */;
-INSERT INTO `coordonnateur` VALUES (4,1),(3,3);
+INSERT INTO `coordonnateur` VALUES (22,1);
 /*!40000 ALTER TABLE `coordonnateur` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,14 +218,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `deparetement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `deparetement` (
   `id_deparetement` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
   `description` varchar(400) NOT NULL,
   PRIMARY KEY (`id_deparetement`),
   UNIQUE KEY `title` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,7 +234,7 @@ CREATE TABLE `deparetement` (
 
 LOCK TABLES `deparetement` WRITE;
 /*!40000 ALTER TABLE `deparetement` DISABLE KEYS */;
-INSERT INTO `deparetement` VALUES (1,'Computer Science','Department focused on computer programming and information technology new data'),(2,'Mathematics','Department dedicated to mathematical sciences and research'),(3,'Physics','Department specializing in physical sciences and experimental research'),(4,'Engineering','Department covering various engineering disciplines'),(5,'Business','Department focused on business administration and management');
+INSERT INTO `deparetement` VALUES (1,'Département Mathématiques et Informatique','Le Département Mathématiques et Informatique forme des étudiants dans les domaines fondamentaux et appliqués des mathématiques, de l’informatique, des systèmes intelligents, des algorithmes, et de l’analyse de données. Il prépare les étudiants à des carrières en recherche, développement logiciel, intelligence artificielle et cybersécurité.'),(2,'Département Génie Civil Energétique et Environneme','Le Département GCEE regroupe les spécialités du génie civil, de l’énergie, et de l’environnement. Il forme des ingénieurs capables de concevoir des infrastructures durables, d’optimiser les systèmes énergétiques, et de répondre aux défis environnementaux à travers des solutions innovantes et écologiques.'),(3,'Années Préparatoires','Les Années Préparatoires constituent un cycle fondamental destiné à doter les étudiants des bases solides en mathématiques, physique, chimie et informatique. Elles permettent d’acquérir des méthodes de travail rigoureuses et préparent efficacement à l’intégration dans les différents départements d’ingénierie.');
 /*!40000 ALTER TABLE `deparetement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,7 +244,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `emploi_temps_upload`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `emploi_temps_upload` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_filiere` int(11) NOT NULL,
@@ -291,7 +256,7 @@ CREATE TABLE `emploi_temps_upload` (
   PRIMARY KEY (`id`),
   KEY `fk_emploi_filiere` (`id_filiere`),
   CONSTRAINT `fk_emploi_filiere` FOREIGN KEY (`id_filiere`) REFERENCES `filiere` (`id_filiere`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -300,8 +265,35 @@ CREATE TABLE `emploi_temps_upload` (
 
 LOCK TABLES `emploi_temps_upload` WRITE;
 /*!40000 ALTER TABLE `emploi_temps_upload` DISABLE KEYS */;
-INSERT INTO `emploi_temps_upload` VALUES (7,1,'s1',2025,'Emploi du temps GI-1 S2.pdf','/e-service/storage/Pdfs-Excels/Emplois/emploi_683cb9dc8fede.pdf','2025-06-01 20:36:44');
 /*!40000 ALTER TABLE `emploi_temps_upload` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `feature_deadlines`
+--
+
+DROP TABLE IF EXISTS `feature_deadlines`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `feature_deadlines` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `feature` enum('choose_modules','upload_notes') NOT NULL,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime NOT NULL,
+  `status` enum('open','closed') DEFAULT 'open',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `feature_deadlines`
+--
+
+LOCK TABLES `feature_deadlines` WRITE;
+/*!40000 ALTER TABLE `feature_deadlines` DISABLE KEYS */;
+INSERT INTO `feature_deadlines` VALUES (1,'choose_modules','2025-06-11 22:27:00','2025-06-27 22:27:00','open','2025-06-11 21:27:56'),(2,'upload_notes','2025-06-11 22:28:00','2025-06-17 22:28:00','open','2025-06-11 21:28:13');
+/*!40000 ALTER TABLE `feature_deadlines` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -310,7 +302,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `filiere`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `filiere` (
   `id_filiere` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -320,7 +312,7 @@ CREATE TABLE `filiere` (
   UNIQUE KEY `title` (`title`),
   KEY `id_deparetement` (`id_deparetement`),
   CONSTRAINT `filiere_ibfk_1` FOREIGN KEY (`id_deparetement`) REFERENCES `deparetement` (`id_deparetement`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,7 +321,7 @@ CREATE TABLE `filiere` (
 
 LOCK TABLES `filiere` WRITE;
 /*!40000 ALTER TABLE `filiere` DISABLE KEYS */;
-INSERT INTO `filiere` VALUES (1,'Computer Science','Likely a strong theoretical focus within the \"Ing├⌐nierie des  system mes d\'Information et de T├⌐l├⌐communications\" program, covering algorithms and data structures. test test',1),(2,'Digital Transformation and AI','Integrated into \"Ingenierie des Syst├¿mes d\'Information et de T├⌐l├⌐communications\" and possibly \"G├⌐nie Industriel,\" involving technology to reshape businesses and utilizing AI.',1),(3,'Data Engineering','A focus within \"Ingenierie des Syst├¿mes d\'Information et de T├⌐l├⌐communications\" and potentially \"G├⌐nie Industriel,\" dealing with building data infrastructure.A focus within \"Ingenierie des Syst├¿mes d\'Information et de T├⌐l├⌐communications\" and potentially \"G├⌐nie Industriel,\" dealing with building data infrastructure.',1),(4,'Water and Environmental Engineering','Possibly a specialization within \"G├⌐nie Civil\" or a research area, focusing on sustainable water management and environmental protection.',4),(5,'Energy and Renewable Energies','Could be a specialization within \"G├⌐nie ├ëlectrique\" or \"G├⌐nie M├⌐canique,\" concentrating on power, efficiency, and green energy sources.',4);
+INSERT INTO `filiere` VALUES (1,'Génie Informatique','Ce programme vise à doter les étudiants de connaissances avancées et de compétences pratiques dans divers aspects de l\'ingénierie informatique, y compris le développement de logiciels, les algorithmes, l\'intelligence artificielle, les réseaux et la gestion de bases de données. Les diplômés sont préparés à concevoir, développer et maintenir des systèmes informatiques complexes et des solutions inno',1),(2,'Ingénierie des Données','Le programme d\'Ingénierie des Données est conçu pour former des spécialistes dans la collecte, le stockage, le traitement et l\'analyse de grands ensembles de données. Les étudiants apprennent la modélisation des données, les technologies du big data, l\'entreposage de données et la gouvernance des données, les préparant à des rôles en architecture de données, en support à la science des données et ',1),(3,'Transformation Digitale et Intelligence Artificiel','Cette spécialisation explore l\'intégration stratégique des technologies numériques et de l\'intelligence artificielle pour stimuler la transformation des entreprises. Les étudiants acquièrent une expertise en développement d\'IA, en apprentissage automatique, en analyse de données pour la prise de décision et en compréhension de l\'impact du changement numérique sur les organisations, les préparant à',1),(4,'Année Préparatoire','L\'année préparatoire propose un programme fondamental dans les matières scientifiques et d\'ingénierie de base, y compris les mathématiques, la physique et les bases de l\'informatique. Elle vise à renforcer la base académique des étudiants et à développer les compétences essentielles d\'analyse et de résolution de problèmes nécessaires aux études avancées dans diverses disciplines de l\'ingénierie.',3),(5,'Génie Civil','Le programme de Génie Civil se concentre sur la conception, la construction et la maintenance de projets d\'infrastructure tels que les bâtiments, les routes, les ponts et les systèmes d\'eau. Les étudiants acquièrent des connaissances en analyse structurelle, en ingénierie géotechnique, en urbanisme et en gestion de la construction, les préparant à contribuer au développement durable et aux environ',2),(6,'Génie Énergétique et Environnement','Ce programme est dédié à la formation d\'ingénieurs en systèmes énergétiques et en gestion environnementale. Il couvre les technologies des énergies renouvelables, l\'efficacité énergétique, le contrôle de la pollution et la gestion durable des ressources. Les diplômés sont équipés pour concevoir et mettre en œuvre des solutions respectueuses de l\'environnement et économes en énergie pour les indust',2),(7,'Génie Électrique, Énergie Renouvelable et Réseaux','Cette spécialisation combine les principes de l\'ingénierie électrique avec un accent sur les sources d\'énergie renouvelables et les technologies de réseaux intelligents. Les étudiants apprennent les systèmes d\'alimentation électrique, la production distribuée, les compteurs intelligents et l\'optimisation des réseaux, les préparant à des carrières dans le secteur de l\'énergie en rapide évolution.',2);
 /*!40000 ALTER TABLE `filiere` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -339,7 +331,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `module` (
   `id_module` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -353,20 +345,10 @@ CREATE TABLE `module` (
   `volume_tp` smallint(6) DEFAULT 0,
   `volume_autre` smallint(6) DEFAULT 0,
   `evaluation` smallint(6) DEFAULT 0,
-  `id_speciality` int(11) DEFAULT NULL,
-  `responsable` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_module`),
-  UNIQUE KEY `title` (`title`),
-  UNIQUE KEY `code_module` (`code_module`),
   KEY `id_filiere` (`id_filiere`),
-  KEY `responsable` (`responsable`),
-  KEY `id_speciality` (`id_speciality`),
-  CONSTRAINT `module_ibfk_1` FOREIGN KEY (`id_filiere`) REFERENCES `filiere` (`id_filiere`),
-  CONSTRAINT `module_ibfk_2` FOREIGN KEY (`responsable`) REFERENCES `professor` (`id_professor`),
-  CONSTRAINT `module_ibfk_3` FOREIGN KEY (`id_speciality`) REFERENCES `speciality` (`id_speciality`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
   CONSTRAINT `module_ibfk_1` FOREIGN KEY (`id_filiere`) REFERENCES `filiere` (`id_filiere`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -375,18 +357,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES (1,'Français','Module de français avancé','s1',3,1,'M1.1',10,5,0,0,1,2,4),(2,'Anglais','Module d\'anglais avancé','s1',3,1,'M1.2',8,6,0,0,1,1,4),(3,'Analyse Numérique','Numerical Analysis','s4',2,1,'M3.1',20,10,5,0,2,23,4),(4,'Algèbre Linéaire','Linear and Bilinear Algebra','s2',3,1,'M4',25,20,1,1,0,23,4),(5,'Algèbre Quadratique','Algèbre des Matrices et endomorphismes','s3',3,1,'M5',30,20,0,0,0,23,4),(6,'Chimie 1','Atomistique & liaisons chimiques','s2',3,1,'M6',20,20,10,0,0,3,3),(7,'Language C','C programming language','s3',3,1,'M7',40,10,30,5,0,4,4),(8,'Probabilité & Statiqtique Descriptive','Calcule Probabilité et statistique descriptive','s4',2,1,'M3.8',20,10,0,0,2,23,4);
-INSERT INTO `module` VALUES 
-(1, 'Français', 'Module de français avancé', 's1', 3, 1, 'M1.1', 10, 5, 0, 0, 1),
-(2, 'Anglais', 'Module d\'anglais avancé', 's1', 3, 1, 'M1.2', 8, 6, 0, 0, 1),
-(3, 'Mathématiques', 'Analyse mathématique', 's2', 4, 1, 'M3.1', 20, 10, 0, 0, 2),
-(20, 'Algorithmique', 'Introduction à l\'algorithmique', 's1', 4, 1, 'M20', 15, 5, 0, 0, 0),
-(21, 'POO - Concepts', 'Concepts de la programmation orientée objet', 's2', 2, 1, 'M21.1', 10, 2, 0, 0, 3),
-(22, 'POO - Pratique Java', 'Travaux pratiques en Java', 's2', 2, 1, 'M21.2', 5, 5, 0, 0, 3),
-(23, 'Systèmes d\'exploitation', 'Architecture et fonctionnement des OS', 's3', 5, 1, 'M23', 20, 10, 0, 0, 0),
-(24, 'HTML/CSS', 'Introduction au développement web', 's4', 2, 1, 'M24.1', 6, 2, 0, 0, 4),
-(25, 'JavaScript', 'Langage JavaScript et DOM', 's4', 2, 1, 'M24.2', 6, 2, 0, 0, 4),
-(26, 'PHP', 'Introduction au langage PHP', 's4', 2, 2, 'M26', 6, 2, 0, 0, 0);
+INSERT INTO `module` VALUES (1,'Architecture des ordinateurs','Ce module, intitulé \'Architecture des ordinateurs\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de l\'architecture des ordinateurs et prépare les étudiants aux défis du domaine. ','s1',6,1,'M111',26,16,16,4,0),(2,'Langage C avancé et structures de données','Ce module, intitulé \'Langage C avancé et structures de données\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de le langage c avancé et structures de données et prépare les étudiants aux défis du domaine. ','s1',6,1,'M112',26,16,18,0,0),(3,'Recherche opérationnelle et théorie des graphes','Ce module, intitulé \'Recherche opérationnelle et théorie des graphes\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de recherche opérationnelle et théorie des graphes et prépare les étudiants aux défis du domaine. ','s1',6,1,'M113',26,24,12,0,0),(4,'Systèmes d’Information et Bases de Données Relatio','Ce module, intitulé \'Systèmes d’Information et Bases de Données Relationnelles\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de systèmes d’information et bases de données relationnelles et prépare les étudiants aux défis du domaine. ','s1',6,1,'M114',26,24,12,0,0),(5,'Réseaux informatiques','Ce module, intitulé \'Réseaux informatiques\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de réseaux informatiques et prépare les étudiants aux défis du domaine. ','s1',6,1,'M115',26,18,14,4,0),(6,'Culture and Art skills','Ce module, intitulé \'Culture and Art skills\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de culture and art skills et prépare les étudiants aux défis du domaine. ','s1',3,1,'M116',26,10,0,9,0),(7,'Langues Etrangères (Français)','Ce module, intitulé \'Langues Etrangères (Français)\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de langues étrangères (français) et prépare les étudiants aux défis du domaine. ','s1',3,1,'M117.1',20,6,3,0,1),(8,'Langues Etrangères (Anglais)','Ce module, intitulé \'Langues Etrangères (Anglais)\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de langues étrangères (anglais) et prépare les étudiants aux défis du domaine. ','s1',3,1,'M117.2',20,6,3,0,1),(9,'Architecture Logicielle et UML','Ce module, intitulé \'Architecture Logicielle et UML\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de l\'architecture logicielle et uml et prépare les étudiants aux défis du domaine. ','s2',6,1,'M121',26,16,10,10,0),(10,'Web1 : Technologies de Web et PHP5','Ce module, intitulé \'Web1 : Technologies de Web et PHP5\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de web1 : technologies de web et php5 et prépare les étudiants aux défis du domaine. ','s2',6,1,'M122',26,10,16,10,0),(11,'Programmation Orientée Objet C++','Ce module, intitulé \'Programmation Orientée Objet C++\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de programmation orientée objet c++ et prépare les étudiants aux défis du domaine. ','s2',6,1,'M123',26,16,10,10,0),(12,'Linux et programmation système','Ce module, intitulé \'Linux et programmation système\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de linux et programmation système et prépare les étudiants aux défis du domaine. ','s2',6,1,'M124',26,16,10,10,0),(13,'Algorithmique Avancée et complexité','Ce module, intitulé \'Algorithmique Avancée et complexité\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de algorithmique avancée et complexité et prépare les étudiants aux défis du domaine. ','s2',6,1,'M125',26,26,4,6,0),(14,'Prompt ingeniering for developpers','Ce module, intitulé \'Prompt ingeniering for developpers\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de prompt ingeniering for developpers et prépare les étudiants aux défis du domaine. ','s2',6,1,'M126',26,26,6,4,0),(15,'Langues,Communication et TIC -fr','Ce module, intitulé \'Langues,Communication et TIC -fr\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de langues,communication et tic -fr et prépare les étudiants aux défis du domaine. ','s2',6,1,'M127.1',20,6,3,0,2),(16,'Langues,Communication et TIC- Ang','Ce module, intitulé \'Langues,Communication et TIC- Ang\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de langues,communication et tic- ang et prépare les étudiants aux défis du domaine. ','s2',6,1,'M127.2',20,6,3,0,2),(17,'Python pour les sciences de données','Ce module, intitulé \'Python pour les sciences de données\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de python pour les sciences de données et prépare les étudiants aux défis du domaine. ','s3',6,1,'M31',28,0,36,0,0),(18,'Programmation Java Avancée','Ce module, intitulé \'Programmation Java Avancée\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de programmation java avancée et prépare les étudiants aux défis du domaine. ','s3',6,1,'M32',24,8,32,0,0),(19,'Langues et Communication -FR','Ce module, intitulé \'Langues et Communication -FR\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de langues et communication -fr et prépare les étudiants aux défis du domaine. ','s3',2,1,'M33.1',21,0,11,0,3),(20,'Langues et Communication- Ang','Ce module, intitulé \'Langues et Communication- Ang\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de langues et communication- ang et prépare les étudiants aux défis du domaine. ','s3',2,1,'M33.2',21,10,0,0,3),(21,'Langues et Communication- Espagnol','Ce module, intitulé \'Langues et Communication- Espagnol\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de langues et communication- espagnol et prépare les étudiants aux défis du domaine. ','s3',2,1,'M33.3',21,10,0,0,3),(23,'Linux et programmation système 2','Ce module, intitulé \'Linux et programmation système\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de linux et programmation système et prépare les étudiants aux défis du domaine. ','s3',6,1,'M34',21,16,27,0,0),(24,'Administration des Bases de données Avancées','Ce module, intitulé \'Administration des Bases de données Avancées\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de administration des bases de données avancées et prépare les étudiants aux défis du domaine. ','s3',6,1,'M35',26,4,34,0,0),(25,'Administration réseaux et systèmes','Ce module, intitulé \'Administration réseaux et systèmes\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de administration réseaux et systèmes et prépare les étudiants aux défis du domaine. ','s3',6,1,'M36',27,15,22,0,0),(26,'Entreprenariat 2 - Contrôle gestion','Ce module, intitulé \'Entreprenariat 2 - Contrôle gestion\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de entreprenariat 2 - contrôle gestion et prépare les étudiants aux défis du domaine. ','s4',3,1,'M41.1',21,18,0,0,4),(27,'Entreprenariat 2 -Marketing fondamental','Ce module, intitulé \'Entreprenariat 2 -Marketing fondamental\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de entreprenariat 2 -marketing fondamental et prépare les étudiants aux défis du domaine. ','s4',3,1,'M41.2',25,0,0,0,4),(28,'Machine Learning','Ce module, intitulé \'Machine Learning\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de machine learning et prépare les étudiants aux défis du domaine. ','s4',6,1,'M42',21,20,23,0,0),(29,'Gestion de projet','Ce module, intitulé \'Gestion de projet\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de gestion de projet et prépare les étudiants aux défis du domaine. ','s4',3,1,'M43.1',16,6,16,0,5),(30,'Génie logiciel','Ce module, intitulé \'Génie logiciel\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de génie logiciel et prépare les étudiants aux défis du domaine. ','s4',3,1,'M43.2',12,6,0,8,5),(31,'Crypto-systèmes','Ce module, intitulé \'Crypto-systèmes\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de crypto-systèmes et prépare les étudiants aux défis du domaine. ','s4',3,1,'M44.1',15,10,4,0,6),(32,'Sécurité Informatique','Ce module, intitulé \'Sécurité Informatique\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de sécurité informatique et prépare les étudiants aux défis du domaine. ','s4',3,1,'M44.2',15,10,10,0,6),(33,'Frameworks Java EE avancés','Ce module, intitulé \'Frameworks Java EE avancés\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de frameworks java ee avancés et prépare les étudiants aux défis du domaine. ','s4',0,1,'M45.1',15,10,4,0,7),(34,'.Net','Ce module, intitulé \'.Net\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de .net et prépare les étudiants aux défis du domaine. ','s4',0,1,'M45.2',15,10,10,0,7),(35,'Web 2 : Applications Web modernes','Ce module, intitulé \'Web 2 : Applications Web modernes\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de web 2 : applications web modernes et prépare les étudiants aux défis du domaine. ','s4',6,1,'M46',21,15,28,0,0),(36,'Système embarqué et temps réel','Ce module, intitulé \'Système embarqué et temps réel\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de système embarqué et temps réel et prépare les étudiants aux défis du domaine. ','s5',6,1,'M51',25,25,14,0,0),(37,'Développement des applications mobiles','Ce module, intitulé \'Développement des applications mobiles\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de développement des applications mobiles et prépare les étudiants aux défis du domaine. ','s5',6,1,'M52',28,0,36,0,0),(38,'Virtualisation','Ce module, intitulé \'Virtualisation\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de virtualisation et prépare les étudiants aux défis du domaine. ','s5',3,1,'M53.1',10,4,12,0,8),(39,'Cloud Computing','Ce module, intitulé \'Cloud Computing\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de cloud computing et prépare les étudiants aux défis du domaine. ','s5',3,1,'M53.2',12,8,18,0,8),(40,'Analyse et conception des systèmes décisionnels','Ce module, intitulé \'Analyse et conception des systèmes décisionnels\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de analyse et conception des systèmes décisionnels et prépare les étudiants aux défis du domaine. ','s5',6,1,'M54',28,12,24,0,0),(41,'Enterprise Resource Planning ERP','Ce module, intitulé \'Enterprise Resource Planning ERP\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de enterprise resource planning erp et prépare les étudiants aux défis du domaine. ','s5',6,1,'M55',22,12,30,0,0),(42,'Ingénierie logicielle, Qualité, Test et Intégratio','Ce module, intitulé \'Ingénierie logicielle, Qualité, Test et Intégration\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de ingénierie logicielle, qualité, test et intégration et prépare les étudiants aux défis du domaine. ','s5',6,1,'M56',21,18,25,0,0),(43,'Ingénierie de l’information et des connaissances','Ce module, intitulé \'Ingénierie de l’information et des connaissances\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de ingénierie de l’information et des connaissances et prépare les étudiants aux défis du domaine. ','s5',6,1,'M57',28,12,24,0,0),(44,'Business Intelligence & Veille Stratégique','Ce module, intitulé \'Business Intelligence & Veille Stratégique\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de business intelligence & veille stratégique et prépare les étudiants aux défis du domaine. ','s5',6,1,'M58',24,16,24,0,0),(45,'Data Mining','Ce module, intitulé \'Data Mining\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de data mining et prépare les étudiants aux défis du domaine. ','s5',6,1,'M59',26,14,24,0,0),(46,'Entreprenariat 3 -RH','Ce module, intitulé \'Entreprenariat 3 -RH\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de entreprenariat 3 -rh et prépare les étudiants aux défis du domaine. ','s5',4,1,'M510.1',30,0,0,0,9),(47,'Entreprenariat 3 - Gestion financiere','Ce module, intitulé \'Entreprenariat 3 - Gestion financiere\', fait partie du programme de Génie Informatique. Il couvre des aspects fondamentaux de entreprenariat 3 - gestion financiere et prépare les étudiants aux défis du domaine. ','s5',2,1,'M510.2',18,16,0,0,9),(48,'Analyse numérique matricielle','Ce module, intitulé \'Analyse numérique matricielle\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'analyse numérique matricielle et prépare les étudiants aux défis du domaine.','s1',3,2,'M111.1',15,10,5,0,10),(49,'statistique inférentielle','Ce module, intitulé \'Statistique inférentielle\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la statistique inférentielle et prépare les étudiants aux défis du domaine.','s1',3,2,'M111.2',15,10,5,0,10),(51,'Théorie des langages et compilation','Ce module, intitulé \'Théorie des langages et compilation\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la théorie des langages et de la compilation et prépare les étudiants aux défis du domaine.','s1',6,2,'M112',26,16,10,0,0),(52,'Systèmes d’Information et Bases de données','Ce module, intitulé \'Systèmes d’Information et Bases de données\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux des systèmes d\'information et des bases de données et prépare les étudiants aux défis du domaine.','s1',6,2,'M113',26,16,10,0,0),(53,'Relationnelles','Ce module, intitulé \'Relationnelles\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux des bases de données relationnelles et prépare les étudiants aux défis du domaine.','s1',6,2,'M114',26,16,10,0,0),(54,'Architectures des ordinateurs et systèmes d’exploi','Ce module, intitulé \'Architectures des ordinateurs et systèmes d’exploitation\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux des architectures des ordinateurs et des systèmes d\'exploitation et prépare les étudiants aux défis du domaine.','s1',6,2,'M115',26,18,14,4,0),(55,'Structure de données et algorithmique avancée','Ce module, intitulé \'Structure de données et algorithmique avancée\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la structure de données et de l\'algorithmique avancée et prépare les étudiants aux défis du domaine.','s1',6,2,'M116',26,24,12,0,0),(56,'Anglais','Ce module, intitulé \'Anglais\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'anglais et prépare les étudiants aux défis du domaine.','s1',3,2,'M117.1',20,6,3,0,11),(57,'Français','Ce module, intitulé \'Français\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux du français et prépare les étudiants aux défis du domaine.','s1',3,2,'M117.2',20,6,3,0,11),(58,'Programmation Python Bases du Web','Ce module, intitulé \'Programmation Python Bases du Web\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la programmation Python et des bases du Web et prépare les étudiants aux défis du domaine.','s2',6,2,'M126',26,16,10,0,0),(59,'Data mining','Ce module, intitulé \'Data mining\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux du data mining et prépare les étudiants aux défis du domaine.','s2',6,2,'M127',26,16,10,0,0),(60,'Statistique en grande dimension','Ce module, intitulé \'Statistique en grande dimension\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la statistique en grande dimension et prépare les étudiants aux défis du domaine.','s2',6,2,'M125',26,16,10,0,0),(61,'Programmation orientée objet java','Ce module, intitulé \'Programmation orientée objet java\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la programmation orientée objet Java et prépare les étudiants aux défis du domaine.','s2',6,2,'M121',26,16,10,0,0),(62,'Administration et optimisation des bases de donnée','Ce module, intitulé \'Administration et optimisation des bases de données\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'administration et de l\'optimisation des bases de données et prépare les étudiants aux défis du domaine.','s2',6,2,'M122',26,16,10,0,0),(63,'Communication Professionnelle II : Anglais','Ce module, intitulé \'Communication Professionnelle II : Anglais\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la communication professionnelle en anglais et prépare les étudiants aux défis du domaine.','s2',3,2,'M123.1',20,6,3,0,12),(64,'Communication Professionnelle II : Espagnol','Ce module, intitulé \'Communication Professionnelle II : Espagnol\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la communication professionnelle en espagnol et prépare les étudiants aux défis du domaine.','s2',3,2,'M123.2',20,6,3,0,12),(65,'Entreprenariat -I-','Ce module, intitulé \'Entreprenariat -I-\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'entreprenariat et prépare les étudiants aux défis du domaine.','s2',3,2,'M124',26,10,0,9,0),(66,'Inteligence Artificielle I: Maching Learning','Ce module, intitulé \'Intelligence Artificielle I: Machine Learning\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'intelligence artificielle et de l\'apprentissage automatique et prépare les étudiants aux défis du domaine.','s3',6,2,'M31',24,10,24,0,0),(67,'Modélisation stochastique','Ce module, intitulé \'Modélisation stochastique\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la modélisation stochastique et prépare les étudiants aux défis du domaine.','s3',3,2,'M32.1',13,10,7,0,13),(68,'Technique Mathématiques d\'Optimisation','Ce module, intitulé \'Technique Mathématiques d\'Optimisation\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux des techniques mathématiques d\'optimisation et prépare les étudiants aux défis du domaine.','s3',3,2,'M32.2',13,10,7,0,13),(69,'Architecture Logicielle et UML','Ce module, intitulé \'Architecture Logicielle et UML\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'architecture logicielle et UML et prépare les étudiants aux défis du domaine.','s3',6,2,'M33',24,10,24,0,0),(70,'Fondements du Big Data','Ce module, intitulé \'Fondements du Big Data\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux des fondements du Big Data et prépare les étudiants aux défis du domaine.','s3',6,2,'M34',24,10,24,0,0),(71,'Français','Ce module, intitulé \'Français\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux du français et prépare les étudiants aux défis du domaine.','s3',2,2,'M35.1',12,10,0,10,14),(72,'Anglais','Ce module, intitulé \'Anglais\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'anglais et prépare les étudiants aux défis du domaine.','s3',2,2,'M35.2',12,10,0,10,14),(73,'SoftSkills','Ce module, intitulé \'SoftSkills\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux des soft skills et prépare les étudiants aux défis du domaine.','s3',2,2,'M35.3',10,10,0,10,14),(74,'Bases de données Avancées','Ce module, intitulé \'Bases de données Avancées\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux des bases de données avancées et prépare les étudiants aux défis du domaine.','s3',6,2,'M36',24,10,24,0,0),(75,'Big Data Avancée','Ce module, intitulé \'Big Data Avancée\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux du Big Data avancé et prépare les étudiants aux défis du domaine.','s4',6,2,'M41',24,10,24,0,0),(76,'Inelligence artificielle-II- Deep Learning','Ce module, intitulé \'Intelligence Artificielle II: Deep Learning\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'intelligence artificielle et du Deep Learning et prépare les étudiants aux défis du domaine.','s4',6,2,'M42',24,8,32,0,0),(77,'Data Werhaus et Data Lake','Ce module, intitulé \'Data Warehouse et Data Lake\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux du Data Warehouse et du Data Lake et prépare les étudiants aux défis du domaine.','s4',4,2,'M43',21,0,21,0,0),(78,'Applicataions Web avancées avec Java et spring','Ce module, intitulé \'Applications Web avancées avec Java et Spring\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux des applications Web avancées avec Java et Spring et prépare les étudiants aux défis du domaine.','s4',6,2,'M44',21,16,27,0,0),(79,'TAL','Ce module, intitulé \'Traitement Automatique du Langage (TAL)\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux du traitement automatique du langage et prépare les étudiants aux défis du domaine.','s4',6,2,'M45',26,4,34,0,0),(80,'Entreprenariat-II','Ce module, intitulé \'Entreprenariat II\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'entreprenariat et prépare les étudiants aux défis du domaine.','s4',6,2,'M46',27,15,22,0,0),(81,'Big Data Visualisation & Cloud Computing','Ce module, intitulé \'Visualisation Big Data & Cloud Computing\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la visualisation de données massives et du cloud computing et prépare les étudiants aux défis du domaine.','s5',6,2,'M51',28,12,24,0,0),(82,'Business inteligence & Veille Stratégique','Ce module, intitulé \'Business Intelligence & Veille Stratégique\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la veille stratégique et de l\'intelligence économique et prépare les étudiants aux défis du domaine.','s5',6,2,'M510',24,16,24,0,0),(83,'Entreprenariat-3-','Ce module, intitulé \'Entreprenariat III\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'entreprenariat et prépare les étudiants aux défis du domaine.','s5',4,2,'M511',22,12,30,0,0),(84,'Social Network Mining','Ce module, intitulé \'Social Network Mining\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de l\'analyse des réseaux sociaux et prépare les étudiants aux défis du domaine.','s5',6,2,'M512',26,14,24,0,0),(85,'Web Marketing et CRM','Ce module, intitulé \'Web Marketing et CRM\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux du marketing numérique et de la gestion de la relation client et prépare les étudiants aux défis du domaine.','s5',6,2,'M513',28,12,24,0,0),(86,'Transformation Digital','Ce module, intitulé \'Transformation Digitale\', fait partie du programme d\'Ingénierie des Données. Il couvre des aspects fondamentaux de la transformation numérique et prépare les étudiants aux défis du domaine.','s5',6,2,'M514',21,18,25,0,0),(87,'Théorie des langages et compilation','Ce module, intitulé \'Théorie des langages et compilation\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il couvre les concepts fondamentaux des langages formels et des techniques de compilation.','s1',6,3,'M111',26,18,8,10,0),(88,'Systèmes d’Information et Bases de Données','Ce module, intitulé \'Systèmes d’Information et Bases de Données\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il aborde la conception, la gestion et l\'optimisation des systèmes d\'information et des bases de données.','s1',6,3,'M112',26,10,16,10,0),(89,'Structure de données et Algorithmique avancée','Ce module, intitulé \'Structure de données et Algorithmique avancée\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il explore les structures de données complexes et les algorithmes efficaces pour la résolution de problèmes.','s1',6,3,'M113',26,16,10,10,0),(90,'Architecture d\'entreprise et transformation digita','Ce module, intitulé \'Architecture d\'entreprise et transformation digitale\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il se concentre sur la planification et la mise en œuvre de la transformation numérique au sein des organisations.','s1',6,3,'M114',26,6,20,10,0),(91,'Architecture des ordinateurs et systèmes d’exploit','Ce module, intitulé \'Architecture des ordinateurs et systèmes d’exploitation\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il étudie les principes fondamentaux de l\'architecture matérielle et logicielle des ordinateurs.','s1',6,3,'M115',26,10,16,10,0),(92,'Langues Etrangères (Anglais)','Ce module, intitulé \'Langues Etrangères (Anglais)\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il vise à développer les compétences linguistiques en anglais pour la communication professionnelle.','s1',3,3,'M116.1',20,6,3,0,15),(93,'Langues Etrangères (Français)','Ce module, intitulé \'Langues Etrangères (Français)\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il vise à développer les compétences linguistiques en français pour la communication professionnelle.','s1',3,3,'M116.2',20,6,3,0,15),(94,'Compétences en culture et en art','Ce module, intitulé \'Compétences en culture et en art\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il vise à développer des aptitudes créatives et une ouverture culturelle.','s1',4,3,'M117',26,10,0,8,0),(95,'Programmation Orientée Objet Java','Ce module, intitulé \'Programmation Orientée Objet Java\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il enseigne les principes de la programmation orientée objet en utilisant le langage Java.','s2',6,3,'M122',24,10,30,10,0),(96,'Programmation Python / Programmation fonctionnelle','Ce module, intitulé \'Programmation Python / Programmation fonctionnelle\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il explore la programmation en Python et les paradigmes de programmation fonctionnelle.','s2',6,3,'M127',36,0,28,10,0),(97,'Développement Web','Ce module, intitulé \'Développement Web\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il couvre les technologies et les pratiques de développement d\'applications web modernes.','s2',6,3,'M121',24,0,40,10,0),(98,'Gestion de projets informatiques','Ce module, intitulé \'Gestion de projets informatiques\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il aborde les méthodologies et les outils de gestion de projets dans le domaine informatique.','s2',6,3,'M125',24,10,30,10,0),(99,'Industrie de numérique','Ce module, intitulé \'Industrie de numérique\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il offre une vue d\'ensemble des enjeux et des acteurs de l\'industrie numérique.','s2',6,3,'M123',24,20,20,10,0),(100,'Langues Etrangères (Anglais)','Ce module, intitulé \'Langues Etrangères (Anglais)\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il vise à approfondir les compétences linguistiques en anglais pour des contextes technologiques.','s2',3,3,'M124.1',20,6,3,0,16),(101,'Langues Etrangères (Français)','Ce module, intitulé \'Langues Etrangères (Français)\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il vise à approfondir les compétences linguistiques en français pour des contextes technologiques.','s2',3,3,'M124.2',20,6,3,0,16),(102,'Cloud Computing','Ce module, intitulé \'Cloud Computing\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il couvre les concepts, les modèles de déploiement et les services offerts par le cloud computing.','s3',6,3,'M234',24,10,30,10,0),(103,'Cartographie des systèmes d\'information','Ce module, intitulé \'Cartographie des systèmes d\'information\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il enseigne les techniques de modélisation et de représentation des systèmes d\'information complexes.','s3',6,3,'M232',24,20,20,10,0),(104,'Bases de l\'Intelligence Artificielle','Ce module, intitulé \'Bases de l\'Intelligence Artificielle\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il introduit les fondements théoriques et pratiques de l\'intelligence artificielle.','s3',6,3,'M235',24,10,30,10,0),(105,'Architecture logiciel et UML','Ce module, intitulé \'Architecture logiciel et UML\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il explore les principes de l\'architecture logicielle et l\'utilisation du langage UML pour la modélisation.','s3',6,3,'M236',24,10,30,10,0),(106,'Communication Professionnelle et Soft Skills-2','Ce module, intitulé \'Communication Professionnelle et Soft Skills-2\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il renforce les compétences en communication et les aptitudes interpersonnelles.','s3',6,3,'M233',30,30,0,0,0),(107,'Gestion de projets digitaux','Ce module, intitulé \'Gestion de projets digitaux\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il se concentre sur la gestion efficace des projets dans l\'environnement numérique.','s3',6,3,'M231',24,30,10,10,0),(108,'Applications de l\'Intelligence Artificielle','Ce module, intitulé \'Applications de l\'Intelligence Artificielle\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il présente des cas d\'utilisation concrets et des implémentations de l\'IA dans divers domaines.','s4',6,3,'M243',24,10,30,10,0),(109,'Ingestion et stockage de données','Ce module, intitulé \'Ingestion et stockage de données\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il couvre les techniques d\'acquisition, de transformation et de stockage des données massives.','s4',6,3,'M245',24,10,30,10,0),(110,'Big Data','Ce module, intitulé \'Big Data\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il explore les concepts, les technologies et les architectures liées aux grandes quantités de données.','s4',6,3,'M242',24,10,30,10,0),(111,'Droit et sécurité des données','Ce module, intitulé \'Droit et sécurité des données\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il aborde les aspects légaux et les mesures de sécurité pour la protection des données numériques.','s4',6,3,'M244',24,20,20,10,0),(112,'Cyber Security','Ce module, intitulé \'Cyber Security\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il couvre les principes et les pratiques de la cybersécurité pour protéger les systèmes et les informations.','s4',6,3,'M241',24,10,30,10,0),(113,'Entreprenariat','Ce module, intitulé \'Entreprenariat\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il développe les compétences nécessaires à la création et à la gestion d\'entreprise.','s4',6,3,'M246',24,20,10,20,0),(114,'La veille Stratégique, Scientifique et Technologiq','Ce module, intitulé \'La veille Stratégique, Scientifique et Technologique\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il enseigne les méthodes de surveillance et d\'analyse de l\'environnement stratégique.','s5',6,3,'M351',24,10,30,10,0),(115,'Gouvernance et Urbanisation des SI','Ce module, intitulé \'Gouvernance et Urbanisation des SI\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il couvre les principes de la gouvernance des systèmes d\'information et de leur urbanisation.','s5',6,3,'M353',24,10,30,10,0),(116,'DevOps','Ce module, intitulé \'DevOps\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il introduit les pratiques et les outils de DevOps pour l\'intégration et le déploiement continus.','s5',6,3,'M352',24,10,30,10,0),(117,'Innovation Engineering & Digitalisation','Ce module, intitulé \'Innovation Engineering & Digitalisation\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il explore les processus d\'ingénierie de l\'innovation et l\'impact de la digitalisation.','s5',6,3,'M355',24,10,30,10,0),(118,'Web Marketing et CRM','Ce module, intitulé \'Web Marketing et CRM\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il aborde les stratégies de marketing digital et la gestion de la relation client.','s5',6,3,'M354',24,10,30,10,0),(119,'Business English','Ce module, intitulé \'Business English\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il vise à améliorer les compétences en anglais des affaires pour le monde professionnel.','s5',6,3,'M356',14,20,0,40,0),(120,'Marketing et management pour les technologies de l','Ce module, intitulé \'Marketing et management pour les technologies de l\'information\', fait partie du programme de Transformation Digitale et Intelligence Artificielle. Il explore les stratégies de marketing et de gestion appliquées aux TIC.','s2',6,3,'M126',24,30,10,30,0),(121,'Algèbre 1','Ce module, intitulé \'Algèbre 1\', fait partie du programme de l\'Année Préparatoire. Il couvre les concepts fondamentaux de l\'algèbre linéaire et de la théorie des ensembles.','s1',4,4,'M113',26,26,0,0,0),(122,'Analyse 1','Ce module, intitulé \'Analyse 1\', fait partie du programme de l\'Année Préparatoire. Il aborde les bases du calcul différentiel et intégral pour les fonctions d\'une variable.','s1',4,4,'M111',26,26,0,0,0),(123,'Initiation à l’informatique','Ce module, intitulé \'Initiation à l’informatique\', fait partie du programme de l\'Année Préparatoire. Il introduit les concepts fondamentaux de l\'informatique et de la programmation algorithmique.','s1',4,4,'M115',26,26,0,0,0),(124,'Langues Etrangères (Anglais)','Ce module, intitulé \'Langues Etrangères (Anglais)\', fait partie du programme de l\'Année Préparatoire. Il vise à développer les compétences linguistiques en anglais, essentielles pour les études scientifiques.','s1',1,4,'M116.1',7,15,0,0,17),(125,'Langues Etrangères (Français)','Ce module, intitulé \'Langues Etrangères (Français)\', fait partie du programme de l\'Année Préparatoire. Il vise à développer les compétences linguistiques en français, essentielles pour les études scientifiques.','s1',1,4,'M116.2',7,15,0,0,17),(126,'Méthodologie de travail universitaire','Ce module, intitulé \'Méthodologie de travail universitaire\', fait partie du programme de l\'Année Préparatoire. Il enseigne les méthodes et outils nécessaires à la réussite académique à l\'université.','s1',2,4,'M117',28,15,0,0,0),(127,'Algèbre 2','Ce module, intitulé \'Algèbre 2\', fait partie du programme de l\'Année Préparatoire. Il approfondit les notions d\'algèbre linéaire et introduit de nouvelles structures algébriques.','s2',4,4,'M126',26,26,0,0,0),(128,'Analyse 2','Ce module, intitulé \'Analyse 2\', fait partie du programme de l\'Année Préparatoire. Il étend les concepts de l\'analyse aux fonctions de plusieurs variables et aux équations différentielles.','s2',4,4,'M125',26,26,0,0,0),(129,'Programmation C','Ce module, intitulé \'Programmation C\', fait partie du programme de l\'Année Préparatoire. Il enseigne les bases de la programmation structurée en langage C.','s2',4,4,'M123',26,0,26,0,0),(130,'Langues Etrangères (Anglais - S2)','Ce module, intitulé \'Langues Etrangères (Anglais - S2)\', fait partie du programme de l\'Année Préparatoire. Il consolide les compétences en anglais dans un contexte scientifique.','s2',1,4,'M128.1',7,15,0,0,18),(131,'Langues Etrangères (Français - S2)','Ce module, intitulé \'Langues Etrangères (Français - S2)\', fait partie du programme de l\'Année Préparatoire. Il consolide les compétences en français dans un contexte scientifique.','s2',1,4,'M128.2',7,15,0,0,18),(132,'Langues Etrangères (Anglais - S2 Autre)','Ce module, intitulé \'Langues Etrangères (Anglais - S2 Autre)\', fait partie du programme de l\'Année Préparatoire. Il offre une pratique supplémentaire des langues étrangères.','s2',1,4,'M124.1',7,15,0,0,19),(133,'Langues Etrangères (Français - S2 Autre)','Ce module, intitulé \'Langues Etrangères (Français - S2 Autre)\', fait partie du programme de l\'Année Préparatoire. Il offre une pratique supplémentaire des langues étrangères.','s2',1,4,'M124.2',7,15,0,0,19),(134,'Culture digitale','Ce module, intitulé \'Culture digitale\', fait partie du programme de l\'Année Préparatoire. Il explore les concepts et l\'impact de la culture numérique dans la société actuelle.','s2',5,4,'M127',10,0,30,0,0),(135,'Algèbre 3 : Algèbre Quadratique','Ce module, intitulé \'Algèbre 3 : Algèbre Quadratique\', fait partie du programme de l\'Année Préparatoire. Il se penche sur l\'algèbre quadratique et ses applications en géométrie.','s3',6,4,'AP31',32,32,0,0,0),(136,'Analyse 3 : Fonctions de Plusieurs Variables (FPV)','Ce module, intitulé \'Analyse 3 : Fonctions de Plusieurs Variables (FPV)\', fait partie du programme de l\'Année Préparatoire. Il traite du calcul différentiel et intégral pour les fonctions à plusieurs variables.','s3',6,4,'AP32',32,32,0,0,0),(137,'Informatique 2 : Programmation en C','Ce module, intitulé \'Informatique 2 : Programmation en C\', fait partie du programme de l\'Année Préparatoire. Il approfondit la programmation en langage C avec des structures de données plus complexes.','s3',6,4,'AP35',32,32,0,0,0),(138,'Langues et Communication 3 -FR','Ce module, intitulé \'Langues et Communication 3 -FR\', fait partie du programme de l\'Année Préparatoire. Il développe les compétences en communication écrite et orale en français.','s3',2,4,'AP36.1',14,8,0,0,20),(139,'Langues et Communication 3 -Ang','Ce module, intitulé \'Langues et Communication 3 -Ang\', fait partie du programme de l\'Année Préparatoire. Il développe les compétences en communication écrite et orale en anglais.','s3',2,4,'AP36.2',14,8,0,0,20),(140,'Mathématiques Appliquées- Proba et stat descr','Ce module, intitulé \'Mathématiques Appliquées- Proba et stat descr\', fait partie du programme de l\'Année Préparatoire. Il introduit les concepts de probabilités et de statistique descriptive.','s4',3,4,'AP41.1',16,16,0,0,21),(141,'Mathématiques Appliquées- Analyse Numerique','Ce module, intitulé \'Mathématiques Appliquées- Analyse Numerique\', fait partie du programme de l\'Année Préparatoire. Il explore les méthodes numériques pour la résolution de problèmes mathématiques.','s4',3,4,'AP41.2',16,16,0,0,21),(142,'Analyse 4 : Intégrales et Formes Différentielles','Ce module, intitulé \'Analyse 4 : Intégrales et Formes Différentielles\', fait partie du programme de l\'Année Préparatoire. Il couvre les intégrales multiples et les formes différentielles en calcul vectoriel.','s4',6,4,'AP42',32,32,0,0,0),(143,'Informatique 3 : Outils Informatique','Ce module, intitulé \'Informatique 3 : Outils Informatique\', fait partie du programme de l\'Année Préparatoire. Il présente divers outils informatiques essentiels pour l\'ingénierie et la science.','s4',6,4,'AP45',32,32,0,0,0);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -396,7 +367,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notes` (
   `id_note` int(11) NOT NULL AUTO_INCREMENT,
   `id_module` int(11) NOT NULL,
@@ -413,7 +384,7 @@ CREATE TABLE `notes` (
   CONSTRAINT `notes_ibfk_2` FOREIGN KEY (`id_professor`) REFERENCES `professor` (`id_professor`),
   CONSTRAINT `notes_ibfk_3` FOREIGN KEY (`id_vacataire`) REFERENCES `vacataire` (`id_vacataire`),
   CONSTRAINT `CONSTRAINT_1` CHECK (`id_professor` is not null and `id_vacataire` is null or `id_professor` is null and `id_vacataire` is not null)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -422,7 +393,6 @@ CREATE TABLE `notes` (
 
 LOCK TABLES `notes` WRITE;
 /*!40000 ALTER TABLE `notes` DISABLE KEYS */;
-INSERT INTO `notes` VALUES (10,1,NULL,3,'2025-04-20','ratt','1387697393'),(12,5,NULL,4,'2025-04-29','ratt','1908555592.pdf'),(13,4,NULL,2,'2025-05-01','ratt','868599667.pdf'),(14,3,NULL,3,'2025-05-14','ratt','177070053.pdf');
 /*!40000 ALTER TABLE `notes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -432,7 +402,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notifications` (
   `id_notification` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
@@ -444,8 +414,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`id_notification`),
   KEY `id_user` (`id_user`),
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -454,44 +423,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (11,1,'2024-02-01 09:00:00','New Module Assignment',NULL,'read','You have been assigned to teach Database Management'),(12,1,'2024-02-01 10:30:00','Grade Submission Reminder',NULL,'read','Please submit grades for Programming 101 by Friday'),(13,1,'2024-02-02 11:15:00','Department Meeting',NULL,'read','Monthly department meeting scheduled for next week'),(14,1,'2024-02-02 14:00:00','Schedule Update',NULL,'read','Your teaching schedule has been updated'),(15,1,'2024-02-03 09:45:00','System Maintenance',NULL,'read','System will be down for maintenance on Sunday'),(16,2,'2025-04-16 22:19:28','Welcome to E-service',NULL,'read','Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.'),(24,3,'2025-04-19 00:39:11','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev'),(25,3,'2025-04-19 00:42:15','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(26,3,'2025-04-19 12:51:05','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev'),(27,3,'2025-04-19 12:51:30','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(28,3,'2025-04-19 13:51:21','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(29,3,'2025-04-19 15:28:13','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : C++. ΓÜá∩╕Å Attention : votre charge horaire (230 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(30,3,'2025-04-20 20:14:52','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(31,3,'2025-04-20 20:21:31','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(32,3,'2025-04-20 22:26:17','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : test. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(33,3,'2025-04-20 22:47:43','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais, engalais. ΓÜá∩╕Å Attention : votre charge horaire (520 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(40,4,'2025-04-24 15:52:18','Bienvenue sur E-service',NULL,'read','Veuillez changer votre mot de passe temporaire d├¿s que possible pour la s├⌐curit├⌐ de votre compte. Vous pouvez le faire en allant dans les param├¿tres de votre profil.'),(41,4,'2025-04-24 16:22:39','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev. ΓÜá∩╕Å Attention : votre charge horaire (120 h) est inf├⌐rieure au minimum requis (150 h).'),(42,4,'2025-04-28 22:30:59','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : mecanique, francais. ΓÜá∩╕Å Attention : votre charge horaire (310 h) d├⌐passe le maximum autoris├⌐ (200 h).'),(43,4,'2025-04-28 22:32:24','≡ƒÄô Module valid├⌐',NULL,'read','Votre demande pour le module \'mecanique\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(44,4,'2025-04-28 22:32:26','≡ƒÄô Module valid├⌐',NULL,'read','Votre demande pour le module \'Web Dev\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(45,2,'2025-04-28 22:33:05','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais. ΓÜá∩╕Å Attention : votre charge horaire (90 h) est inf├⌐rieure au minimum requis (120 h).'),(46,2,'2025-04-28 22:33:15','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'francais\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(47,3,'2025-04-29 00:14:33','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Web Dev, C++, mecanique. ΓÜá∩╕Å Attention : votre charge horaire (330 h) d├⌐passe le maximum autoris├⌐ (150 h).'),(48,3,'2025-04-29 00:18:00','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'Web Dev\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(49,3,'2025-04-29 00:18:07','≡ƒÄô Module valid├⌐',NULL,'unread','Votre demande pour le module \'mecanique\' a ├⌐t├⌐ valid├⌐e pour l\'ann├⌐e 2025.'),(50,2,'2025-04-29 00:20:57','Affectation enregistr├⌐e',NULL,'unread','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : francais. ΓÜá∩╕Å Attention : votre charge horaire (90 h) est inf├⌐rieure au minimum requis (120 h).'),(51,4,'2025-04-29 00:23:54','≡ƒÄô Module Affect├⌐',NULL,'read','Le module \'engalais\' a ├⌐t├⌐ affect├⌐ ├á vous pour l\'ann├⌐e 2025 par le chef de d├⌐partement.'),(53,2,'2025-05-06 20:42:57','Affectation enregistr├⌐e',NULL,'read','Vos choix de modules ont bien ├⌐t├⌐ enregistr├⌐s : Anglais. ΓÜá∩╕Å Attention : votre charge horaire (0 h) est inf├⌐rieure au minimum requis (120 h).'),(55,13,'2025-05-08 18:54:06','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(56,14,'2025-05-08 18:55:37','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(57,16,'2025-06-06 19:21:55','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(58,20,'2025-06-06 20:06:22','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.');
-INSERT INTO `notifications` VALUES 
-(11,1,'2024-02-01 09:00:00','New Module Assignment',NULL,'read','You have been assigned to teach Database Management'),
-(12,1,'2024-02-01 10:30:00','Grade Submission Reminder',NULL,'read','Please submit grades for Programming 101 by Friday'),
-(13,1,'2024-02-02 11:15:00','Department Meeting',NULL,'read','Monthly department meeting scheduled for next week'),
-(14,1,'2024-02-02 14:00:00','Schedule Update',NULL,'read','Your teaching schedule has been updated'),
-(15,1,'2024-02-03 09:45:00','System Maintenance',NULL,'read','System will be down for maintenance on Sunday'),
-(16,2,'2025-04-16 22:19:28','Welcome to E-service',NULL,'read','Please change your temporary password as soon as possible for account security. You can do this by going to your profile settings.'),
-(24,3,'2025-04-19 00:39:11','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),
-(25,3,'2025-04-19 00:42:15','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),
-(26,3,'2025-04-19 12:51:05','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Web Dev'),
-(27,3,'2025-04-19 12:51:30','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),
-(28,3,'2025-04-19 13:51:21','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),
-(29,3,'2025-04-19 15:28:13','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : C++. ⚠️ Attention : votre charge horaire (230 h) dépasse le maximum autorisé (150 h).'),
-(30,3,'2025-04-20 20:14:52','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),
-(31,3,'2025-04-20 20:21:31','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),
-(32,3,'2025-04-20 22:26:17','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : test. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),
-(33,3,'2025-04-20 22:47:43','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : français, anglais. ⚠️ Attention : votre charge horaire (520 h) dépasse le maximum autorisé (150 h).'),
-(40,4,'2025-04-24 15:52:18','Bienvenue sur E-service',NULL,'read','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),
-(41,4,'2025-04-24 16:22:39','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : Web Dev. ⚠️ Attention : votre charge horaire (120 h) est inférieure au minimum requis (150 h).'),
-(42,4,'2025-04-28 22:30:59','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : mécanique, français. ⚠️ Attention : votre charge horaire (310 h) dépasse le maximum autorisé (200 h).'),
-(43,4,'2025-04-28 22:32:24','✅ Module validé',NULL,'read','Votre demande pour le module \'mécanique\' a été validée pour l\'année 2025.'),
-(44,4,'2025-04-28 22:32:26','✅ Module validé',NULL,'unread','Votre demande pour le module \'Web Dev\' a été validée pour l\'année 2025.'),
-(45,2,'2025-04-28 22:33:05','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : français. ⚠️ Attention : votre charge horaire (90 h) est inférieure au minimum requis (120 h).'),
-(46,2,'2025-04-28 22:33:15','✅ Module validé',NULL,'unread','Votre demande pour le module \'français\' a été validée pour l\'année 2025.'),
-(47,3,'2025-04-29 00:14:33','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : Web Dev, C++, mécanique. ⚠️ Attention : votre charge horaire (330 h) dépasse le maximum autorisé (150 h).'),
-(48,3,'2025-04-29 00:18:00','✅ Module validé',NULL,'unread','Votre demande pour le module \'Web Dev\' a été validée pour l\'année 2025.'),
-(49,3,'2025-04-29 00:18:07','✅ Module validé',NULL,'unread','Votre demande pour le module \'mécanique\' a été validée pour l\'année 2025.'),
-(50,2,'2025-04-29 00:20:57','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : français. ⚠️ Attention : votre charge horaire (90 h) est inférieure au minimum requis (120 h).'),
-(51,4,'2025-04-29 00:23:54','✅ Module validé',NULL,'unread','Le module \'anglais\' a été affecté à vous pour l\'année 2025 par le chef de département.'),
-(53,2,'2025-05-06 20:42:57','Affectation enregistrée',NULL,'read','Vos choix de modules ont bien été enregistrés : Anglais. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (120 h).'),
-(55,13,'2025-05-08 18:54:06','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),
-(56,14,'2025-05-08 18:55:37','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),
-(57,4,'2025-05-14 14:06:18','✅ Module Affecté',NULL,'unread','Le module \'tqwvm\' a été affecté à vous pour l\'année 2025 par le chef de département.'),
-(58,2,'2025-05-14 14:09:01','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : asdjd, jhajb. ⚠️ Attention : votre charge horaire (14 h) est inférieure au minimum requis (120 h).'),
-(59,2,'2025-05-14 15:05:28','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Anglais. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (120 h).'),
-(60,2,'2025-05-14 15:05:39','✅ Module validé',NULL,'unread','Votre demande pour le module \'Anglais\' a été validée pour l\'année 2025.');
-
+INSERT INTO `notifications` VALUES (1,22,'2025-06-11 22:16:45','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(2,24,'2025-06-11 22:18:13','Bienvenue sur E-service',NULL,'read','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(3,25,'2025-06-11 22:18:57','Bienvenue sur E-service',NULL,'unread','Veuillez changer votre mot de passe temporaire dès que possible pour la sécurité de votre compte. Vous pouvez le faire en allant dans les paramètres de votre profil.'),(4,24,'2025-06-11 22:29:26','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Architecture des ordinateurs, Langage C avancé et structures de données, Langues Etrangères (Français), Langues Etrangères (Anglais). ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(5,25,'2025-06-12 00:08:39','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Architecture des ordinateurs, Langage C avancé et structures de données, Architecture Logicielle et UML. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(6,25,'2025-06-12 00:09:10','✅ Module validé',NULL,'unread','Votre demande pour le module \'Architecture Logicielle et UML\' a été validée pour l\'année 2025.'),(7,25,'2025-06-12 00:09:16','✅ Module validé',NULL,'unread','Votre demande pour le module \'Architecture des ordinateurs\' a été validée pour l\'année 2025.'),(8,24,'2025-06-12 00:09:16','❌ Module refusé',NULL,'unread','Votre choix du module \'Architecture des ordinateurs\' pour l\'année 2025 a été refusé car il a déjà été attribué.'),(9,25,'2025-06-12 00:10:30','✅ Module validé',NULL,'unread','Votre demande pour le module \'Langage C avancé et structures de données\' a été validée pour l\'année 2025.'),(10,24,'2025-06-12 00:10:30','❌ Module refusé',NULL,'unread','Votre choix du module \'Langage C avancé et structures de données\' pour l\'année 2025 a été refusé car il a déjà été attribué.'),(11,24,'2025-06-12 00:14:06','✅ Module validé',NULL,'read','Votre demande pour le module \'Langues Etrangères (Français)\' a été validée pour l\'année 2025.'),(12,24,'2025-06-12 00:14:45','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Langage C avancé et structures de données, Langues Etrangères (Français). ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(13,24,'2025-06-12 00:17:03','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Statistique en grande dimension. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(14,24,'2025-06-12 00:17:26','✅ Module validé',NULL,'unread','Votre demande pour le module \'Statistique en grande dimension\' a été validée pour l\'année 2025.'),(15,24,'2025-06-12 00:21:43','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Architecture des ordinateurs, Langage C avancé et structures de données, Statistique en grande dimension. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(16,24,'2025-06-12 00:21:51','✅ Module validé',NULL,'unread','Votre demande pour le module \'Statistique en grande dimension\' a été validée pour l\'année 2025.'),(17,24,'2025-06-12 00:23:30','✅ Module validé',NULL,'unread','Votre demande pour le module \'Architecture des ordinateurs\' a été validée pour l\'année 2025.'),(18,24,'2025-06-12 00:27:08','✅ Module validé',NULL,'unread','Votre demande pour le module \'Langage C avancé et structures de données\' a été validée pour l\'année 2025.'),(19,24,'2025-06-12 00:28:59','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Architecture des ordinateurs, Langage C avancé et structures de données, Statistique en grande dimension. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(20,24,'2025-06-12 00:29:06','✅ Module validé',NULL,'unread','Votre demande pour le module \'Architecture des ordinateurs\' a été validée pour l\'année 2025.'),(21,24,'2025-06-12 00:31:27','✅ Module validé',NULL,'unread','Votre demande pour le module \'Statistique en grande dimension\' a été validée pour l\'année 2025.'),(22,24,'2025-06-12 00:33:00','✅ Module validé',NULL,'unread','Votre demande pour le module \'Langage C avancé et structures de données\' a été validée pour l\'année 2025.'),(23,24,'2025-06-12 00:34:07','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Architecture des ordinateurs, Langage C avancé et structures de données. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(24,24,'2025-06-12 00:34:14','✅ Module validé',NULL,'unread','Votre demande pour le module \'Architecture des ordinateurs\' a été validée pour l\'année 2025.'),(25,24,'2025-06-12 00:35:21','✅ Module validé',NULL,'unread','Votre demande pour le module \'Langage C avancé et structures de données\' a été validée pour l\'année 2025.'),(26,24,'2025-06-12 00:41:00','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Architecture des ordinateurs, Langage C avancé et structures de données. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(27,24,'2025-06-12 00:41:06','✅ Module validé',NULL,'unread','Votre demande pour le module \'Architecture des ordinateurs\' a été validée pour l\'année 2025.'),(28,24,'2025-06-12 00:47:25','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Recherche opérationnelle et théorie des graphes, Systèmes d’Information et Bases de Données Relatio. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).'),(29,24,'2025-06-12 00:47:30','✅ Module validé',NULL,'unread','Votre demande pour le module \'Langage C avancé et structures de données\' a été validée pour l\'année 2025.'),(30,24,'2025-06-12 00:48:10','Affectation enregistrée',NULL,'unread','Vos choix de modules ont bien été enregistrés : Recherche opérationnelle et théorie des graphes. ⚠️ Attention : votre charge horaire (0 h) est inférieure au minimum requis (100 h).');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -501,7 +433,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `professor` (
   `id_professor` int(11) NOT NULL,
   `max_hours` int(11) NOT NULL CHECK (`max_hours` > 0),
@@ -511,7 +443,7 @@ CREATE TABLE `professor` (
   `id_speciality` int(11) NOT NULL,
   UNIQUE KEY `id_professor` (`id_professor`),
   KEY `id_deparetement` (`id_deparetement`),
-  KEY `speciality` (`id_speciality`),
+  KEY `id_speciality` (`id_speciality`),
   CONSTRAINT `professor_ibfk_1` FOREIGN KEY (`id_deparetement`) REFERENCES `deparetement` (`id_deparetement`),
   CONSTRAINT `professor_ibfk_2` FOREIGN KEY (`id_professor`) REFERENCES `user` (`id_user`),
   CONSTRAINT `professor_ibfk_3` FOREIGN KEY (`id_speciality`) REFERENCES `speciality` (`id_speciality`)
@@ -524,7 +456,7 @@ CREATE TABLE `professor` (
 
 LOCK TABLES `professor` WRITE;
 /*!40000 ALTER TABLE `professor` DISABLE KEYS */;
-INSERT INTO `professor` VALUES (2,130,120,'chef_deparetement',1,0),(3,150,120,'normal',1,0),(4,200,150,'coordonnateur',1,0);
+INSERT INTO `professor` VALUES (22,300,100,'coordonnateur',1,25),(24,250,100,'chef_deparetement',1,26),(25,350,100,'normal',1,23);
 /*!40000 ALTER TABLE `professor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -534,7 +466,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `speciality`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `speciality` (
   `id_speciality` int(11) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
@@ -542,7 +474,7 @@ CREATE TABLE `speciality` (
   PRIMARY KEY (`id_speciality`),
   KEY `id_deparetement` (`id_deparetement`),
   CONSTRAINT `speciality_ibfk_1` FOREIGN KEY (`id_deparetement`) REFERENCES `deparetement` (`id_deparetement`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -551,7 +483,7 @@ CREATE TABLE `speciality` (
 
 LOCK TABLES `speciality` WRITE;
 /*!40000 ALTER TABLE `speciality` DISABLE KEYS */;
-INSERT INTO `speciality` VALUES (1,'English Language',1),(2,'French Language',1),(3,'Software Tools',1),(4,'Scientific Writing',1),(5,'Communication Skills',1),(6,'Project Management',1),(7,'Research Methods',1),(14,'English Language',1),(15,'French Language',1),(16,'Software Tools',1),(17,'Scientific Writing',1),(18,'Communication Skills',1),(19,'Project Management',1),(20,'Research Methods',1),(21,'English Language',2),(22,'French Language',2),(23,'Mathematics',2),(24,'Statistics',2),(25,'Scientific Writing',2),(26,'Research Methods',2),(27,'English Language',3),(28,'French Language',3),(29,'Physics',3),(30,'Mathematics',3),(31,'Scientific Writing',3),(32,'Research Methods',3),(33,'English Language',4),(34,'French Language',4),(35,'Project Management',4),(36,'Software Tools',4),(37,'Physics',4),(38,'Mathematics',4),(39,'Communication Skills',4),(40,'English Language',5),(41,'French Language',5),(42,'Communication Skills',5),(43,'Project Management',5),(44,'Statistics',5),(45,'Research Methods',5);
+INSERT INTO `speciality` VALUES (1,'Informatique Fondamentale',1),(2,'Intelligence Artificielle',1),(3,'Développement Logiciel',1),(4,'Réseaux et Sécurité',1),(5,'Bases de Données',1),(6,'Algorithmique Avancée',1),(7,'Statistiques et Optimisation',1),(8,'Théorie des Graphes',1),(9,'MI/Français',1),(10,'MI/Anglais',1),(11,'Structure et Matériaux',2),(12,'Hydraulique et Environnement',2),(13,'Géotechnique',2),(14,'Urbanisme et Transport',2),(15,'Énergies Renouvelables',2),(16,'Efficacité Énergétique',2),(17,'Réseaux Électriques Intelligents',2),(18,'Gestion de Projets BTP',2),(19,'Pollution et Traitement des Déchets',2),(20,'GCEE/Français',2),(21,'GCEE/Anglais',2),(22,'Mathématiques Approfondies',3),(23,'Physique Fondamentale',3),(24,'Chimie Générale',3),(25,'Mécanique des Fluides',3),(26,'Algèbre Linéaire',3),(27,'Analyse Numérique',3),(28,'AP/Français',3),(29,'AP/Anglais',3);
 /*!40000 ALTER TABLE `speciality` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -561,7 +493,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `firstName` char(30) NOT NULL,
@@ -579,7 +511,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `CIN` (`CIN`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +520,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'ADMIN','ENSAH','default.webp','rc12435','adminEnsah@eservice.com','admin','$2y$10$CWflyVgtOuJjEvH5.BHuAeI8kCNhJGZJ1OM4pKy.C0Pg9BY3y1h/6','0653646266','ensah  alhoceima','2000-01-01','2025-03-03 00:00:00','active'),(2,'hassan','hassan','2_3957213016242711.png','PB28536','hassan@gmail.com','professor','$2y$10$pPOO9pFsdt0GvB6T34oO..XmD3ZGNIBuYoFoHYKeTATh/ZcKOBtr6','123456789','morocco alhociema','2000-12-03','2025-04-16 22:19:28','active'),(3,'hassan','hassan','default.webp','PB234323','hassanvivo25@gmail.com','professor','$2y$10$pPOO9pFsdt0GvB6T34oO..XmD3ZGNIBuYoFoHYKeTATh/ZcKOBtr6','123456789','morocco alhociema','2001-02-02','2025-04-16 22:23:25','active'),(4,'AYOUB','Coordonnateur','4_8702589800169008.png','R123456','ayoub_coord@gmail.com','professor','$2y$10$fyhNM0ptoJxAnsXwYjo4ruvZOobJeE7/5C3rDa423LMM33YXsC/xy','688171625','Beni Bouayach , AL Hoceima','2001-04-24','2025-04-24 15:52:18','active'),(14,'Moad','Abdou','default.webp','R161000','elabdellaoui.mod@etu.uae.ac.ma','vacataire','$2y$10$GeU8scMCsbtAnTUBZhrqVeY9ejfUHvipiMHO6e5r6AijP5rdl9MaW','612345678','test alo alo alo','2001-05-02','2025-05-08 18:55:37','active'),(20,'AYOUB','Vacataire','20_9112355805813685.png','R231116','ayoub_vacataire@gmail.com','vacataire','$2y$10$4qRpy.i3Mx.YK0of.zgqR.th6fux67VNi9JkBAnbjVc1NdOab6yHW','684171622','Beni Bouayach , AL Hoceima','2000-09-07','2025-06-06 20:06:22','active');
+INSERT INTO `user` VALUES (1,'ADMIN','ENSAH','admin.png','rc12435','adminEnsah@eservice.com','admin','$2y$10$CWflyVgtOuJjEvH5.BHuAeI8kCNhJGZJ1OM4pKy.C0Pg9BY3y1h/6','0653646266','ensah alhoceima','2000-01-01','2025-03-03 00:00:00','active'),(22,'Moad','Abdou','coord.png','RC12345','moad@gmail.com','professor','$2y$10$ddMd26yHKtqyhqjIt07ZbeRfMLBPwmWOEESoP73TiHtnvfUwE.xGC','612345678','Targuist Hoceima','2001-06-05','2025-06-11 22:16:45','active'),(24,'Hassan','El khatoury','chef.png','RC12340','hassan@gmail.com','professor','$2y$10$ddMd26yHKtqyhqjIt07ZbeRfMLBPwmWOEESoP73TiHtnvfUwE.xGC','612345678','Targuist Hoceima','2001-06-05','2025-06-11 22:18:13','active'),(25,'ayoube','Boukkakar','prof.png','RC12000','ayoub@gmail.com','professor','$2y$10$ddMd26yHKtqyhqjIt07ZbeRfMLBPwmWOEESoP73TiHtnvfUwE.xGC','612345600','Targuist bni boayach','2001-06-05','2025-06-11 22:18:57','active');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -598,7 +530,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `vacataire`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vacataire` (
   `id_vacataire` int(11) NOT NULL,
   `id_coordonnateur` int(11) DEFAULT NULL,
@@ -618,7 +550,6 @@ CREATE TABLE `vacataire` (
 
 LOCK TABLES `vacataire` WRITE;
 /*!40000 ALTER TABLE `vacataire` DISABLE KEYS */;
-INSERT INTO `vacataire` VALUES (13,4,7),(14,4,5),(16,4,14),(20,4,1);
 /*!40000 ALTER TABLE `vacataire` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -631,5 +562,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-07 16:14:48
--- Dump completed on 2025-05-14 15:07:47
+-- Dump completed on 2025-06-12 19:35:01
